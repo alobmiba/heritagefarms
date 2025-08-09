@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 
-export const revalidate = 86400;
-export const dynamic = 'force-static';
+// Note: This is a Client Component; static hints belong on server components only
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -82,7 +80,7 @@ export default function ContactPage() {
                 Contact Us
               </h1>
               <p className="text-lg font-gilroy text-white/90 max-w-2xl mx-auto">
-                Have questions about our heritage crops? We'd love to hear from you.
+                Have questions about our heritage crops? We&apos;d love to hear from you.
               </p>
             </div>
           </div>

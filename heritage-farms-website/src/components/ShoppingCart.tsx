@@ -5,10 +5,19 @@ import Image from 'next/image';
 import CheckoutForm from './CheckoutForm';
 import { useCart } from '@/context/CartContext';
 
+interface CartItem {
+  id: string;
+  name: string;
+  localName: string;
+  price: string;
+  image: string;
+  quantity: number;
+}
+
 interface ShoppingCartProps {
   isOpen: boolean;
   onClose: () => void;
-  onCheckout: (items: any[]) => void;
+  onCheckout: (items: CartItem[]) => void;
 }
 
 export default function ShoppingCart({ isOpen, onClose, onCheckout }: ShoppingCartProps) {
