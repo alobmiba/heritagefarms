@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
+export const revalidate = 86400;
+export const dynamic = 'force-static';
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -76,7 +79,7 @@ export default function ContactPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center text-white">
               <h1 className="text-4xl md:text-6xl font-gilroy font-medium leading-tight mb-4">
-                Get In Touch
+                Contact Us
               </h1>
               <p className="text-lg font-gilroy text-white/90 max-w-2xl mx-auto">
                 Have questions about our heritage crops? We'd love to hear from you.
@@ -223,8 +226,16 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-gilroy font-semibold text-[#404A3D] mb-1">Location</h3>
-                    <p className="text-gray-600 font-gilroy">Ontario, Canada</p>
-                    <p className="text-gray-600 font-gilroy">Greater Toronto Area</p>
+                    <p className="text-gray-600 font-gilroy">16 Twin Sisters Lake Road</p>
+                    <p className="text-gray-600 font-gilroy">Marmora, Ontario, Canada</p>
+                    <a
+                      href="https://www.google.com/maps?q=16+Twin+Sisters+Lake+Road,+Marmora,+Ontario"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 text-[#EDDD5E] hover:underline"
+                    >
+                      View on Google Maps
+                    </a>
                   </div>
                 </div>
 
@@ -279,7 +290,7 @@ export default function ContactPage() {
               
               <div className="relative h-64 rounded-2xl overflow-hidden">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2887.269250541065!2d-79.38318408450264!3d43.65322597911439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63c85%3A0x24cb7dae6ada8419!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sus!4v1640995200000!5m2!1sen!2sus"
+                  src="https://maps.google.com/maps?q=16%20Twin%20Sisters%20Lake%20Road%2C%20Marmora%2C%20Ontario&t=&z=12&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
