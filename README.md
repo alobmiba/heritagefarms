@@ -39,7 +39,7 @@ A world-class Next.js 15 + TypeScript website for Heritage Fields and Acreage Lt
 ## 📁 Project Structure
 
 ```
-heritage-farms-website/
+heritage-farms-website/ ([browse in GitHub](https://github.com/alobmiba/heritagefarms/tree/main/heritage-farms-website))
 ├── src/
 │   ├── app/
 │   │   ├── api/

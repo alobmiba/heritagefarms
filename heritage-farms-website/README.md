@@ -50,7 +50,7 @@ heritage-farms-website/
 
 ### Prerequisites
 - Node.js 18+ 
-- npm or yarn
+- npm
 
 ### Installation
 ```bash
@@ -61,7 +61,7 @@ git clone [repository-url]
 cd heritage-farms-website
 
 # Install dependencies
-npm install
+npm ci
 
 # Start development server
 npm run dev
@@ -174,9 +174,9 @@ npm run lint     # Run ESLint
 4. **Testing** - Unit and integration tests
 5. **Deployment** - Vercel or similar platform
 
-## 📚 Documentation
+## 📚 Environment
 
-For detailed architecture documentation, see our [Notion page](https://www.notion.so/Technology-2450d6d578f3806f86caea6f3d38964e?source=copy_link).
+Copy `.env.example` to `.env.local` and fill in values (e.g. `PEXELS_API_KEY`).
 
 ---
 

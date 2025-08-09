@@ -44,14 +44,7 @@ const nextConfig = {
       },
     ];
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/pexels/:path*',
-        destination: '/api/pexels',
-      },
-    ];
-  },
+  // No custom rewrites needed; Pexels proxy lives at /api/pexels
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -64,4 +57,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
