@@ -28,6 +28,7 @@ export default function HeroSlider() {
               fill
               className="object-cover"
               priority
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
           </div>
@@ -39,6 +40,7 @@ export default function HeroSlider() {
               alt="Heritage Farms Banner 2"
               fill
               className="object-cover"
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
           </div>
@@ -50,6 +52,7 @@ export default function HeroSlider() {
               alt="Heritage Farms Banner 3"
               fill
               className="object-cover"
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
           </div>

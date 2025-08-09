@@ -2,26 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Gilroy Font Imports */
-@font-face {
-  font-family: 'Gilroy-Light';
-  src: url('/fonts/Gilroy/Gilroy-Light.woff') format('woff'),
-       url('/fonts/Gilroy/Gilroy-Light.ttf') format('truetype'),
-       url('/fonts/Gilroy/Gilroy-Light.eot') format('embedded-opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Gilroy-Extrabold';
-  src: url('/fonts/Gilroy/Gilroy-Extrabold.woff') format('woff'),
-       url('/fonts/Gilroy/Gilroy-Extrabold.ttf') format('truetype'),
-       url('/fonts/Gilroy/Gilroy-Extrabold.eot') format('embedded-opentype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
+/* Fonts are now loaded with next/font/local in layout.tsx */
 
 /* Base Styles */
 @layer base {
@@ -30,14 +11,12 @@
   }
   
   body {
-    font-family: 'Gilroy', system-ui, sans-serif;
     font-weight: 300;
     line-height: 1.6;
     color: #404A3D;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Gilroy', system-ui, sans-serif;
     font-weight: 800;
   }
 }

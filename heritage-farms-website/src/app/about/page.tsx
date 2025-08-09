@@ -1,3 +1,5 @@
+export const revalidate = 86400;
+export const dynamic = 'force-static';
 import React from 'react';
 import Image from 'next/image';
 import Header from '@/components/Header';

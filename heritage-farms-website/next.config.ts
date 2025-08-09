@@ -45,6 +45,7 @@ const nextConfig = {
     ];
   },
   // No custom rewrites needed; Pexels proxy lives at /api/pexels
+  productionBrowserSourceMaps: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },

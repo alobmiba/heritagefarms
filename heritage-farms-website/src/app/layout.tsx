@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
-const inter = Inter({ subsets: ['latin'] });
+const gilroy = localFont({
+  src: [
+    { path: '../../public/fonts/Gilroy/Gilroy-Light.woff', weight: '300', style: 'normal' },
+    { path: '../../public/fonts/Gilroy/Gilroy-Extrabold.woff', weight: '800', style: 'normal' },
+  ],
+  display: 'swap',
+  variable: '--font-gilroy',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -116,7 +123,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#404A3D" />
         <meta name="msapplication-tap-highlight" content="no" />
       </head>
-      <body className={inter.className}>
+      <body className={gilroy.className}>
         {/* Skip to main content link for accessibility */}
         <a 
           href="#main-content" 

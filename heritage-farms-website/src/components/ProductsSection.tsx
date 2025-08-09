@@ -95,6 +95,7 @@ export default function ProductsSection() {
               alt="Heritage Farms Products"
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 66vw, 768px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
           </div>
