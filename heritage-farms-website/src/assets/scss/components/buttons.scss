@@ -1,0 +1,30 @@
+/* Button Components */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-[#EDDD5E] text-[#404A3D] hover:bg-opacity-90 focus:ring-[#EDDD5E];
+  }
+
+  .btn-secondary {
+    @apply bg-[#5B8C51] text-white hover:bg-opacity-90 focus:ring-[#5B8C51];
+  }
+
+  .btn-outline {
+    @apply border-2 border-[#5B8C51] text-[#5B8C51] hover:bg-[#5B8C51] hover:text-white;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+
+  .btn-xl {
+    @apply px-10 py-5 text-xl;
+  }
+} 
