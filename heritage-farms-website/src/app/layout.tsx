@@ -98,10 +98,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
+          {/* Favicon - prefer app icons in /app over /public to avoid conflicts */}
+          <link rel="icon" href="/favicon.png" type="image/png" />
+          <link rel="apple-touch-icon" href="/favicon.png" />
         
         {/* Manifest for PWA */}
         <link rel="manifest" href="/manifest.json" />

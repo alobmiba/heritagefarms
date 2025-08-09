@@ -1,6 +1,3 @@
-export const revalidate = 3600;
-export const dynamic = 'force-static';
-
 'use client';
 
 import React from "react";
