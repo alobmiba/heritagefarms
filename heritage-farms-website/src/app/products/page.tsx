@@ -1,6 +1,4 @@
 'use client';
-export const revalidate = 3600;
-export const dynamic = 'force-static';
 
 import React, { useState } from 'react';
 import Image from 'next/image';

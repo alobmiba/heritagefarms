@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // Note: This is a Client Component; static hints belong on server components only
 
@@ -308,6 +310,8 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 } 
