@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function ContactCard() {
   return (
     <aside className="rounded-2xl bg-white shadow-md p-6">
