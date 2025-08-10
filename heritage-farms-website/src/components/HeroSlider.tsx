@@ -91,7 +91,7 @@ export default function HeroSlider() {
                 </div>
                 <div>
                   <p className="text-xs text-white font-gilroy">Call us Now</p>
-                  <p className="text-sm font-gilroy font-medium text-white">+1(212)255-511</p>
+                  <p className="text-sm font-gilroy font-medium text-white">+1 (647) 616-2833</p>
                 </div>
               </div>
               

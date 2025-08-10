@@ -45,7 +45,7 @@ export default function Header() {
               </div>
               <div>
                 <p className="text-xs text-white font-gilroy">Call us Now</p>
-                <p className="text-sm font-gilroy font-medium text-white">+1(212)255-511</p>
+                <p className="text-sm font-gilroy font-medium text-white">+1 (647) 616-2833</p>
               </div>
             </div>
 
@@ -127,7 +127,7 @@ export default function Header() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-300 font-gilroy">Call us Now</p>
-                  <p className="text-sm font-gilroy font-medium text-white">+1(212)255-511</p>
+                  <p className="text-sm font-gilroy font-medium text-white">+1 (647) 616-2833</p>
                 </div>
               </div>
               
@@ -142,7 +142,7 @@ export default function Header() {
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323c-.875.807-2.026 1.297-3.323 1.297z"/></svg>
               </a>
               <a href="https://www.youtube.com/@HeritageFields" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-white/80 hover:text-[#EDDD5E] transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.97 2.97 0 00-2.09-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.408.586a2.97 2.97 0 00-2.09 2.1C0 8 0 12 0 12s0 4 .502 5.814a2.97 2.97 0 002.09 2.1C4.4 20.5 12 20.5 12 20.5s7.6 0 9.408-.586a2.97 2.97 0 00-2.09-2.1C24 16 24 12 24 12s0-4-.502-5.814zM9.75 15.5v-7l6 3.5-6 3.5z"/></svg>
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.97 2.97 0 00-2.09-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.408.586a2.97 2.97 0 00-2.09 2.1C0 8 0 12 0 12s0 4 .502 5.814a2.97 2.97 0 002.09 2.1C4.4 20.5 12 20.5 12 20.5s7.6 0 9.408-.586a2.97 2.97 0 002.09-2.1C24 16 24 12 24 12s0-4-.502-5.814zM9.75 15.5v-7l6 3.5-6 3.5z"/></svg>
               </a>
             </div>
           </div>

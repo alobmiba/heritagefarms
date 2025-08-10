@@ -111,6 +111,25 @@ export default function RootLayout({
         {/* Viewport */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         
+        {/* Content Security Policy for Google Maps and site security */}
+        <meta httpEquiv="Content-Security-Policy" content="
+          default-src 'self';
+          script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
+          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
+          img-src 'self' data: https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com;
+          frame-src 'self' https://www.google.com https://*.google.com;
+          connect-src 'self' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
+          font-src 'self' https://fonts.gstatic.com;
+          object-src 'none';
+          base-uri 'self';
+          form-action 'self';
+          frame-ancestors 'self';
+          upgrade-insecure-requests;
+        " />
+        
+        {/* Referrer Policy for external embeds */}
+        <meta name="referrer" content="no-referrer-when-downgrade" />
+        
         {/* Additional meta tags */}
         <meta name="application-name" content="Heritage Farms" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
