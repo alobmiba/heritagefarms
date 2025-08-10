@@ -27,7 +27,7 @@ export function ContactForm() {
           Connect with us
         </h3>
         <p className="text-gray-600 font-gilroy font-medium">
-          Fill out the form below and we'll get back to you as soon as possible.
+          Fill out the form below and we&apos;ll get back to you as soon as possible.
         </p>
       </div>
 
@@ -85,7 +85,7 @@ export function ContactForm() {
               className={input} 
               id="subject"
               name="subject" 
-              placeholder="What's this about?" 
+              placeholder="What&apos;s this about?" 
               aria-label="Subject" 
             />
           </div>
@@ -130,7 +130,7 @@ export function ContactForm() {
               <svg className="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <p className="text-green-800 font-gilroy font-medium">Thanks! We'll be in touch soon.</p>
+              <p className="text-green-800 font-gilroy font-medium">Thanks! We&apos;ll be in touch soon.</p>
             </div>
           </div>
         )}

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export function ContactInformationOne() {
   return (
@@ -8,8 +8,8 @@ export function ContactInformationOne() {
           className="w-full h-full bg-cover bg-center rounded-l-full"
           style={{
             backgroundImage: "url('/branding/Images/products/callaloo-amaranth.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundSize: "cover",
+            backgroundPosition: "center"
           }}
         />
       </div>
@@ -23,7 +23,7 @@ export function ContactInformationOne() {
                   Get In Touch
                 </span>
                 <h2 className="text-3xl md:text-5xl font-gilroy-extrabold text-[#404A3D] mb-6">
-                  We're Ready to Help You! Need Any Heritage Greens or Consultations?
+                  We&apos;re Ready to Help You! Need Any Heritage Greens or Consultations?
                 </h2>
               </div>
               
@@ -120,9 +120,9 @@ export function ContactInformationOne() {
               <div className="row">
                 <div className="col-lg-8 mx-auto text-center">
                   <p className="text-lg text-gray-600 font-gilroy font-medium">
-                    We're passionate about bringing authentic African heritage greens to your table. 
-                    Whether you're a restaurant looking for fresh ingredients or a home cook wanting to explore new flavors, 
-                    we're here to help you discover the rich culinary traditions of Africa.
+                    We&apos;re passionate about bringing authentic African heritage greens to your table. 
+                    Whether you&apos;re a restaurant looking for fresh ingredients or a home cook wanting to explore new flavors, 
+                    we&apos;re here to help you discover the rich culinary traditions of Africa.
                   </p>
                 </div>
               </div>

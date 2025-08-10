@@ -27,11 +27,11 @@ export default function ContactPage() {
               {/* Section Header */}
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-gilroy-extrabold text-[#404A3D] mb-6">
-                  Let's Connect
+                  Let&apos;s Connect
                 </h2>
                 <p className="text-xl text-gray-600 font-gilroy font-medium max-w-3xl mx-auto">
-                  Whether you're a restaurant looking for fresh ingredients, a home cook wanting to explore new flavors, 
-                  or just curious about our heritage crops, we'd love to hear from you.
+                  Whether you&apos;re a restaurant looking for fresh ingredients, a home cook wanting to explore new flavors, 
+                  or just curious about our heritage crops, we&apos;d love to hear from you.
                 </p>
               </div>
 
@@ -44,7 +44,7 @@ export default function ContactPage() {
                       Contact Information
                     </h3>
                     <p className="text-gray-600 font-gilroy mb-8">
-                      Reach out to us through any of these channels. We're here to help you discover 
+                      Reach out to us through any of these channels. We&apos;re here to help you discover 
                       the authentic flavors of African heritage greens.
                     </p>
                   </div>
@@ -184,7 +184,7 @@ export default function ContactPage() {
                     Are your greens organic?
                   </h3>
                   <p className="text-gray-600 font-gilroy">
-                    We use sustainable greenhouse technology and eco-friendly farming methods. While we're not 
+                    We use sustainable greenhouse technology and eco-friendly farming methods. While we&apos;re not 
                     certified organic, we prioritize natural growing practices and avoid harmful chemicals.
                   </p>
                 </div>

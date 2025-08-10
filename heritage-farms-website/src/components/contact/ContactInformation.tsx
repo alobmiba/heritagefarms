@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export function ContactInformation() {
   return (
@@ -16,7 +16,7 @@ export function ContactInformation() {
               Get In Touch
             </span>
             <h2 className="text-3xl md:text-5xl font-gilroy-extrabold text-[#404A3D] mb-6">
-              We're Ready to Help You!
+              We&apos;re Ready to Help You!
             </h2>
             <p className="text-xl text-gray-600 font-gilroy font-medium max-w-3xl mx-auto">
               Need heritage greens or consultations? Our team is here to provide you with authentic African vegetables and expert guidance.
@@ -108,9 +108,9 @@ export function ContactInformation() {
           {/* Additional Information */}
           <div className="text-center">
             <p className="text-lg text-gray-600 font-gilroy font-medium max-w-2xl mx-auto">
-              We're passionate about bringing authentic African heritage greens to your table. 
-              Whether you're a restaurant looking for fresh ingredients or a home cook wanting to explore new flavors, 
-              we're here to help you discover the rich culinary traditions of Africa.
+              We&apos;re passionate about bringing authentic African heritage greens to your table. 
+              Whether you&apos;re a restaurant looking for fresh ingredients or a home cook wanting to explore new flavors, 
+              we&apos;re here to help you discover the rich culinary traditions of Africa.
             </p>
           </div>
         </div>
