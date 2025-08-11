@@ -13,15 +13,15 @@
   "icons": [
     {
       "src": "/favicon.png",
-      "sizes": "192x192",
+      "sizes": "32x32",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/favicon.png",
-      "sizes": "512x512",
+      "sizes": "64x64",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "screenshots": [
@@ -42,7 +42,7 @@
       "icons": [
         {
           "src": "/favicon.png",
-          "sizes": "96x96"
+          "sizes": "32x32"
         }
       ]
     },
@@ -54,7 +54,7 @@
       "icons": [
         {
           "src": "/favicon.png",
-          "sizes": "96x96"
+          "sizes": "32x32"
         }
       ]
     }
