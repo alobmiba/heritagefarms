@@ -39,7 +39,7 @@ export default function DebugPage() {
               <p><strong>Email:</strong> {session.user?.email}</p>
               <p><strong>Name:</strong> {session.user?.name}</p>
               <p><strong>Image:</strong> {session.user?.image ? 'Yes' : 'No'}</p>
-              <p><strong>Is Admin:</strong> {(session as any).isAdmin ? 'Yes' : 'No'}</p>
+              <p><strong>Is Admin:</strong> {(session as { isAdmin?: boolean }).isAdmin ? 'Yes' : 'No'}</p>
             </div>
           </div>
         )}

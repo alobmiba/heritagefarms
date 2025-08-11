@@ -1,6 +1,7 @@
 import { db } from "@/lib/firebase-admin";
 import { InventoryItem } from "@/types/commerce";
 import { formatCurrency } from "@/lib/utils";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -155,11 +156,13 @@ export default async function InventoryAdmin() {
                     <tr key={item.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <img 
+                          <div className="flex-shrink-0 h-10 w-10 relative">
+                            <Image 
                               className="h-10 w-10 rounded-full object-cover" 
                               src={item.image} 
                               alt={item.name}
+                              width={40}
+                              height={40}
                             />
                           </div>
                           <div className="ml-4">
@@ -222,7 +225,7 @@ export default async function InventoryAdmin() {
               <div className="mt-2 text-sm text-blue-700">
                 <p>
                   To add inventory items, you can use the Firebase Console or run the inventory population script. 
-                  For now, you can manually add items to the "inventory" collection in Firestore.
+                  For now, you can manually add items to the &quot;inventory&quot; collection in Firestore.
                 </p>
                 <p className="mt-2">
                   Run <code className="bg-blue-100 px-1 rounded">node scripts/populate-inventory.js</code> to populate sample data.

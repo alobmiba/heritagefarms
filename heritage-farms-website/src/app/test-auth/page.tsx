@@ -5,7 +5,13 @@ import { useEffect, useState } from 'react';
 
 export default function TestAuthPage() {
   const { data: session, status } = useSession();
-  const [config, setConfig] = useState<any>(null);
+  const [config, setConfig] = useState<{
+    adminEmails?: string;
+    nextauthUrl?: string;
+    hasSecret?: boolean;
+    hasGoogleClientId?: boolean;
+    hasGoogleClientSecret?: boolean;
+  } | null>(null);
 
   useEffect(() => {
     fetch('/api/debug')
@@ -33,7 +39,7 @@ export default function TestAuthPage() {
             <h2 className="text-lg font-semibold mb-3">Your Session</h2>
             <p><strong>Email:</strong> {session.user?.email}</p>
             <p><strong>Name:</strong> {session.user?.name}</p>
-            <p><strong>Is Admin:</strong> {(session as any).isAdmin ? 'Yes' : 'No'}</p>
+                          <p><strong>Is Admin:</strong> {(session as { isAdmin?: boolean }).isAdmin ? 'Yes' : 'No'}</p>
           </div>
         )}
 

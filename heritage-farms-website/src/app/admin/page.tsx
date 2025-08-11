@@ -14,7 +14,6 @@ import {
   UsersIcon,
   ExclamationTriangleIcon,
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
   CalendarIcon,
   TagIcon
 } from '@heroicons/react/24/outline';
@@ -35,7 +34,7 @@ export default async function AdminHome() {
       .filter(o => o.status === 'paid')
       .reduce((sum, o) => sum + o.total, 0);
     
-    const averageOrderValue = paidOrders > 0 ? totalRevenue / paidOrders : 0;
+    // const averageOrderValue = paidOrders > 0 ? totalRevenue / paidOrders : 0;
 
     // Calculate recent activity (last 7 days)
     const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
