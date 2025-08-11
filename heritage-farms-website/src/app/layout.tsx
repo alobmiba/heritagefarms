@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { CartProvider } from '@/context/CartContext';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { SessionProvider } from 'next-auth/react';
+import AppProviders from '@/components/wrappers/AppProviders';
 
 const gilroy = localFont({
   src: [
@@ -93,7 +92,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -112,19 +111,18 @@ export default function RootLayout({
         {/* Viewport */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         
-        {/* Content Security Policy for Google Maps and site security */}
+        {/* Content Security Policy for Google Maps, YouTube, and site security */}
         <meta httpEquiv="Content-Security-Policy" content="
           default-src 'self';
           script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
           img-src 'self' data: https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com;
-          frame-src 'self' https://www.google.com https://*.google.com;
+          frame-src 'self' https://www.google.com https://*.google.com https://www.youtube-nocookie.com https://youtube-nocookie.com;
           connect-src 'self' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
           font-src 'self' https://fonts.gstatic.com;
           object-src 'none';
           base-uri 'self';
           form-action 'self';
-          frame-ancestors 'self';
           upgrade-insecure-requests;
         " />
         
@@ -153,11 +151,9 @@ export default function RootLayout({
         
         <main id="main-content">
           <ErrorBoundary>
-            <SessionProvider>
-              <CartProvider>
-                {children}
-              </CartProvider>
-            </SessionProvider>
+            <AppProviders>
+              {children}
+            </AppProviders>
           </ErrorBoundary>
         </main>
       </body>
