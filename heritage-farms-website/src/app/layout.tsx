@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { SessionProvider } from 'next-auth/react';
 
 const gilroy = localFont({
   src: [
@@ -152,9 +153,11 @@ export default function RootLayout({
         
         <main id="main-content">
           <ErrorBoundary>
-            <CartProvider>
-              {children}
-            </CartProvider>
+            <SessionProvider>
+              <CartProvider>
+                {children}
+              </CartProvider>
+            </SessionProvider>
           </ErrorBoundary>
         </main>
       </body>
