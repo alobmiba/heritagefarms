@@ -7,12 +7,12 @@ const HeroSlider = dynamic(() => import('@/components/HeroSlider'), {
   loading: () => <div className="h-screen bg-[#F8F7F0]" />,
 });
 import ServicesSection from '@/components/ServicesSection';
-import ProductsSection from '@/components/ProductsSection';
+
 import PortfolioSection from '@/components/PortfolioSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import CTASection from '@/components/CTASection';
-import ClientLogosSection from '@/components/ClientLogosSection';
 import OurPurpose from '@/components/OurPurpose';
+import YouTubeEmbed from '@/components/media/YouTubeEmbed';
 import CredibilityMetrics from '@/components/CredibilityMetrics';
 import MissionOrderForm from '@/components/MissionOrderForm';
 import LatestNews from '@/components/LatestNews';
@@ -56,14 +56,9 @@ const HomePage = () => {
           <ServicesSection />
         </section>
 
-        {/* Products Section */}
-        <section id="products">
-          <ProductsSection />
-        </section>
-
-        {/* Portfolio Section */}
-        <section id="portfolio">
-          <PortfolioSection />
+        {/* Our Purpose Section */}
+        <section id="purpose">
+          <OurPurpose />
         </section>
 
         {/* Testimonials Section */}
@@ -71,19 +66,28 @@ const HomePage = () => {
           <TestimonialsSection />
         </section>
 
+        {/* YouTube Video Section */}
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <h2 className="text-3xl md:text-4xl font-gilroy font-bold text-[#404A3D] mb-6">
+              Aerial View of Heritage Farms
+            </h2>
+            <YouTubeEmbed
+              urlOrId="https://youtu.be/loTBYvTHvcg?si=HlA_y0YpKgRmxTfj"
+              title="Heritage Farms — Aerial view"
+              className="mx-auto"
+            />
+          </div>
+        </section>
+
+        {/* Portfolio Section */}
+        <section id="portfolio">
+          <PortfolioSection />
+        </section>
+
         {/* CTA Section */}
         <section id="cta">
           <CTASection />
-        </section>
-
-        {/* Client Logos Section */}
-        <section id="clients">
-          <ClientLogosSection />
-        </section>
-
-        {/* Our Purpose Section */}
-        <section id="purpose">
-          <OurPurpose />
         </section>
 
         {/* Mission & Order Form Section */}

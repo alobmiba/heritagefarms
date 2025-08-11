@@ -150,9 +150,9 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
       const result = await response.json();
 
       if (result.success) {
-        setOrderId(result.orderId);
+        setOrderId(result.code);
         setFormStatus('success');
-        onOrderSuccess(result.orderId);
+        onOrderSuccess(result.code);
       } else {
         setFormStatus('error');
         console.error('Order submission failed:', result.message);
@@ -221,11 +221,11 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                   Interac e-Transfer Instructions:
                 </h4>
                 <div className="space-y-2 text-sm text-gray-700">
-                  <p><strong>Send payment to:</strong> payments@heritagefarms.ca</p>
-                  <p><strong>Amount:</strong> ${getTotalPrice().toFixed(2)}</p>
-                                     <p><strong>Important:</strong> Include your Order Number <strong>{orderId}</strong> in the message</p>
-                   <p><strong>Security Question:</strong> &quot;Heritage Farm Order&quot;</p>
-                   <p><strong>Answer:</strong> &quot;Produce&quot;</p>
+                  <p><strong>Send payment to:</strong> heritagefieldsandacreage@gmail.com</p>
+                  <p><strong>Amount:</strong> ${getTotalPrice().toFixed(2)} CAD</p>
+                  <p><strong>Important:</strong> Include your Order Code <strong>{orderId}</strong> in the message</p>
+                  <p><strong>Security Question:</strong> &quot;Heritage Farm Order&quot;</p>
+                  <p><strong>Answer:</strong> &quot;Produce&quot;</p>
                 </div>
               </div>
 
@@ -458,8 +458,8 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                     Payment Method: Interac e-Transfer
                   </h4>
                   <div className="text-sm text-blue-700 space-y-1">
-                    <p>• Send payment to: <strong>payments@heritagefarms.ca</strong></p>
-                    <p>• Include your Order Number in the message</p>
+                    <p>• Send payment to: <strong>heritagefieldsandacreage@gmail.com</strong></p>
+                    <p>• Include your Order Code in the message</p>
                     <p>• Payment must be received within 24 hours</p>
                   </div>
                 </div>

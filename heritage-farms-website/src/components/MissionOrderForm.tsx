@@ -140,7 +140,7 @@ export default function MissionOrderForm() {
       
       if (result.success) {
         setFormStatus('success');
-        setSubmitMessage(`Order submitted successfully! Order ID: ${result.orderId}. Please send Interac e-Transfer to payments@heritagefarms.ca with your order number in the message. Payment must be received within 24 hours.`);
+        setSubmitMessage(`Order submitted successfully! Order Code: ${result.code}. Please send Interac e-Transfer to ${result.instructions.pay_to} for $${(result.instructions.amount_cents/100).toFixed(2)} CAD. Include "${result.instructions.message}" in your e-Transfer message. Payment must be received within 24 hours.`);
         
         // Reset form
         setFormData({

@@ -48,18 +48,11 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-[#3A7817]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-6 py-2 bg-white rounded-full mb-6 border border-[#5B8C51]">
-            <svg className="w-4 h-4 text-[#5B8C51] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <span className="text-[#5B8C51] font-gilroy font-medium text-sm uppercase tracking-wider">testimonial</span>
-          </div>
-          
-          <h2 className="text-5xl md:text-6xl font-gilroy font-medium text-[#404A3D] mb-6">
+          <h2 className="text-5xl md:text-6xl font-gilroy font-medium text-[#EAFDE7] mb-6">
             What our customers say
           </h2>
         </div>

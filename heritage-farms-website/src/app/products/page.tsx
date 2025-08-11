@@ -1,223 +1,246 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ProductModal from '@/components/ProductModal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ShoppingCart from '@/components/ShoppingCart';
 import { useCart } from '@/context/CartContext';
 
 // Product interface definition
 interface Product {
   id: string;
+  sku: string;
   name: string;
   localName: string;
-  price: string;
+  price: number;
+  priceUnit: string;
   image: string;
   cultivar: string;
   healthBenefits: string;
   growingMethod: string;
   maturityTime: string;
   description: string;
+  category: string;
+  active: boolean;
+  inStock: boolean;
+  stockQuantity: number;
 }
 
-// Product data with detailed information
-const products: Product[] = [
-  {
-    id: 'fluted-pumpkin-leaves',
-    name: 'Fluted Pumpkin Leaves',
-    localName: 'Ugwu',
-    price: '$5 per bunch',
-    image: '/branding/Images/products/fluted-pumpkin-leaves.png',
-    cultivar: 'Telfairia occidentalis',
-    healthBenefits: 'Rich in vitamins A, C, and E, iron, and calcium. Known for its blood-building properties and immune system support.',
-    growingMethod: 'Hydroponically grown in controlled greenhouse environment with organic nutrients and natural pest management.',
-    maturityTime: '6-8 weeks from seedling to harvest',
-    description: 'Traditional West African leafy green with a mild, slightly nutty flavor. Perfect for soups, stews, and traditional dishes.'
-  },
-  {
-    id: 'callaloo-amaranth',
-    name: 'Callaloo - Amaranth',
-    localName: 'Efo Tete',
-    price: '$5 per bunch',
-    image: '/branding/Images/products/callaloo-amaranth.png',
-    cultivar: 'Amaranthus viridis',
-    healthBenefits: 'Excellent source of protein, iron, and calcium. Contains antioxidants and anti-inflammatory properties.',
-    growingMethod: 'Soil-based cultivation in greenhouse with organic compost and natural fertilizers.',
-    maturityTime: '4-6 weeks from seed to harvest',
-    description: 'Nutritious leafy green with a slightly bitter, earthy taste. Popular in Caribbean and West African cuisine.'
-  },
-  {
-    id: 'yam',
-    name: 'Yam',
-    localName: 'Yam',
-    price: 'Per lb',
-    image: '/branding/Images/products/yams.webp',
-    cultivar: 'Dioscorea rotundata',
-    healthBenefits: 'High in complex carbohydrates, fiber, and potassium. Good source of vitamin C and B vitamins.',
-    growingMethod: 'Container-grown in greenhouse with specialized soil mix and controlled temperature conditions.',
-    maturityTime: '8-10 months from planting to harvest',
-    description: 'Traditional root vegetable with starchy, slightly sweet flesh. Versatile ingredient for various dishes.'
-  },
-  {
-    id: 'water-leaf',
-    name: 'Water Leaf',
-    localName: 'Gbure',
-    price: '$5 per bunch',
-    image: '/branding/Images/products/waterleaf-gbure.jpeg',
-    cultivar: 'Talinum triangulare',
-    healthBenefits: 'High water content, rich in vitamins A and C, and contains beneficial minerals for hydration.',
-    growingMethod: 'Hydroponic system with high humidity control and frequent nutrient solution changes.',
-    maturityTime: '3-4 weeks from seedling to harvest',
-    description: 'Succulent leafy green with a mild, slightly sour taste. Excellent for soups and stews.'
-  },
-  {
-    id: 'clove-basil',
-    name: 'Clove Basil - Scent Leaf',
-    localName: 'Efirin',
-    price: 'Market price',
-    image: '/branding/Images/products/scent-leaves.jpeg',
-    cultivar: 'Ocimum gratissimum',
-    healthBenefits: 'Contains essential oils with antimicrobial properties. Rich in antioxidants and known for digestive benefits.',
-    growingMethod: 'Organic soil cultivation with natural pest control and regular pruning for optimal leaf production.',
-    maturityTime: '5-6 weeks from seed to harvest',
-    description: 'Aromatic herb with a strong, distinctive flavor. Essential ingredient in traditional Nigerian cuisine.'
-  },
-  {
-    id: 'red-onions',
-    name: 'Red Onions',
-    localName: 'Red Onions',
-    price: 'Market price',
-    image: '/branding/Images/products/red-onions.jpg',
-    cultivar: 'Allium cepa',
-    healthBenefits: 'Rich in quercetin, a powerful antioxidant. Contains sulfur compounds that support heart health.',
-    growingMethod: 'Container-grown in greenhouse with well-draining soil and controlled irrigation systems.',
-    maturityTime: '3-4 months from bulb planting to harvest',
-    description: 'Sweet and mild red onions with beautiful color and excellent flavor for cooking and raw consumption.'
-  },
-  {
-    id: 'honey',
-    name: 'Raw Honey',
-    localName: 'Honey',
-    price: '$10 for 250ml',
-    image: '/branding/Images/products/raw-honey.jpg',
-    cultivar: 'Natural',
-    healthBenefits: 'Natural antibacterial and antifungal properties. Rich in antioxidants and enzymes. Soothes sore throats.',
-    growingMethod: 'Produced by local bees from our greenhouse flowers and surrounding wildflowers.',
-    maturityTime: 'Varies by season',
-    description: 'Pure, unprocessed honey with natural sweetness and health benefits. Perfect for tea, cooking, and natural remedies.'
-  }
-];
-
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { addToCart, cartItems, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen } = useCart();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addToCart } = useCart();
+  const [showModal, setShowModal] = useState(false);
+
+  // Fetch products from Firebase
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/inventory');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProducts(data.items || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleCheckout = async (items: any[]) => {
+    // This will be handled by the ShoppingCart component
+    console.log('Checkout items:', items);
+  };
 
   const openProductModal = (product: Product) => {
     setSelectedProduct(product);
-    setIsModalOpen(true);
+    setShowModal(true);
   };
 
   const closeProductModal = () => {
-    setIsModalOpen(false);
+    setShowModal(false);
     setSelectedProduct(null);
   };
 
-  return (
-    <div className="min-h-screen bg-[#F8F7F0]">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-[#404A3D] to-[#2D3328]">
+  const formatPrice = (price: number, unit: string) => {
+    return `$${price.toFixed(2)} per ${unit}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
         <Header />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-white">
-            <h1 className="text-5xl md:text-7xl font-gilroy-extrabold font-bold mb-6">
-              Specialty Produce
-            </h1>
-            <p className="text-xl font-gilroy text-white/90 max-w-3xl mx-auto">
-              Authentic West African and Caribbean crops, grown with care in our sustainable greenhouses.
-            </p>
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading products...</p>
           </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <p>Error loading products: {error}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-green-600 to-green-800 text-white py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-gilroy font-bold mb-4">
+            Our Fresh Products
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            Discover our selection of fresh, locally grown West African vegetables and herbs, 
+            cultivated with care in our sustainable greenhouse.
+          </p>
         </div>
       </section>
 
       {/* Products Grid */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-gilroy-extrabold font-bold text-[#404A3D] mb-6">
-              Our Heritage Crops
-            </h2>
-            <p className="text-xl font-gilroy text-gray-600 max-w-3xl mx-auto">
-              Traditional varieties cultivated with modern sustainable practices
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
-                onClick={() => openProductModal(product)}
-              >
-                <div className="relative h-64">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute top-4 right-4 bg-[#EDDD5E] text-[#404A3D] px-3 py-1 rounded-full text-sm font-gilroy-extrabold font-semibold">
-                    {product.price}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          {products.length === 0 ? (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-semibold text-gray-600 mb-4">No Products Available</h2>
+              <p className="text-gray-500">Check back soon for our fresh products!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {products.map((product) => (
+                <div 
+                  key={product.sku} 
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="relative h-64">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover"
+                    />
+                    {!product.inStock && (
+                      <div className="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded text-sm">
+                        Out of Stock
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-gilroy font-semibold text-gray-800 mb-2">
+                      {product.name}
+                    </h3>
+                    <p className="text-green-600 font-medium mb-2">
+                      {product.localName}
+                    </p>
+                    <p className="text-2xl font-bold text-green-700 mb-4">
+                      {formatPrice(product.price, product.priceUnit)}
+                    </p>
+                    
+                    <div className="space-y-3">
+                      <p className="text-sm text-gray-600 line-clamp-3">
+                        {product.description}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-2">
+                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                          {product.category}
+                        </span>
+                        {product.inStock && (
+                          <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                            In Stock: {product.stockQuantity}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 flex gap-3">
+                      <button
+                        onClick={() => openProductModal(product)}
+                        className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                      >
+                        View Details
+                      </button>
+                                             <button
+                         onClick={() => addToCart({
+                           id: product.sku,
+                           name: product.name,
+                           localName: product.localName,
+                           price: formatPrice(product.price, product.priceUnit),
+                           image: product.image
+                         })}
+                         disabled={!product.inStock}
+                         className="flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                       >
+                         Add to Cart
+                       </button>
+                    </div>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-gilroy-extrabold font-bold text-[#404A3D] mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-lg font-gilroy text-gray-600 mb-2">
-                    {product.localName}
-                  </p>
-                  <p className="text-gray-600 font-gilroy mb-4">
-                    {product.description}
-                  </p>
-                  <div className="space-y-2">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToCart({
-                          id: product.id,
-                          name: product.name,
-                          localName: product.localName,
-                          price: product.price,
-                          image: product.image
-                        });
-                      }}
-                      className="w-full bg-[#5B8C51] text-white font-gilroy-extrabold font-semibold py-2 rounded-full hover:bg-opacity-90 transition-all duration-300"
-                    >
-                      Add to Cart
-                    </button>
-                    <button className="w-full bg-[#EDDD5E] text-[#404A3D] font-gilroy-extrabold font-semibold py-2 rounded-full hover:bg-opacity-90 transition-all duration-300">
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Product Modal */}
-      {isModalOpen && selectedProduct && (
+      {selectedProduct && (
         <ProductModal
           product={selectedProduct}
-          isOpen={isModalOpen}
+          isOpen={showModal}
           onClose={closeProductModal}
+                     onAddToCart={() => {
+             addToCart({
+               id: selectedProduct.sku,
+               name: selectedProduct.name,
+               localName: selectedProduct.localName,
+               price: formatPrice(selectedProduct.price, selectedProduct.priceUnit),
+               image: selectedProduct.image
+             });
+             closeProductModal();
+           }}
         />
       )}
 
-      {/* Footer */}
+      {/* Shopping Cart */}
+      <ShoppingCart 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        onCheckout={handleCheckout}
+      />
+
       <Footer />
     </div>
   );

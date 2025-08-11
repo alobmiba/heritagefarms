@@ -5,24 +5,31 @@ import Image from 'next/image';
 
 interface Product {
   id: string;
+  sku: string;
   name: string;
   localName: string;
-  price: string;
+  price: number;
+  priceUnit: string;
   image: string;
   cultivar: string;
   healthBenefits: string;
   growingMethod: string;
   maturityTime: string;
   description: string;
+  category: string;
+  active: boolean;
+  inStock: boolean;
+  stockQuantity: number;
 }
 
 interface ProductModalProps {
   product: Product;
   isOpen: boolean;
   onClose: () => void;
+  onAddToCart: () => void;
 }
 
-export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
+export default function ProductModal({ product, isOpen, onClose, onAddToCart }: ProductModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -67,7 +74,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
               className="object-cover rounded-t-2xl lg:rounded-l-2xl lg:rounded-t-none"
             />
             <div className="absolute top-4 left-4 bg-[#EDDD5E] text-[#404A3D] px-4 py-2 rounded-full text-sm font-gilroy font-semibold">
-              {product.price}
+              ${product.price.toFixed(2)} per {product.priceUnit}
             </div>
           </div>
 
@@ -129,8 +136,12 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
               {/* CTA Button */}
               <div className="pt-4">
-                <button className="w-full bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold py-4 rounded-full hover:bg-opacity-90 transition-all duration-300 text-lg">
-                  Order Now
+                <button 
+                  onClick={onAddToCart}
+                  disabled={!product.inStock}
+                  className="w-full bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold py-4 rounded-full hover:bg-opacity-90 transition-all duration-300 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                  {product.inStock ? 'Add to Cart' : 'Out of Stock'}
                 </button>
               </div>
             </div>

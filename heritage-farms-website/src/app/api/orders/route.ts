@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { db } from '@/lib/firebase-admin';
+import { generateOrderCode } from '@/lib/order-code';
 
 interface CartItem {
   id: string;
@@ -23,8 +26,34 @@ interface OrderData {
   orderType: 'ecommerce' | 'mission';
 }
 
+const OrderSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  phone: z.string().optional(),
+  notes: z.string().optional(),
+  items: z.array(z.object({
+    sku: z.string(),
+    name: z.string(),
+    qty: z.number().int().positive(),
+    price: z.number().int().nonnegative(),
+  })).min(1),
+  subtotal: z.number().int().nonnegative(),
+  tax: z.number().int().nonnegative(),
+  total: z.number().int().positive(),
+});
+
 export async function POST(request: NextRequest) {
   try {
+    const ip = (request.headers.get("x-forwarded-for") || "").split(",")[0];
+    // basic rate limit (edge-safe, ephemeral)
+    const key = `order:${ip}`;
+    (globalThis as any).__hits = (globalThis as any).__hits || new Map<string, { c: number; t: number }>();
+    const now = Date.now();
+    const rec = (globalThis as any).__hits.get(key) || { c: 0, t: now };
+    if (now - rec.t > 60000) { rec.t = now; rec.c = 0; }
+    rec.c++; (globalThis as any).__hits.set(key, rec);
+    if (rec.c > 10) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+
     const body: OrderData = await request.json();
     
     // Validate required fields based on order type
@@ -99,57 +128,87 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate unique order ID
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const orderId = `HF-${timestamp}-${randomString}`;
-    
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Convert legacy order format to new format for Firebase
+    let orderItems: Array<{
+      sku: string;
+      name: string;
+      qty: number;
+      price: number;
+    }> = [];
+    let subtotal = 0;
+    let total = 0;
 
-    // Prepare order data for logging
+    if (body.orderType === 'ecommerce' && body.cartItems) {
+      orderItems = body.cartItems.map(item => {
+        const price = parseFloat(item.price.replace(/[^0-9.]/g, '')) * 100; // Convert to cents
+        const itemTotal = price * item.quantity;
+        subtotal += itemTotal;
+        return {
+          sku: item.id,
+          name: item.name,
+          qty: item.quantity,
+          price: price
+        };
+      });
+    } else if (body.selectedProducts) {
+      // For mission orders, create placeholder items
+      orderItems = body.selectedProducts.map(product => ({
+        sku: product.toLowerCase().replace(/\s+/g, '-'),
+        name: product,
+        qty: 1,
+        price: 0 // Will be calculated by admin
+      }));
+    }
+
+    total = subtotal;
+    const tax = 0; // No tax for now
+
+    // Validate order data with Zod
     const orderData = {
-      orderId,
-      orderType: body.orderType,
-      customer: {
-        name: body.name,
-        email: body.email,
-        phone: body.phone,
-        address: body.address || 'Not provided',
-        city: body.city || 'Not provided',
-        postalCode: body.postalCode || 'Not provided'
-      },
-      items: body.orderType === 'ecommerce' ? body.cartItems || [] : body.selectedProducts || [],
-      totalPrice: body.orderType === 'ecommerce' ? (body.totalPrice || 0) : 0,
-      message: body.message || 'No additional message',
-      timestamp: new Date().toISOString(),
-      paymentMethod: 'Interac e-Transfer',
-      paymentEmail: 'payments@heritagefarms.ca'
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      notes: body.message,
+      items: orderItems,
+      subtotal,
+      tax,
+      total
     };
 
-    // Log the order (in production, save to database)
-    console.log('New Order Received:', orderData);
+    const parsed = OrderSchema.safeParse(orderData);
+    if (!parsed.success) {
+      return NextResponse.json({ 
+        error: "Invalid order", 
+        details: parsed.error.issues 
+      }, { status: 400 });
+    }
 
-    // Send email notification (in production, use a proper email service)
-    await sendOrderNotification(orderData);
+    // Generate order code and save to Firebase
+    const code = generateOrderCode();
+    const ts = Date.now();
+    const doc = {
+      ...parsed.data,
+      code,
+      status: "pending_payment",
+      createdAt: ts,
+      updatedAt: ts,
+    };
+
+    const ref = await db.collection("orders").add(doc);
+    const instructions = {
+      pay_to: "heritagefieldsandacreage@gmail.com",
+      amount_cents: parsed.data.total,
+      currency: "CAD",
+      message: `ORDER ${code} - please include this code in your Interac e-Transfer note`,
+    };
 
     return NextResponse.json({
       success: true,
       message: 'Order submitted successfully! Please complete your Interac e-Transfer payment.',
-      orderId,
-      data: {
-        customer: orderData.customer,
-        items: orderData.items,
-        totalPrice: orderData.totalPrice,
-        paymentInstructions: {
-          email: 'payments@heritagefarms.ca',
-          amount: orderData.totalPrice,
-          orderNumber: orderId,
-          securityQuestion: 'Heritage Farm Order',
-          securityAnswer: 'Produce',
-          deadline: '24 hours'
-        }
-      }
+      orderId: ref.id,
+      code,
+      status: "pending_payment",
+      instructions
     }, { status: 200 });
 
   } catch (error) {
@@ -165,84 +224,4 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Helper function to send email notification (implement with your email service)
-async function sendOrderNotification(orderData: {
-  orderId: string;
-  orderType: string;
-  customer: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    city: string;
-    postalCode: string;
-  };
-  items: Array<{
-    name: string;
-    localName: string;
-    quantity: number;
-    price: string;
-  }> | string[];
-  totalPrice: number;
-  message: string;
-  timestamp: string;
-  paymentMethod: string;
-  paymentEmail: string;
-}) {
-    // Example implementation with a service like SendGrid, Mailgun, etc.
-  let itemsText = '';
-  if (orderData.orderType === 'ecommerce') {
-    if (Array.isArray(orderData.items) && orderData.items.length > 0) {
-      // Type guard to check if items are CartItem objects
-      const cartItems = orderData.items as CartItem[];
-      itemsText = cartItems.map((item) => 
-        `- ${item.name} (${item.localName}): ${item.quantity} x ${item.price}`
-      ).join('\n');
-    } else {
-      itemsText = 'No items';
-    }
-  } else {
-    itemsText = Array.isArray(orderData.items) ? orderData.items.join(', ') : 'No products selected';
-  }
-
-  const emailContent = `
-    New Order Received - Heritage Farms
-    
-    Order ID: ${orderData.orderId}
-    Order Type: ${orderData.orderType}
-    
-    Customer Information:
-    Name: ${orderData.customer.name}
-    Email: ${orderData.customer.email}
-    Phone: ${orderData.customer.phone}
-    Address: ${orderData.customer.address}
-    City: ${orderData.customer.city}
-    Postal Code: ${orderData.customer.postalCode}
-    
-    ${orderData.orderType === 'ecommerce' ? `
-    Order Items:
-    ${itemsText}
-    
-    Total Amount: $${orderData.totalPrice.toFixed(2)}
-    ` : `
-    Selected Products:
-    ${itemsText}
-    `}
-    
-    Additional Message: ${orderData.message}
-    
-    Payment Method: ${orderData.paymentMethod}
-    Payment Email: ${orderData.paymentEmail}
-    
-    Timestamp: ${orderData.timestamp}
-  `;
-  
-  // In production, implement actual email sending
-  // await emailService.send({
-  //   to: 'orders@heritagefarms.ca',
-  //   subject: `New Order Received - ${orderData.orderId}`,
-  //   text: emailContent
-  // });
-  
-  console.log('Order notification email content:', emailContent);
-} 
+ 
