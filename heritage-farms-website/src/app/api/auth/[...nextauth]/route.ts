@@ -1,5 +1,12 @@
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import Google from "next-auth/providers/google";
+
+// Extend the built-in session types
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    isAdmin?: boolean;
+  }
+}
 
 const allowed = (process.env.ADMIN_EMAILS || "").split(",").map(s => s.trim().toLowerCase());
 
@@ -18,7 +25,7 @@ const handler = NextAuth({
     async session({ session }) {
       // tag sessions as admin if email is whitelisted
       if (session?.user?.email && allowed.includes(session.user.email.toLowerCase())) {
-        (session as any).isAdmin = true;
+        session.isAdmin = true;
       }
       return session;
     },

@@ -26,6 +26,15 @@ interface OrderData {
   orderType: 'ecommerce' | 'mission';
 }
 
+interface RateLimitRecord {
+  c: number;
+  t: number;
+}
+
+interface GlobalWithHits {
+  __hits?: Map<string, RateLimitRecord>;
+}
+
 const OrderSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
@@ -47,11 +56,12 @@ export async function POST(request: NextRequest) {
     const ip = (request.headers.get("x-forwarded-for") || "").split(",")[0];
     // basic rate limit (edge-safe, ephemeral)
     const key = `order:${ip}`;
-    (globalThis as any).__hits = (globalThis as any).__hits || new Map<string, { c: number; t: number }>();
+    const globalWithHits = globalThis as GlobalWithHits;
+    globalWithHits.__hits = globalWithHits.__hits || new Map<string, RateLimitRecord>();
     const now = Date.now();
-    const rec = (globalThis as any).__hits.get(key) || { c: 0, t: now };
+    const rec = globalWithHits.__hits.get(key) || { c: 0, t: now };
     if (now - rec.t > 60000) { rec.t = now; rec.c = 0; }
-    rec.c++; (globalThis as any).__hits.set(key, rec);
+    rec.c++; globalWithHits.__hits.set(key, rec);
     if (rec.c > 10) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
     const body: OrderData = await request.json();

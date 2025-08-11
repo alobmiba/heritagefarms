@@ -71,6 +71,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }: 
               src={product.image}
               alt={product.name}
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover rounded-t-2xl lg:rounded-l-2xl lg:rounded-t-none"
             />
             <div className="absolute top-4 left-4 bg-[#EDDD5E] text-[#404A3D] px-4 py-2 rounded-full text-sm font-gilroy font-semibold">

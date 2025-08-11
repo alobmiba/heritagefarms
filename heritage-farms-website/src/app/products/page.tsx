@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ShoppingCart from '@/components/ShoppingCart';
 import { useCart } from '@/context/CartContext';
+import { CartItem } from '@/types/commerce';
 
 // Product interface definition
 interface Product {
@@ -32,7 +33,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { addToCart, cartItems, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen } = useCart();
+  const { addToCart, isCartOpen, setIsCartOpen } = useCart();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -56,7 +57,7 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  const handleCheckout = async (items: any[]) => {
+  const handleCheckout = async (items: CartItem[]) => {
     // This will be handled by the ShoppingCart component
     console.log('Checkout items:', items);
   };
@@ -149,6 +150,7 @@ export default function ProductsPage() {
                       src={product.image}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover"
                     />
                     {!product.inStock && (

@@ -1,12 +1,30 @@
-export type InventoryItem = {
+export type CartItem = {
   id: string;
+  name: string;
+  localName: string;
+  price: string;
+  image: string;
+  quantity: number;
+};
+
+export type InventoryItem = {
   sku: string;
   name: string;
+  localName: string;
   price: number;        // cents
-  unit?: string;        // "bunch", "lb"
-  stock: number;
+  priceUnit: string;    // "bunch", "lb"
+  image: string;
+  cultivar: string;
+  healthBenefits: string;
+  growingMethod: string;
+  maturityTime: string;
+  description: string;
+  category: string;
   active: boolean;
-  imageUrl?: string;
+  inStock: boolean;
+  stockQuantity: number;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type OrderItem = {
