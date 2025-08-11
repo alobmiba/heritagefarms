@@ -19,8 +19,8 @@ const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ user }) {
-      if (!user?.email) return false;
-      return allowed.includes(user.email.toLowerCase());
+      // Allow all users to sign in, but only grant admin access to whitelisted emails
+      return !!user?.email;
     },
     async session({ session }) {
       // tag sessions as admin if email is whitelisted
