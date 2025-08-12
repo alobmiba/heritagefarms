@@ -1,19 +1,57 @@
-import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase-admin";
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/firebase-admin';
+import { z } from 'zod';
 
-export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+const statusUpdateSchema = z.object({
+  status: z.enum(['pending_payment', 'paid', 'cancelled']),
+});
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { status } = await req.json();
-    if (!["paid", "cancelled"].includes(status)) {
-      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    const body = await request.json();
+    
+    // Validate the input
+    const validatedData = statusUpdateSchema.parse(body);
+    
+    // Check if order exists
+    const orderDoc = await db.collection("orders").doc(params.id).get();
+    
+    if (!orderDoc.exists) {
+      return NextResponse.json(
+        { error: 'Order not found' },
+        { status: 404 }
+      );
     }
     
-    const resolvedParams = await params;
-    const ref = db.collection("orders").doc(resolvedParams.id);
-    await ref.update({ status, updatedAt: Date.now() });
-    return NextResponse.json({ ok: true });
+    // Update order status and timestamp
+    await db.collection("orders").doc(params.id).update({
+      status: validatedData.status,
+      updatedAt: Date.now(),
+    });
+    
+    return NextResponse.json(
+      { 
+        message: 'Order status updated successfully',
+        orderId: params.id,
+        newStatus: validatedData.status
+      },
+      { status: 200 }
+    );
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.errors },
+        { status: 400 }
+      );
+    }
+    
     console.error('Error updating order status:', error);
-    return NextResponse.json({ error: "Failed to update order status" }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to update order status' },
+      { status: 500 }
+    );
   }
 }

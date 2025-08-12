@@ -154,25 +154,7 @@ export default function LatestNews() {
           </button>
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-16 text-center">
-          <div className="bg-[#F8F7F0] rounded-2xl p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-gilroy font-bold text-[#404A3D] mb-4">
-              Stay Connected with Heritage Farms
-            </h3>
-            <p className="text-gray-600 font-gilroy mb-6 max-w-2xl mx-auto">
-              Subscribe to our newsletter for the latest updates on crop availability, farm events, and community initiatives.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all duration-300">
-                Subscribe to Newsletter
-              </button>
-              <button className="border-2 border-gray-600 text-gray-600 font-gilroy-extrabold font-semibold px-8 py-3 rounded-lg hover:bg-gray-600 hover:text-white transition-all duration-300">
-                View All News
-              </button>
-            </div>
-          </div>
-        </div>
+
       </div>
     </section>
   );

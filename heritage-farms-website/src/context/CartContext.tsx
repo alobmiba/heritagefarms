@@ -58,19 +58,35 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cartItems]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
+    // Validate and sanitize item before adding
+    if (!item.id || !item.name || !item.price || !item.sku) {
+      console.error('Invalid cart item:', item);
+      return;
+    }
+
+    // Sanitize item data
+    const sanitizedItem: Omit<CartItem, 'quantity'> = {
+      ...item,
+      name: item.name.trim().replace(/[<>]/g, '').substring(0, 200),
+      price: item.price.trim().substring(0, 50),
+      image: item.image.startsWith('http') ? item.image : '',
+      sku: item.sku.trim().substring(0, 50),
+      priceUnit: item.priceUnit.trim().substring(0, 20)
+    };
+
     setCartItems(prev => {
-      const existingItem = prev.find(cartItem => cartItem.id === item.id);
+      const existingItem = prev.find(cartItem => cartItem.id === sanitizedItem.id);
       
       if (existingItem) {
         // If item already exists, increase quantity
         return prev.map(cartItem =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          cartItem.id === sanitizedItem.id
+            ? { ...cartItem, quantity: Math.min(cartItem.quantity + 1, 99) } // Limit quantity
             : cartItem
         );
       } else {
         // If item doesn't exist, add it with quantity 1
-        return [...prev, { ...item, quantity: 1 }];
+        return [...prev, { ...sanitizedItem, quantity: 1 }];
       }
     });
   };

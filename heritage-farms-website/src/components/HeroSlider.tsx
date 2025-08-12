@@ -23,7 +23,7 @@ export default function HeroSlider() {
           {/* Slide 1 - Main slide */}
           <div className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === 0 ? 'opacity-100' : 'opacity-0'}`}>
             <Image
-              src="/branding/Images/banner/homebanner.png"
+              src="/branding/Images/banner/optimized/homebanner.webp"
               alt="Heritage Farms Banner"
               fill
               className="object-cover"
@@ -36,7 +36,7 @@ export default function HeroSlider() {
           {/* Slide 2 */}
           <div className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === 1 ? 'opacity-100' : 'opacity-0'}`}>
             <Image
-              src="/branding/Images/banner/homebanner2.png"
+              src="/branding/Images/banner/optimized/homebanner2.webp"
               alt="Heritage Farms Banner 2"
               fill
               className="object-cover"
@@ -48,7 +48,7 @@ export default function HeroSlider() {
           {/* Slide 3 */}
           <div className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === 2 ? 'opacity-100' : 'opacity-0'}`}>
             <Image
-              src="/branding/Images/banner/homebanner.png"
+              src="/branding/Images/banner/optimized/homebanner.webp"
               alt="Heritage Farms Banner 3"
               fill
               className="object-cover"

@@ -4,10 +4,14 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/components/Wishlist';
+import { useWishlistModal } from '@/context/WishlistContext';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { getTotalItems, setIsCartOpen } = useCart();
+  const { wishlistItems } = useWishlist();
+  const { openWishlist } = useWishlistModal();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -29,11 +33,11 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-white hover:text-[#EDDD5E] font-gilroy font-semibold text-sm uppercase tracking-wider transition-colors">Home</Link>
-            <Link href="/about" className="text-white hover:text-[#EDDD5E] font-gilroy font-semibold text-sm uppercase tracking-wider transition-colors">About</Link>
-            <Link href="/contact" className="text-white hover:text-[#EDDD5E] font-gilroy font-semibold text-sm uppercase tracking-wider transition-colors">Contact Us</Link>
-            <Link href="/products" className="bg-white text-[#404A3D] font-gilroy font-semibold px-6 py-3 rounded-full hover:bg-opacity-90 transition-all duration-300">
+          <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
+            <Link href="/" className="text-white hover:text-[#EDDD5E] font-gilroy font-semibold text-sm uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">Home</Link>
+            <Link href="/about" className="text-white hover:text-[#EDDD5E] font-gilroy font-semibold text-sm uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">About</Link>
+            <Link href="/contact" className="text-white hover:text-[#EDDD5E] font-gilroy font-semibold text-sm uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">Contact Us</Link>
+            <Link href="/products" className="bg-white text-[#404A3D] font-gilroy font-semibold px-6 py-3 rounded-full hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2">
               Shop now
             </Link>
           </nav>
@@ -74,6 +78,21 @@ export default function Header() {
                 </svg>
               </a>
             </div>
+            
+            <button 
+              onClick={openWishlist}
+              className="relative bg-white text-[#404A3D] font-gilroy font-semibold px-4 py-3 rounded-full hover:bg-opacity-90 transition-all duration-300 mr-2"
+              aria-label="Open wishlist"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#EDDD5E] text-[#404A3D] text-xs font-gilroy-extrabold font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </button>
             
             <button 
               onClick={() => setIsCartOpen(true)}
@@ -171,7 +190,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </div>
-    </header>
-  );
-} 
+              </div>
+      </header>
+    );
+  } 

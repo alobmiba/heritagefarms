@@ -6,7 +6,25 @@ import { redirect } from "next/navigation";
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const session = await getServerSession();
   
-  if (!session?.isAdmin) {
+  console.log('Admin layout - Session:', {
+    user: session?.user?.email,
+    isAdmin: session?.isAdmin,
+    hasSession: !!session,
+    sessionKeys: session ? Object.keys(session) : []
+  });
+  
+  // Check if user is admin by email as fallback
+  const allowed = (process.env.ADMIN_EMAILS || "").split(",").map(s => s.trim().toLowerCase());
+  const isAdminByEmail = session?.user?.email && allowed.includes(session.user.email.toLowerCase());
+  
+  console.log('Admin layout - Email check:', {
+    userEmail: session?.user?.email,
+    allowedEmails: allowed,
+    isAdminByEmail
+  });
+  
+  if (!session?.isAdmin && !isAdminByEmail) {
+    console.log('Redirecting to signin - not admin');
     redirect("/api/auth/signin");
   }
 

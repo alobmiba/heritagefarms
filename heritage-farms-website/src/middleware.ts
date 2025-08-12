@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 
 interface JWTToken {
   email?: string;
+  isAdmin?: boolean;
   [key: string]: unknown;
 }
 
@@ -14,12 +15,25 @@ export async function middleware(req: NextRequest) {
   if (!adminPaths.some(rx => rx.test(url.pathname))) return NextResponse.next();
   
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET }) as JWTToken | null;
-  if (!token || !token.email) return NextResponse.redirect(new URL("/api/auth/signin", req.url));
+  console.log('Middleware - Token:', { email: token?.email, isAdmin: token?.isAdmin });
   
+  if (!token || !token.email) {
+    console.log('Middleware - No token, redirecting to signin');
+    return NextResponse.redirect(new URL("/api/auth/signin", req.url));
+  }
+  
+  // Check if user is admin (either by isAdmin flag or email)
   const allowed = (process.env.ADMIN_EMAILS || "").split(",").map(s => s.trim().toLowerCase());
-  if (!allowed.includes(token.email.toLowerCase())) {
+  const isAdmin = token.isAdmin || allowed.includes(token.email.toLowerCase());
+  
+  console.log('Middleware - Admin check:', { email: token.email, isAdmin, allowed });
+  
+  if (!isAdmin) {
+    console.log('Middleware - Not admin, returning forbidden');
     return new NextResponse("Forbidden", { status: 403 });
   }
+  
+  console.log('Middleware - Admin access granted');
   return NextResponse.next();
 }
 

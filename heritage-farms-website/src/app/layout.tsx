@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import AppProviders from '@/components/wrappers/AppProviders';
+import StructuredData, { organizationSchema, localBusinessSchema } from '@/components/StructuredData';
+import WishlistWrapper from '@/components/WishlistWrapper';
 
 const gilroy = localFont({
   src: [
@@ -117,7 +119,7 @@ export default function RootLayout({
           script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
           img-src 'self' data: https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com;
-          frame-src 'self' https://www.google.com https://*.google.com https://www.youtube-nocookie.com https://youtube-nocookie.com;
+          frame-src 'self' https://www.google.com https://*.google.com https://maps.google.com https://www.youtube-nocookie.com https://youtube-nocookie.com;
           connect-src 'self' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
           font-src 'self' https://fonts.gstatic.com;
           object-src 'none';
@@ -153,9 +155,14 @@ export default function RootLayout({
           <ErrorBoundary>
             <AppProviders>
               {children}
+              <WishlistWrapper />
             </AppProviders>
           </ErrorBoundary>
         </main>
+        
+        {/* Structured Data */}
+        <StructuredData type="organization" data={organizationSchema} />
+        <StructuredData type="localBusiness" data={localBusinessSchema} />
       </body>
     </html>
   );

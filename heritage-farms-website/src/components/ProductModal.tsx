@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import Image from 'next/image';
+import ProductReviews from '@/components/ProductReviews';
 
 interface Product {
   id: string;
@@ -147,6 +148,14 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }: 
               </div>
             </div>
           </div>
+        </div>
+        
+        {/* Product Reviews Section */}
+        <div className="border-t border-gray-200 p-8">
+          <ProductReviews 
+            productId={product.id} 
+            productName={product.name} 
+          />
         </div>
       </div>
     </div>

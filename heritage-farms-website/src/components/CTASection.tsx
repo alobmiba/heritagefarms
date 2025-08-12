@@ -5,12 +5,7 @@
 export default function CTASection() {
   return (
     <section className="py-20 bg-[#5B8C51] relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-32 h-32 bg-[#EDDD5E] rounded-full"></div>
-        <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#EDDD5E] rounded-full"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-[#EDDD5E] rounded-full"></div>
-      </div>
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center">

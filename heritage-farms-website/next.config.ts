@@ -38,7 +38,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://i.ytimg.com https://*.ggpht.com; font-src 'self' data:; connect-src 'self' https://api.pexels.com; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; media-src 'self' https://*.googlevideo.com;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://*.gstatic.com https://*.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com; img-src 'self' data: https: https://i.ytimg.com https://*.ggpht.com https://maps.gstatic.com https://*.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.pexels.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://www.google.com https://*.google.com https://maps.google.com; media-src 'self' https://*.googlevideo.com;",
           },
         ],
       },
@@ -67,7 +67,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://i.ytimg.com https://*.ggpht.com; font-src 'self' data:; connect-src 'self' https://api.pexels.com; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com; media-src 'self' https://*.googlevideo.com;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://*.gstatic.com https://*.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com; img-src 'self' data: https: https://i.ytimg.com https://*.ggpht.com https://maps.gstatic.com https://*.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.pexels.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://www.google.com https://*.google.com https://maps.google.com; media-src 'self' https://*.googlevideo.com;",
           },
         ],
       },
