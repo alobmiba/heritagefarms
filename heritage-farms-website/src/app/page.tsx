@@ -3,14 +3,10 @@
 import React from "react";
 import HeroSlider from '@/components/HeroSlider';
 import ServicesSection from '@/components/ServicesSection';
-
-
+import BlogSection from '@/components/BlogSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import OurPurpose from '@/components/OurPurpose';
 import BenefitsSection from '@/components/BenefitsSection';
-import MissionOrderForm from '@/components/MissionOrderForm';
-import StructuredData from '@/components/StructuredData';
-import LatestNews from '@/components/LatestNews';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import Footer from '@/components/Footer';
 import ShoppingCart from '@/components/ShoppingCart';
@@ -35,7 +31,6 @@ const HomePage = () => {
 
   return (
     <>
-      <StructuredData />
       <div>
         {/* Hero Section */}
         <section id="home">
@@ -55,16 +50,14 @@ const HomePage = () => {
         {/* Benefits Section - Full Bleed Video Background */}
         <BenefitsSection />
 
-
-
         {/* Testimonials Section */}
         <section id="testimonials">
           <TestimonialsSection />
         </section>
 
-        {/* Latest News Section */}
-        <section id="news">
-          <LatestNews />
+        {/* Blog Section */}
+        <section id="blog">
+          <BlogSection />
         </section>
 
         {/* Newsletter Signup Section */}

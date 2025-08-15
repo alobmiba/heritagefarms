@@ -59,7 +59,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     // Validate and sanitize item before adding
-    if (!item.id || !item.name || !item.price || !item.sku) {
+    if (!item.id || !item.name || !item.price || !item.image) {
       console.error('Invalid cart item:', item);
       return;
     }
@@ -69,9 +69,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       ...item,
       name: item.name.trim().replace(/[<>]/g, '').substring(0, 200),
       price: item.price.trim().substring(0, 50),
-      image: item.image.startsWith('http') ? item.image : '',
-      sku: item.sku.trim().substring(0, 50),
-      priceUnit: item.priceUnit.trim().substring(0, 20)
+      image: item.image || '/branding/Images/products/placeholder.png',
+      localName: item.localName ? item.localName.trim().replace(/[<>]/g, '').substring(0, 100) : ''
     };
 
     setCartItems(prev => {

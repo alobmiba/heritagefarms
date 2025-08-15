@@ -109,7 +109,7 @@ export default function ShoppingCart({ isOpen, onClose, onCheckout }: ShoppingCa
                   <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                     <div className="relative w-16 h-16 flex-shrink-0">
                       <Image
-                        src={item.image}
+                        src={item.image || '/branding/Images/products/placeholder.png'}
                         alt={item.name}
                         fill
                         className="object-cover rounded-md"
@@ -120,7 +120,7 @@ export default function ShoppingCart({ isOpen, onClose, onCheckout }: ShoppingCa
                       <h3 className="text-sm font-gilroy font-semibold text-[#404A3D] truncate">
                         {item.name}
                       </h3>
-                      <p className="text-xs text-gray-500 font-gilroy">
+                      <p className="text-sm text-gray-500 font-gilroy">
                         {item.localName}
                       </p>
                       <p className="text-sm font-gilroy font-semibold text-[#5B8C51]">
@@ -131,7 +131,7 @@ export default function ShoppingCart({ isOpen, onClose, onCheckout }: ShoppingCa
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-8 h-8 bg-[#EDDD5E] text-[#404A3D] rounded-full flex items-center justify-center hover:bg-opacity-80 transition-colors"
+                        className="w-8 h-8 bg-[#00312D] text-[#EAFDE7] rounded-full flex items-center justify-center hover:bg-opacity-80 transition-colors"
                         aria-label="Decrease quantity"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,13 +139,13 @@ export default function ShoppingCart({ isOpen, onClose, onCheckout }: ShoppingCa
                         </svg>
                       </button>
                       
-                      <span className="w-8 text-center font-gilroy font-semibold text-[#404A3D]">
+                      <span className="text-lg font-gilroy font-semibold text-[#00312D] min-w-[2rem] text-center">
                         {item.quantity}
                       </span>
                       
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-8 h-8 bg-[#EDDD5E] text-[#404A3D] rounded-full flex items-center justify-center hover:bg-opacity-80 transition-colors"
+                        className="w-8 h-8 bg-[#00312D] text-[#EAFDE7] rounded-full flex items-center justify-center hover:bg-opacity-80 transition-colors"
                         aria-label="Increase quantity"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

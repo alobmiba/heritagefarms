@@ -25,8 +25,8 @@ export function ContactThree() {
           <div className="col-xl-7 col-lg-10 mx-auto">
             <div className="contact-three_content-box">
               <div className="section-title section-title-left mb-12">
-                <span className="sub-title inline-block px-4 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold text-sm rounded-full mb-4">
-                  Get In Touch
+                <span className="sub-title inline-block px-4 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold text-sm rounded-full mb-4">
+                  Contact Information
                 </span>
                 <h2 className="text-3xl md:text-4xl font-gilroy-extrabold text-[#404A3D] mb-4">
                   Need Heritage Greens! Send Us Message

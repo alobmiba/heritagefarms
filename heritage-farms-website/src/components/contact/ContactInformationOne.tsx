@@ -19,8 +19,8 @@ export function ContactInformationOne() {
           <div className="col-xl-9 col-lg-12 mx-auto">
             <div className="contact-two_information-box">
               <div className="section-title section-title-left mb-16 text-center md:text-left wow fadeInUp">
-                <span className="sub-title inline-block px-4 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold text-sm rounded-full mb-4">
-                  Get In Touch
+                <span className="sub-title inline-block px-4 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold text-sm rounded-full mb-4">
+                  Contact Information
                 </span>
                 <h2 className="text-3xl md:text-5xl font-gilroy-extrabold text-[#404A3D] mb-6">
                   We&apos;re Ready to Help You! Need Any Heritage Greens or Consultations?

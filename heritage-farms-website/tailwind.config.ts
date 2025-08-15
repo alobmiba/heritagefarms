@@ -42,9 +42,9 @@ const config: Config = {
         // Figma design colors
         'figma': {
           'primary': '#5B8C51',
-          'secondary': '#EDDD5E',
-          'dark': '#404A3D',
-          'light': '#F8F7F0',
+          'secondary': '#00312D',
+          'dark': '#00312D',
+          'light': '#EAFDE7',
           'yellow': '#FDCF00',
           'gray': '#666666',
           'light-gray': '#999999',

@@ -1,19 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { db } from "@/lib/firebase-admin";
 import { InventoryItem } from "@/types/commerce";
 import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
 import { 
   PlusIcon, 
   PencilIcon, 
-  TrashIcon, 
   EyeIcon,
   ArrowUpIcon,
   ArrowDownIcon,
   DocumentArrowUpIcon,
-  DocumentArrowDownIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
@@ -185,7 +182,7 @@ export default function InventoryAdmin() {
       
       setBulkPreview(preview);
       setBulkErrors(errors);
-    } catch (err) {
+    } catch {
       setBulkErrors(['Failed to parse bulk data']);
     }
   };

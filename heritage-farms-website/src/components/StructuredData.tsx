@@ -166,7 +166,15 @@ export const localBusinessSchema: LocalBusinessSchema = {
   areaServed: ["Ontario", "Greater Toronto Area"]
 };
 
-export const createProductSchema = (product: any): ProductSchema => ({
+export const createProductSchema = (product: {
+  name: string;
+  description: string;
+  image: string;
+  sku: string;
+  price: number;
+  inStock: boolean;
+  category: string;
+}): ProductSchema => ({
   "@context": "https://schema.org",
   "@type": "Product",
   name: product.name,

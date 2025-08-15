@@ -1,46 +1,25 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import AppProviders from '@/components/wrappers/AppProviders';
-import StructuredData, { organizationSchema, localBusinessSchema } from '@/components/StructuredData';
-import WishlistWrapper from '@/components/WishlistWrapper';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { performanceOptimizations } from "@/lib/performance-utils";
+import AppProviders from "@/components/wrappers/AppProviders";
 
-const gilroy = localFont({
-  src: [
-    { path: '../../public/fonts/Gilroy/Gilroy-Light.woff', weight: '300', style: 'normal' },
-    { path: '../../public/fonts/Gilroy/Gilroy-Extrabold.woff', weight: '800', style: 'normal' },
-  ],
+const inter = Inter({ 
+  subsets: ["latin"],
   display: 'swap',
-  variable: '--font-gilroy',
+  preload: true,
 });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Heritage Farms - Authentic West African & Caribbean Produce',
-    template: '%s | Heritage Farms'
+    default: "Heritage Farms - Ontario's First Black-Led Farm",
+    template: "%s | Heritage Farms"
   },
-  description: 'Ontario\'s first Black-led farm specializing in year-round West African and Caribbean greens using sustainable greenhouse technology. Fresh, authentic heritage crops delivered to your community.',
-  keywords: [
-    'heritage crops',
-    'West African produce',
-    'Caribbean greens',
-    'sustainable farming',
-    'Ontario farm',
-    'greenhouse farming',
-    'callaloo',
-    'fluted pumpkin leaves',
-    'jute leaves',
-    'waterleaf',
-    'authentic produce',
-    'cultural heritage',
-    'local farming',
-    'organic produce',
-    'fresh vegetables'
-  ],
-  authors: [{ name: 'Heritage Farms' }],
-  creator: 'Heritage Farms',
-  publisher: 'Heritage Farms',
+  description: "Ontario's first Black-led farm growing West African & Caribbean greens—rooted in heritage, nurtured under Canadian skies.",
+  keywords: ["heritage farms", "sustainable agriculture", "West African greens", "Caribbean greens", "Ontario farm", "local produce"],
+  authors: [{ name: "Heritage Farms" }],
+  creator: "Heritage Farms",
+  publisher: "Heritage Farms",
   formatDetection: {
     email: false,
     address: false,
@@ -54,23 +33,23 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_CA',
     url: 'https://heritagefarms.ca',
-    title: 'Heritage Farms - Authentic West African & Caribbean Produce',
-    description: 'Ontario\'s first Black-led farm specializing in year-round West African and Caribbean greens using sustainable greenhouse technology.',
+    title: "Heritage Farms - Ontario's First Black-Led Farm",
+    description: "Ontario's first Black-led farm growing West African & Caribbean greens—rooted in heritage, nurtured under Canadian skies.",
     siteName: 'Heritage Farms',
     images: [
       {
-        url: '/branding/Images/banner/homebanner.png',
+        url: '/branding/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Heritage Farms - Fresh Heritage Crops',
+        alt: 'Heritage Farms - Sustainable Agriculture',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Heritage Farms - Authentic West African & Caribbean Produce',
-    description: 'Ontario\'s first Black-led farm specializing in year-round West African and Caribbean greens.',
-    images: ['/branding/Images/banner/homebanner.png'],
+    title: "Heritage Farms - Ontario's First Black-Led Farm",
+    description: "Ontario's first Black-led farm growing West African & Caribbean greens—rooted in heritage, nurtured under Canadian skies.",
+    images: ['/branding/images/twitter-image.jpg'],
   },
   robots: {
     index: true,
@@ -84,9 +63,41 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: process.env.GOOGLE_VERIFICATION_CODE || '',
+    google: 'your-google-verification-code',
   },
 };
+
+// Performance optimization component
+function PerformanceOptimizations() {
+  if (typeof window !== 'undefined') {
+    // Initialize performance monitoring
+    performanceOptimizations.performanceMonitoring.measureCoreWebVitals();
+    
+    // Preload critical resources
+    performanceOptimizations.resourceOptimization.preconnect([
+      'https://fonts.googleapis.com',
+      'https://fonts.gstatic.com',
+    ]);
+    
+    performanceOptimizations.resourceOptimization.dnsPrefetch([
+      'https://maps.googleapis.com',
+    ]);
+    
+    // Preload critical images
+    performanceOptimizations.imageOptimization.preloadImages([
+      '/branding/images/hero-bg.jpg',
+      '/branding/images/about/hero-optimized.jpg',
+    ]);
+    
+    // Preload critical fonts
+    performanceOptimizations.fontOptimization.preloadFonts([
+      '/fonts/gilroy-regular.woff2',
+      '/fonts/gilroy-bold.woff2',
+    ]);
+  }
+  
+  return null;
+}
 
 export default function RootLayout({
   children,
@@ -94,75 +105,164 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
+    <html lang="en" className={inter.className}>
       <head>
-        {/* Preconnect to external domains for performance */}
+        {/* Resource hints for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         
-          {/* Favicon - prefer app icons in /app over /public to avoid conflicts */}
-          <link rel="icon" href="/favicon.png" type="image/png" />
-          <link rel="apple-touch-icon" href="/favicon.png" />
+        {/* Preload critical resources */}
+        <link rel="preload" href="/branding/images/hero-bg.jpg" as="image" />
+        <link rel="preload" href="/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/gilroy-bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         
-        {/* Manifest for PWA */}
-        <link rel="manifest" href="/manifest.json" />
+        {/* Critical CSS inlining */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* Critical CSS for above-the-fold content */
+            body { margin: 0; font-family: 'Gilroy', sans-serif; }
+            .hero-section { min-height: 100vh; background-size: cover; }
+            .header { position: fixed; top: 0; width: 100%; z-index: 1000; }
+            .loading { opacity: 0; transition: opacity 0.3s; }
+            .loaded { opacity: 1; }
+          `
+        }} />
         
-        {/* Theme color */}
-        <meta name="theme-color" content="#404A3D" />
+        {/* Structured data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Heritage Farms",
+              "description": "Ontario's first Black-led farm growing West African & Caribbean greens",
+              "url": "https://heritagefarms.ca",
+              "logo": "https://heritagefarms.ca/branding/images/logo.png",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Ontario",
+                "addressCountry": "CA"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "email": "info@heritagefarms.ca"
+              },
+              "sameAs": [
+                "https://facebook.com/heritagefarms",
+                "https://instagram.com/heritagefarms"
+              ]
+            })
+          }}
+        />
         
-        {/* Viewport */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        
-        {/* Content Security Policy for Google Maps, YouTube, and site security */}
-        <meta httpEquiv="Content-Security-Policy" content="
-          default-src 'self';
-          script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
-          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
-          img-src 'self' data: https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com;
-          frame-src 'self' https://www.google.com https://*.google.com https://maps.google.com https://www.youtube-nocookie.com https://youtube-nocookie.com;
-          connect-src 'self' https://maps.googleapis.com https://*.gstatic.com https://*.google.com;
-          font-src 'self' https://fonts.gstatic.com;
-          object-src 'none';
-          base-uri 'self';
-          form-action 'self';
-          upgrade-insecure-requests;
-        " />
-        
-        {/* Referrer Policy for external embeds */}
-        <meta name="referrer" content="no-referrer-when-downgrade" />
-        
-        {/* Additional meta tags */}
-        <meta name="application-name" content="Heritage Farms" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Heritage Farms" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-config" content="/browserconfig.xml" />
-        <meta name="msapplication-TileColor" content="#404A3D" />
-        <meta name="msapplication-tap-highlight" content="no" />
+        {/* Performance monitoring */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Performance monitoring
+              if ('PerformanceObserver' in window) {
+                // LCP monitoring
+                new PerformanceObserver((list) => {
+                  const entries = list.getEntries();
+                  const lastEntry = entries[entries.length - 1];
+                  console.log('LCP:', lastEntry.startTime);
+                }).observe({ entryTypes: ['largest-contentful-paint'] });
+                
+                // FID monitoring
+                new PerformanceObserver((list) => {
+                  const entries = list.getEntries();
+                  entries.forEach(entry => {
+                    console.log('FID:', entry.processingStart - entry.startTime);
+                  });
+                }).observe({ entryTypes: ['first-input'] });
+              }
+              
+              // Image lazy loading
+              if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                  entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                      const img = entry.target;
+                      img.src = img.dataset.src;
+                      img.classList.remove('lazy');
+                      observer.unobserve(img);
+                    }
+                  });
+                });
+                
+                document.addEventListener('DOMContentLoaded', () => {
+                  document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                  });
+                });
+              }
+            `
+          }}
+        />
       </head>
-      <body className={gilroy.className}>
-        {/* Skip to main content link for accessibility */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#EDDD5E] text-[#404A3D] px-4 py-2 rounded z-50"
-        >
-          Skip to main content
-        </a>
+      <body className="antialiased">
+        <PerformanceOptimizations />
+        <AppProviders>
+          {children}
+        </AppProviders>
         
-        <main id="main-content">
-          <ErrorBoundary>
-            <AppProviders>
-              {children}
-              <WishlistWrapper />
-            </AppProviders>
-          </ErrorBoundary>
-        </main>
+        {/* Non-critical CSS is handled by Next.js automatically */}
         
-        {/* Structured Data */}
-        <StructuredData type="organization" data={organizationSchema} />
-        <StructuredData type="localBusiness" data={localBusinessSchema} />
+        {/* Enhanced Service Worker registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Enhanced Service Worker registration with performance monitoring
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(registration => {
+                      console.log('✅ Service Worker registered successfully');
+                      
+                      // Handle updates
+                      registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        if (newWorker) {
+                          newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                              console.log('🔄 New Service Worker available');
+                              // You can show a notification to the user here
+                            }
+                          });
+                        }
+                      });
+                    })
+                    .catch(error => {
+                      console.error('❌ Service Worker registration failed:', error);
+                    });
+                });
+              }
+              
+              // Enhanced performance monitoring
+              if ('PerformanceObserver' in window) {
+                // Monitor Core Web Vitals
+                const observer = new PerformanceObserver((list) => {
+                  list.getEntries().forEach(entry => {
+                    if (entry.entryType === 'largest-contentful-paint') {
+                      console.log('📊 LCP:', Math.round(entry.startTime), 'ms');
+                    } else if (entry.entryType === 'first-input') {
+                      console.log('📊 FID:', Math.round(entry.processingStart - entry.startTime), 'ms');
+                    } else if (entry.entryType === 'layout-shift') {
+                      console.log('📊 CLS:', entry.value);
+                    }
+                  });
+                });
+                
+                observer.observe({ 
+                  entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] 
+                });
+              }
+            `
+          }}
+        />
       </body>
     </html>
   );

@@ -6,7 +6,6 @@ import ProductModal from '@/components/ProductModal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ShoppingCart from '@/components/ShoppingCart';
-import Wishlist from '@/components/Wishlist';
 import SearchAndFilter from '@/components/SearchAndFilter';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/components/Wishlist';
@@ -75,7 +74,12 @@ export default function ProductsPage() {
     setFilteredProducts(filtered);
   }, [products]);
 
-  const handleFilterChange = useCallback((filters: any) => {
+  const handleFilterChange = useCallback((filters: {
+    category?: string;
+    priceRange?: string;
+    inStock?: boolean;
+    sortBy?: string;
+  }) => {
     let filtered = [...products];
 
     // Category filter
@@ -258,7 +262,7 @@ export default function ProductsPage() {
                     </p>
                     
                     <div className="space-y-3">
-                      <p className="text-sm text-gray-600 line-clamp-3">
+                      <p className="text-base text-gray-600 line-clamp-3">
                         {product.description}
                       </p>
                       
@@ -284,7 +288,7 @@ export default function ProductsPage() {
                         </button>
                         <button
                           onClick={() => addToCart({
-                            id: product.id,
+                            id: product.sku,
                             name: product.name,
                             localName: product.localName,
                             price: formatPrice(product.price, product.priceUnit),
@@ -300,11 +304,11 @@ export default function ProductsPage() {
                       {/* Wishlist Button */}
                       <button
                         onClick={() => {
-                          if (isInWishlist(product.id)) {
-                            removeFromWishlist(product.id);
+                          if (isInWishlist(product.sku)) {
+                            removeFromWishlist(product.sku);
                           } else {
                             addToWishlist({
-                              id: product.id,
+                              id: product.sku,
                               name: product.name,
                               price: product.price,
                               priceUnit: product.priceUnit,
@@ -313,11 +317,11 @@ export default function ProductsPage() {
                             });
                           }
                         }}
-                        className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-[#EDDD5E] transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded-lg py-2"
+                        className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-[#00312D] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-2 rounded-lg py-2"
                         aria-label={isInWishlist(product.id) ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
                       >
                         <svg
-                          className={`w-5 h-5 ${isInWishlist(product.id) ? 'text-[#EDDD5E] fill-current' : 'text-gray-400'}`}
+                          className={`w-5 h-5 ${isInWishlist(product.id) ? 'text-[#00312D] fill-current' : 'text-gray-400'}`}
                           fill={isInWishlist(product.id) ? 'currentColor' : 'none'}
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -329,7 +333,7 @@ export default function ProductsPage() {
                             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                           />
                         </svg>
-                        <span className="text-sm font-gilroy">
+                        <span className="text-base font-gilroy">
                           {isInWishlist(product.id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
                         </span>
                       </button>

@@ -67,9 +67,9 @@ export async function POST(req: Request) {
     
     if (!validationResult.success) {
       // Log validation failures for security monitoring
-      validationResult.error.errors.forEach(error => {
+      validationResult.error.issues.forEach(error => {
         securityMonitor.logValidationFailure(
-          error.input || '',
+          String(error.input || ''),
           error.path.join('.'),
           ip,
           userAgent
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { 
           error: "Validation failed", 
-          details: validationResult.error.errors 
+          details: validationResult.error.issues 
         }, 
         { status: 400 }
       );

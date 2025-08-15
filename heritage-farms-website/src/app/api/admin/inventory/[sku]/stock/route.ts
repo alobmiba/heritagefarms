@@ -9,16 +9,17 @@ const stockAdjustmentSchema = z.object({
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { sku: string } }
+  { params }: { params: Promise<{ sku: string }> }
 ) {
   try {
+    const { sku } = await params;
     const body = await request.json();
     
     // Validate the input
     const validatedData = stockAdjustmentSchema.parse(body);
     
     // Get current item
-    const itemDoc = await db.collection("inventory").doc(params.sku).get();
+    const itemDoc = await db.collection("inventory").doc(sku).get();
     
     if (!itemDoc.exists) {
       return NextResponse.json(
@@ -40,7 +41,7 @@ export async function PATCH(
     }
     
     // Update stock and timestamp
-    await db.collection("inventory").doc(params.sku).update({
+    await db.collection("inventory").doc(sku).update({
       stockQuantity: newStock,
       updatedAt: Date.now(),
     });
@@ -57,7 +58,7 @@ export async function PATCH(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }

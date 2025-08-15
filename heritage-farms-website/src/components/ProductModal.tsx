@@ -75,8 +75,8 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }: 
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover rounded-t-2xl lg:rounded-l-2xl lg:rounded-t-none"
             />
-            <div className="absolute top-4 left-4 bg-[#EDDD5E] text-[#404A3D] px-4 py-2 rounded-full text-sm font-gilroy font-semibold">
-              ${product.price.toFixed(2)} per {product.priceUnit}
+            <div className="absolute top-4 left-4 bg-[#00312D] text-[#EAFDE7] px-4 py-2 rounded-full text-sm font-gilroy font-semibold">
+              {product.inStock ? 'In Stock' : 'Out of Stock'}
             </div>
           </div>
 
@@ -141,7 +141,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }: 
                 <button 
                   onClick={onAddToCart}
                   disabled={!product.inStock}
-                  className="w-full bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold py-4 rounded-full hover:bg-opacity-90 transition-all duration-300 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold py-4 rounded-full hover:bg-opacity-90 transition-all duration-300 text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {product.inStock ? 'Add to Cart' : 'Out of Stock'}
                 </button>

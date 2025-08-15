@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 interface Review {
   id: string;
@@ -86,7 +85,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
     return [...Array(5)].map((_, i) => (
       <svg
         key={i}
-        className={`w-5 h-5 ${i < rating ? 'text-[#EDDD5E]' : 'text-gray-300'}`}
+        className={`w-5 h-5 ${i < rating ? 'text-[#00312D]' : 'text-gray-300'}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         aria-hidden="true"
@@ -118,7 +117,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
         </div>
         <button
           onClick={() => setShowReviewForm(true)}
-          className="px-6 py-3 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold rounded-lg hover:bg-[#E5D454] transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2"
+          className="px-6 py-3 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold rounded-lg hover:bg-[#002A26] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-2"
         >
           Write a Review
         </button>
@@ -141,7 +140,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 required
                 value={newReview.customerName}
                 onChange={(e) => setNewReview(prev => ({ ...prev, customerName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EDDD5E] focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent outline-none"
               />
             </div>
 
@@ -155,10 +154,10 @@ export default function ProductReviews({ productId, productName }: ProductReview
                     key={rating}
                     type="button"
                     onClick={() => setNewReview(prev => ({ ...prev, rating }))}
-                    className="focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] rounded"
+                    className="focus:outline-none focus:ring-2 focus:ring-[#00312D] rounded"
                   >
                     <svg
-                      className={`w-8 h-8 ${rating <= newReview.rating ? 'text-[#EDDD5E]' : 'text-gray-300'}`}
+                      className={`w-8 h-8 ${rating <= newReview.rating ? 'text-[#00312D]' : 'text-gray-300'}`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -179,7 +178,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 required
                 value={newReview.title}
                 onChange={(e) => setNewReview(prev => ({ ...prev, title: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EDDD5E] focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent outline-none"
                 placeholder="Summarize your experience"
               />
             </div>
@@ -194,7 +193,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 rows={4}
                 value={newReview.comment}
                 onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EDDD5E] focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent outline-none"
                 placeholder="Share your experience with this product..."
               />
             </div>
@@ -202,14 +201,14 @@ export default function ProductReviews({ productId, productName }: ProductReview
             <div className="flex space-x-4">
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold rounded-lg hover:bg-[#E5D454] transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2"
+                className="px-6 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold rounded-lg hover:bg-[#002A26] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-2"
               >
                 Submit Review
               </button>
               <button
                 type="button"
                 onClick={() => setShowReviewForm(false)}
-                className="px-6 py-2 text-gray-600 font-gilroy font-medium hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="px-6 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold rounded-lg hover:bg-[#002A26] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-2"
               >
                 Cancel
               </button>
@@ -240,7 +239,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                       by {review.customerName}
                     </span>
                     {review.verified && (
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-gilroy">
+                      <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full font-gilroy">
                         Verified Purchase
                       </span>
                     )}

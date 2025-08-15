@@ -7,15 +7,15 @@ import { z } from 'zod';
 const inventoryItemSchema = z.object({
   sku: z.string().min(1, 'SKU is required'),
   name: z.string().min(1, 'Name is required'),
-  localName: z.string().optional(),
+  localName: z.string().min(1, 'Local name is required'),
   price: z.number().positive('Price must be positive'),
   priceUnit: z.string().min(1, 'Price unit is required'),
-  image: z.string().url('Image must be a valid URL').optional(),
-  cultivar: z.string().optional(),
-  healthBenefits: z.string().optional(),
-  growingMethod: z.string().optional(),
-  maturityTime: z.string().optional(),
-  description: z.string().optional(),
+  image: z.string().min(1, 'Image is required'),
+  cultivar: z.string().min(1, 'Cultivar is required'),
+  healthBenefits: z.string().min(1, 'Health benefits are required'),
+  growingMethod: z.string().min(1, 'Growing method is required'),
+  maturityTime: z.string().min(1, 'Maturity time is required'),
+  description: z.string().min(1, 'Description is required'),
   category: z.string().min(1, 'Category is required'),
   active: z.boolean().default(true),
   stockQuantity: z.number().int().min(0, 'Stock quantity must be non-negative').default(0),
@@ -23,16 +23,17 @@ const inventoryItemSchema = z.object({
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { sku: string } }
+  { params }: { params: Promise<{ sku: string }> }
 ) {
   try {
+    const { sku } = await params;
     const body = await request.json();
     
     // Validate the input
     const validatedData = inventoryItemSchema.parse(body);
     
     // Ensure SKU in URL matches SKU in body
-    if (validatedData.sku !== params.sku) {
+    if (validatedData.sku !== sku) {
       return NextResponse.json(
         { error: 'SKU in URL does not match SKU in body' },
         { status: 400 }
@@ -40,7 +41,7 @@ export async function PUT(
     }
     
     // Check if item exists
-    const existingDoc = await db.collection("inventory").doc(params.sku).get();
+    const existingDoc = await db.collection("inventory").doc(sku).get();
     
     if (!existingDoc.exists) {
       return NextResponse.json(
@@ -52,12 +53,13 @@ export async function PUT(
     // Update item with new timestamp
     const updatedItem: InventoryItem = {
       ...validatedData,
+      inStock: validatedData.stockQuantity > 0,
       createdAt: existingDoc.data()?.createdAt || Date.now(),
       updatedAt: Date.now(),
     };
     
     // Update in Firestore
-    await db.collection("inventory").doc(params.sku).set(updatedItem);
+    await db.collection("inventory").doc(sku).set(updatedItem);
     
     return NextResponse.json(
       { message: 'Item updated successfully', item: updatedItem },
@@ -66,7 +68,7 @@ export async function PUT(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }
@@ -81,11 +83,13 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { sku: string } }
+  { params }: { params: Promise<{ sku: string }> }
 ) {
   try {
+    const { sku } = await params;
+    
     // Check if item exists
-    const existingDoc = await db.collection("inventory").doc(params.sku).get();
+    const existingDoc = await db.collection("inventory").doc(sku).get();
     
     if (!existingDoc.exists) {
       return NextResponse.json(
@@ -95,7 +99,7 @@ export async function DELETE(
     }
     
     // Delete from Firestore
-    await db.collection("inventory").doc(params.sku).delete();
+    await db.collection("inventory").doc(sku).delete();
     
     return NextResponse.json(
       { message: 'Item deleted successfully' },

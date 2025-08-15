@@ -133,8 +133,8 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
-                <span className="inline-block px-4 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold text-sm rounded-full mb-4">
-                  FAQ
+                <span className="inline-block px-4 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold text-sm rounded-full mb-4">
+                  Get in Touch
                 </span>
                 <h2 className="text-4xl md:text-5xl font-gilroy-extrabold text-[#404A3D] mb-6">
                   Frequently Asked Questions

@@ -208,7 +208,7 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
               </h3>
               
               <div className="bg-[#EDDD5E] p-4 rounded-lg mb-6">
-                <p className="text-sm font-gilroy font-semibold text-[#404A3D] mb-2">
+                                  <p className="text-base font-gilroy font-semibold text-[#404A3D] mb-2">
                   Your Order Number:
                 </p>
                 <p className="text-xl font-gilroy-extrabold font-bold text-[#404A3D]">
@@ -220,7 +220,7 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                 <h4 className="font-gilroy font-semibold text-[#404A3D] mb-3">
                   Interac e-Transfer Instructions:
                 </h4>
-                <div className="space-y-2 text-sm text-gray-700">
+                <div className="space-y-2 text-base text-gray-700">
                   <p><strong>Send payment to:</strong> heritagefieldsandacreage@gmail.com</p>
                   <p><strong>Amount:</strong> ${getTotalPrice().toFixed(2)} CAD</p>
                   <p><strong>Important:</strong> Include your Order Code <strong>{orderId}</strong> in the message</p>
@@ -230,7 +230,7 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
               </div>
 
               <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
-                <p className="text-sm text-yellow-800 font-gilroy">
+                <p className="text-base text-yellow-800 font-gilroy">
                   <strong>Important:</strong> Your order will be processed upon receipt and confirmation of payment. 
                   Payment must be received within 24 hours to avoid order cancellation.
                 </p>
@@ -256,8 +256,8 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
         
         <div className="relative inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-2xl font-gilroy-extrabold font-bold text-[#404A3D]">
-              Complete Your Order
+            <h3 className="text-2xl font-gilroy-extrabold font-bold text-[#00312D]">
+              Checkout
             </h3>
             <button
               onClick={onClose}
@@ -272,41 +272,50 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Order Summary */}
             <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-gilroy font-semibold text-[#404A3D] mb-4">Order Summary</h4>
+              <h3 className="text-lg font-gilroy-extrabold font-bold text-[#00312D] mb-4">
+                Order Summary
+              </h3>
+              
+              <div className="bg-[#00312D] p-4 rounded-lg mb-6">
+                <p className="text-base font-gilroy font-semibold text-[#EAFDE7] mb-2">
+                  Total Items: {cartItems.length}
+                </p>
+                <p className="text-xl font-gilroy-extrabold font-bold text-[#EAFDE7]">
+                  Total: ${getTotalPrice().toFixed(2)}
+                </p>
+              </div>
+              
               <div className="space-y-3">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-3">
-                    <div className="relative w-12 h-12 flex-shrink-0">
+                  <div key={item.id} className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <div className="flex items-center space-x-3">
                       <Image
                         src={item.image}
                         alt={item.name}
-                        fill
-                        className="object-cover rounded-md"
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 object-cover rounded"
                       />
+                      <div>
+                        <p className="text-base font-gilroy font-semibold text-[#00312D] truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-sm font-gilroy text-gray-600">
+                          Qty: {item.quantity}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-gilroy font-semibold text-[#404A3D] truncate">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-gray-500 font-gilroy">
-                        {item.localName}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-gilroy font-semibold text-[#5B8C51]">
-                        {item.price}
-                      </p>
-                      <p className="text-xs text-gray-500 font-gilroy">
-                        Qty: {item.quantity}
-                      </p>
-                    </div>
+                    <p className="text-base font-gilroy font-semibold text-[#00312D]">
+                      ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                    </p>
                   </div>
                 ))}
               </div>
-              <div className="border-t border-gray-200 mt-4 pt-4">
+              
+              <div className="border-t border-gray-200 pt-4 mt-4">
                 <div className="flex justify-between items-center">
-                  <span className="font-gilroy font-semibold text-[#404A3D]">Total:</span>
-                  <span className="font-gilroy-extrabold font-bold text-[#5B8C51] text-lg">
+                  <span className="font-gilroy font-semibold text-[#00312D]">Total:</span>
+                  <span className="text-xl font-gilroy font-bold text-[#00312D]">
                     ${getTotalPrice().toFixed(2)}
                   </span>
                 </div>
@@ -317,7 +326,7 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
             <div>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
+                  <label htmlFor="name" className="block text-base font-gilroy font-semibold text-[#00312D] mb-1">
                     Full Name *
                   </label>
                   <input
@@ -326,18 +335,17 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51] ${
-                      errors.name ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy"
                     placeholder="Enter your full name"
                   />
                   {errors.name && (
-                    <p className="mt-1 text-sm text-red-600 font-gilroy">{errors.name}</p>
+                    <p className="mt-1 text-base text-red-600 font-gilroy">{errors.name}</p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
+                  <label htmlFor="email" className="block text-base font-gilroy font-semibold text-[#00312D] mb-1">
                     Email Address *
                   </label>
                   <input
@@ -346,18 +354,17 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51] ${
-                      errors.email ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy"
                     placeholder="Enter your email address"
                   />
                   {errors.email && (
-                    <p className="mt-1 text-sm text-red-600 font-gilroy">{errors.email}</p>
+                    <p className="mt-1 text-base text-red-600 font-gilroy">{errors.email}</p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
+                  <label htmlFor="phone" className="block text-base font-gilroy font-semibold text-[#00312D] mb-1">
                     Phone Number *
                   </label>
                   <input
@@ -366,39 +373,37 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51] ${
-                      errors.phone ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy"
                     placeholder="Enter your phone number"
                   />
                   {errors.phone && (
-                    <p className="mt-1 text-sm text-red-600 font-gilroy">{errors.phone}</p>
+                    <p className="mt-1 text-base text-red-600 font-gilroy">{errors.phone}</p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="address" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
+                  <label htmlFor="address" className="block text-base font-gilroy font-semibold text-[#00312D] mb-1">
                     Delivery Address *
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     id="address"
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51] ${
-                      errors.address ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Enter your delivery address"
+                    required
+                    rows={3}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy resize-none"
+                    placeholder="Enter your complete delivery address"
                   />
                   {errors.address && (
-                    <p className="mt-1 text-sm text-red-600 font-gilroy">{errors.address}</p>
+                    <p className="mt-1 text-base text-red-600 font-gilroy">{errors.address}</p>
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
-                    <label htmlFor="city" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
+                    <label htmlFor="city" className="block text-sm font-gilroy font-semibold text-[#00312D] mb-1">
                       City *
                     </label>
                     <input
@@ -407,18 +412,16 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 border rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51] ${
-                        errors.city ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="City"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy"
+                      placeholder="Enter your city"
                     />
                     {errors.city && (
                       <p className="mt-1 text-sm text-red-600 font-gilroy">{errors.city}</p>
                     )}
                   </div>
-
                   <div>
-                    <label htmlFor="postalCode" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
+                    <label htmlFor="postalCode" className="block text-sm font-gilroy font-semibold text-[#00312D] mb-1">
                       Postal Code *
                     </label>
                     <input
@@ -427,10 +430,9 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                       name="postalCode"
                       value={formData.postalCode}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 border rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51] ${
-                        errors.postalCode ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Postal Code"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy"
+                      placeholder="Enter your postal code"
                     />
                     {errors.postalCode && (
                       <p className="mt-1 text-sm text-red-600 font-gilroy">{errors.postalCode}</p>
@@ -439,8 +441,8 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-gilroy font-semibold text-[#404A3D] mb-1">
-                    Additional Notes (Optional)
+                  <label htmlFor="message" className="block text-sm font-gilroy font-semibold text-[#00312D] mb-1">
+                    Special Instructions (Optional)
                   </label>
                   <textarea
                     id="message"
@@ -448,8 +450,8 @@ export default function CheckoutForm({ cartItems, onClose, onOrderSuccess }: Che
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-gilroy focus:outline-none focus:ring-2 focus:ring-[#5B8C51]"
-                    placeholder="Any special instructions or notes..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00312D] focus:border-transparent font-gilroy resize-none"
+                    placeholder="Any special delivery instructions or notes"
                   />
                 </div>
 

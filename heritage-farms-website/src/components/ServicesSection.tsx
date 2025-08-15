@@ -48,44 +48,15 @@ export default function ServicesSection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-gilroy font-medium text-white mb-6">
-            Featured Heritage Crops
-          </h2>
-        </div>
-
-        {/* Two Column Layout: Text + Grid */}
+        {/* Two Column Layout: Grid + Text */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-12">
-          {/* Left Column: Text Content */}
-          <div className="space-y-8">
-            <div className="space-y-6">
-              <p className="text-[#EAFDE7] font-gilroy text-lg leading-relaxed">
-                Discover the authentic flavors of West African and Caribbean cuisine, cultivated with care in our sustainable greenhouse. Each crop tells a story of tradition, connecting communities to their cultural roots through food.
-              </p>
-            </div>
-            
-            {/* View All Button */}
-            <div>
-              <a 
-                href="/products" 
-                className="inline-flex items-center px-8 py-4 bg-[#BFF106] text-[#404A3D] font-gilroy font-semibold rounded-full hover:bg-opacity-90 transition-all duration-300 text-lg"
-              >
-                <span>View All Heritage Crops</span>
-                <svg className="w-5 h-5 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Heritage Crops Grid */}
-          <div className="flex justify-end">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Column: Heritage Crops Grid */}
+          <div className="flex justify-start">
+            <div className="w-[584px] h-[385px] grid grid-cols-2 grid-rows-2 gap-6">
               {heritageCrops.map((crop) => (
-                <div key={crop.id} className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group w-[280px] h-[410px]">
+                <div key={crop.id} className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
                   {/* Image Container */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={crop.image}
                       alt={crop.title}
@@ -95,38 +66,54 @@ export default function ServicesSection() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                     
-                    {/* Local Name Badge */}
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-[#BFF106] rounded-full">
-                      <span className="text-[#404A3D] font-gilroy font-bold text-sm">
-                        {crop.localName}
+                    {/* Category Badge */}
+                    <div className="absolute top-2 left-2">
+                      <span className="inline-block px-3 py-1 bg-[#BFF106] text-[#404A3D] font-gilroy font-semibold text-sm rounded-full">
+                        {crop.title}
                       </span>
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
-                    {/* Category Badge */}
-                    <div className="inline-flex items-center px-3 py-1 bg-[#EDDD5E] rounded-full mb-4">
-                      <span className="text-[#404A3D] font-gilroy font-medium text-xs uppercase tracking-wider">
-                        {crop.category}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-xl font-gilroy font-medium text-[#404A3D] mb-4 group-hover:text-[#5B8C51] transition-colors">
-                      {crop.title}
-                    </h3>
-
-                    {/* Description */}
-                    <div className="border-t border-gray-200 pt-4">
-                      <p className="text-gray-600 font-gilroy text-sm leading-relaxed">
-                        {crop.description}
-                      </p>
+                  <div className="p-2">
+                    {/* Title with Info Icon */}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-gilroy font-bold text-[#00312D] group-hover:text-[#5B8C51] transition-colors truncate">
+                        {crop.title}
+                      </h3>
+                      <div className="relative group">
+                        <div className="w-3 h-3 bg-gray-300 rounded-full flex items-center justify-center cursor-help ml-1">
+                          <svg className="w-2 h-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                          {crop.description}
+                          <div className="absolute top-full right-2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Right Column: OurPurpose Content */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl font-gilroy font-bold text-[#EAFDE7]">
+                Our Flagship Greens
+              </h2>
+            </div>
+            <div className="space-y-6">
+              <p className="text-lg font-gilroy text-[#EAFDE7] leading-relaxed">
+                Discover the authentic flavors of West African and Caribbean cuisine, cultivated with care in our sustainable greenhouse. Each crop tells a story of tradition, connecting communities to their cultural roots through food.
+              </p>
+            </div>
+            <a href="/products" className="inline-block bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold px-8 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 text-lg">
+              Shop now
+            </a>
           </div>
         </div>
       </div>

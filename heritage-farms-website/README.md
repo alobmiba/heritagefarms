@@ -1,298 +1,227 @@
 # Heritage Farms Website
 
-Ontario's first Black-led farm specializing in year-round West African and Caribbean greens using sustainable greenhouse technology.
+A modern, responsive e-commerce website for Heritage Farms, Ontario's first Black-led farm focused on West African & Caribbean greens.
 
-## 🏗️ Architecture Overview
+## About Heritage Farms
 
-### Technology Stack
-- **Framework**: Next.js 15.4.5 with App Router
-- **Language**: TypeScript 5
-- **Styling**: Tailwind CSS 3.4.15 with custom Gilroy fonts
-- **State Management**: React Context API with localStorage persistence
-- **Backend**: Firebase Firestore for database, Firebase Admin SDK
-- **Authentication**: NextAuth.js with Google OAuth
-- **UI Components**: Swiper, React Icons, Preline
-- **Development**: ESLint, Prettier, PostCSS
+Heritage Farms is Ontario's premier heritage crop farm, specializing in West African and Caribbean greens grown sustainably using modern greenhouse technology. Our mission is to reconnect our community with culturally meaningful greens while reducing environmental impact through innovative farming practices.
 
-### Directory Structure
+### Our Values
+- **Cultural Preservation**: Honoring traditional farming methods and heritage crops
+- **Sustainability**: 75% less water usage, reduced food miles, responsible waste management
+- **Community Focus**: Serving the Ontario community with fresh, locally-grown heritage greens
+- **Innovation**: Combining traditional knowledge with modern greenhouse technology
+
+### Heritage Crops Featured
+- **Ugwu (Pumpkin Leaves)**: Traditional West African green
+- **Ewedu (Jute Leaves)**: Nutritious and culturally significant
+- **Scent Leaf**: Aromatic herb with medicinal properties
+- **Waterleaf**: Popular in Caribbean cuisine
+- **And more**: Expanding our selection of heritage varieties
+
+## Features
+
+### User Experience
+- **Responsive Design**: Optimized for all devices and screen sizes
+- **Modern UI/UX**: Clean, intuitive interface with smooth animations
+- **Fast Loading**: Optimized images and efficient code structure
+- **Accessibility**: WCAG compliant with proper ARIA labels and keyboard navigation
+
+### E-commerce Functionality
+- **Product Catalog**: Browse heritage crops with detailed descriptions
+- **Shopping Cart**: Add items and manage quantities
+- **Wishlist**: Save products for later purchase
+- **Product Reviews**: Customer feedback and ratings system
+- **Search & Filter**: Find products by category, price, and availability
+
+### SEO & Accessibility
+- **Structured Data**: JSON-LD markup for better search engine visibility
+- **Meta Tags**: Comprehensive SEO optimization
+- **Sitemap**: Dynamic sitemap generation
+- **Alt Text**: Descriptive alt text for all images
+- **Semantic HTML**: Proper heading hierarchy and landmarks
+
+### Security
+- **Input Validation**: Zod schema validation for all forms
+- **Rate Limiting**: API protection against abuse
+- **Security Monitoring**: Comprehensive logging and monitoring
+- **CSRF Protection**: Cross-site request forgery prevention
+- **Content Security Policy**: XSS protection headers
+
+### Performance Optimizations
+- **Local Image Processing**: All images optimized locally for maximum performance
+- **Multiple Format Support**: WebP, AVIF, and fallback formats
+- **Responsive Images**: Automatically generated for different screen sizes
+- **Service Worker**: Offline support and smart caching strategies
+- **Core Web Vitals**: Real-time performance monitoring and optimization
+- **Bundle Optimization**: Code splitting and tree shaking for faster loads
+
+## Directory Structure
+
 ```
 heritage-farms-website/
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── layout.tsx          # Root layout with providers
-│   │   ├── page.tsx            # Homepage
-│   │   ├── globals.css         # Global styles
-│   │   ├── products/           # Products page (Firebase-powered)
-│   │   ├── about/              # About page
-│   │   ├── admin/              # Admin dashboard
-│   │   │   ├── page.tsx        # Orders management
-│   │   │   ├── inventory/      # Inventory management
-│   │   │   └── layout.tsx      # Admin layout
-│   │   └── api/                # API routes
-│   │       ├── orders/         # Order submission (Firebase)
-│   │       ├── inventory/      # Inventory API (Firebase)
-│   │       ├── admin/          # Admin APIs
-│   │       │   ├── orders/     # Order management
-│   │       │   └── inventory/  # Inventory management
-│   │       ├── auth/           # NextAuth configuration
-│   │       └── pexels/         # Image fetching
-│   ├── components/             # Reusable UI components
-│   │   ├── Header.tsx          # Navigation header
-│   │   ├── Footer.tsx          # Site footer
-│   │   ├── ShoppingCart.tsx    # Cart functionality
-│   │   ├── HeroSlider.tsx      # Homepage hero
-│   │   ├── ProductModal.tsx    # Product details (updated)
-│   │   ├── MissionOrderForm.tsx # Order form (Firebase)
-│   │   ├── CheckoutForm.tsx    # Checkout process
-│   │   └── [18 other components]
-│   ├── context/                # React Context providers
-│   │   └── CartContext.tsx     # Shopping cart state
-│   ├── lib/                    # Utility libraries
-│   │   ├── firebase.ts         # Firebase client config
-│   │   ├── firebase-admin.ts   # Firebase admin config
-│   │   └── order-code.ts       # Order code generation
-│   ├── types/                  # TypeScript definitions
-│   │   ├── commerce.ts         # E-commerce types
-│   │   └── other.ts            # Other type definitions
-│   └── assets/                 # Static assets
-├── public/                     # Static files
-│   ├── branding/              # Brand assets
-│   ├── fonts/                 # Custom fonts
-│   ├── manifest.json          # PWA manifest
-│   ├── robots.txt             # SEO
-│   └── sitemap.xml           # SEO
-├── scripts/                   # Utility scripts
-│   └── populate-inventory.js  # Firebase data population
-└── [config files]
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── about/             # About page
+│   │   ├── admin/             # Admin dashboard
+│   │   ├── api/               # API routes
+│   │   ├── contact/           # Contact page
+│   │   ├── products/          # Product catalog
+│   │   └── globals.css        # Global styles
+│   ├── components/            # React components
+│   │   ├── about/             # About page components
+│   │   ├── contact/           # Contact form components
+│   │   ├── media/             # Media components
+│   │   └── wrappers/          # Component wrappers
+│   ├── context/               # React Context providers
+│   ├── lib/                   # Utility functions
+│   │   ├── flaticon-api.ts    # Flaticon API integration
+│   │   ├── firebase.ts        # Firebase client config
+│   │   ├── firebase-admin.ts  # Firebase admin config
+│   │   ├── validation.ts      # Zod schemas
+│   │   └── security-monitor.ts # Security utilities
+│   └── types/                 # TypeScript type definitions
+├── public/                    # Static assets
+│   ├── branding/              # Brand assets and images
+│   └── fonts/                 # Custom fonts
+└── scripts/                   # Build and utility scripts
 ```
 
-## 🚀 Getting Started
+## State Management
+
+The application uses React Context for global state management:
+
+- **CartContext**: Manages shopping cart state and operations
+- **WishlistContext**: Handles wishlist modal and item management
+- **AppProviders**: Wraps the app with all necessary contexts
+
+## API Architecture
+
+### Firebase Integration
+- **Authentication**: NextAuth.js with Google OAuth
+- **Database**: Firestore for product and order data
+- **Storage**: Firebase Storage for images and files
+- **Admin SDK**: Server-side operations and security
+
+### Security Features
+- **Rate Limiting**: Custom rate limiter for API endpoints
+- **Input Sanitization**: XSS prevention through input cleaning
+- **Security Monitoring**: Comprehensive event logging
+- **Validation**: Zod schema validation for all inputs
+
+## Setup Instructions
 
 ### Prerequisites
 - Node.js 18+ 
-- npm
-- Firebase project (see setup guide)
+- npm or yarn
+- Firebase project
+- Flaticon premium account (for icons)
 
 ### Installation
-```bash
-# Clone the repository
-git clone [repository-url]
 
-# Navigate to project directory
-cd heritage-farms-website
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd heritage-farms-website
+   ```
 
-# Install dependencies
-npm ci
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Copy environment variables
-cp env.example .env.local
+3. **Environment Setup**
+   ```bash
+   cp env.example .env.local
+   ```
 
-# Fill in your Firebase and NextAuth credentials in .env.local
+4. **Configure Environment Variables**
+   
+   **Firebase Configuration:**
+   - Get your Firebase config from the Firebase Console
+   - Add all Firebase variables to `.env.local`
+   
+   **Icon API Setup:**
+   - **Flaticon API**: Contact Flaticon at info@flaticon.com to request an API key
+   - **Icons8 API**: Get your API key from https://developers.icons8.com/
+   - Add both API keys to `.env.local`:
+     ```
+     FLATICON_API_KEY=your_flaticon_api_key_here
+     ICONS8_API_KEY=your_icons8_api_key_here
+     ```
 
-# Start development server
-npm run dev
-```
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-### Available Scripts
-```bash
-npm run dev           # Start development server
-npm run build         # Build for production
-npm run start         # Start production server
-npm run lint          # Run ESLint
-npm run typecheck     # Run TypeScript checks
-```
+### Icon API Integration
 
-## 🔥 Firebase Integration
+The About page uses both Flaticon and Icons8 APIs to fetch professional icons and illustrations. To set this up:
 
-### Features
-- **Real-time Inventory Management**: Products loaded from Firestore
-- **Order Processing**: Orders stored in Firebase with unique codes
-- **Admin Dashboard**: Secure admin interface for order/inventory management
-- **Authentication**: Google OAuth for admin access
+1. **Flaticon API Access**: Contact Flaticon at info@flaticon.com
+2. **Icons8 API Access**: Get your API key from https://developers.icons8.com/
+3. **Add to Environment**: Add both keys to your `.env.local` file
+4. **Usage**: The APIs automatically fetch relevant icons and illustrations for:
+   - Farming and agriculture
+   - Sustainability and environment
+   - Community and teamwork
+   - Food and nutrition
+   - Technology and innovation
+   - Cultural heritage and tradition
 
-### Setup Required
-1. **Firebase Project**: Create project and enable Firestore
-2. **Service Account**: Download service account key
-3. **Google OAuth**: Set up OAuth credentials for admin access
-4. **Environment Variables**: Configure all Firebase and NextAuth variables
+The APIs include automatic token management and fallback to emoji icons if the APIs are unavailable.
 
-See `FIREBASE_SETUP.md` for detailed setup instructions.
+## Key Features
 
-## 🏛️ Architecture Patterns
+### Completed Features
+- ✅ Responsive homepage with hero slider
+- ✅ Product catalog with search and filtering
+- ✅ Shopping cart functionality
+- ✅ Wishlist system
+- ✅ Customer testimonials
+- ✅ Newsletter signup
+- ✅ Contact forms with validation
+- ✅ Admin dashboard (basic)
+- ✅ SEO optimization with structured data
+- ✅ Accessibility improvements
+- ✅ Security monitoring and validation
+- ✅ Flaticon API integration for professional icons
+- ✅ Icons8 API integration for icons and illustrations
+- ✅ Modern About page with themeforest-sandbox layout
 
-### 1. App Router Structure
-- **File-based routing** with Next.js 13+ App Router
-- **Server Components** by default, Client Components when needed
-- **Layout composition** with nested layouts
-- **API Routes** for backend functionality
+### In Progress
+- 🔄 Enhanced admin features
+- 🔄 Advanced product management
+- 🔄 Order processing system
+- 🔄 Payment integration
+- 🔄 Advanced analytics
 
-### 2. Component Architecture
-- **Atomic Design** principles
-- **Composition over inheritance**
-- **Props interface** definitions for all components
-- **Error boundaries** for graceful error handling
-- **TypeScript** for type safety
+## Technologies Used
 
-### 3. State Management
-- **Context API** for global cart state
-- **localStorage** for cart persistence
-- **Firebase** for server-side data
-- **Server-side rendering** compatibility
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, custom CSS animations
+- **Backend**: Firebase (Firestore, Auth, Storage)
+- **Authentication**: NextAuth.js
+- **Validation**: Zod
+- **Icons**: Flaticon API (premium), Icons8 API
+- **Deployment**: Vercel (recommended)
 
-### 4. API Architecture
-- **Route handlers** in `/app/api/`
-- **Firebase integration** for data persistence
-- **NextAuth** for authentication
-- **Error handling** with try-catch blocks
-- **Rate limiting** for order submissions
+## Contributing
 
-## 🔧 Key Features
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-### E-commerce Functionality
-- ✅ **Dynamic Product Catalog**: Products loaded from Firebase
-- ✅ **Shopping Cart**: With localStorage persistence
-- ✅ **Add to Cart**: Real-time inventory checking
-- ✅ **Quantity Management**: Stock-aware quantity controls
-- ✅ **Checkout Process**: Interac e-Transfer integration
-- ✅ **Order Tracking**: Unique order codes and status tracking
+## License
 
-### Admin Dashboard
-- ✅ **Order Management**: View and update order status
-- ✅ **Inventory Management**: View current inventory levels
-- ✅ **Secure Access**: Google OAuth authentication
-- ✅ **Real-time Updates**: Live data from Firebase
+This project is proprietary to Heritage Farms.
 
-### Performance Optimizations
-- ✅ **Image optimization** with Next.js Image component
-- ✅ **Font optimization** with next/font
-- ✅ **Code splitting** and lazy loading
-- ✅ **Bundle size optimization**
-- ✅ **Firebase caching** for inventory data
+## Support
 
-### SEO & Accessibility
-- ✅ **Semantic HTML** structure
-- ✅ **Meta tags** and Open Graph
-- ✅ **Sitemap** and robots.txt
-- ✅ **PWA manifest** for mobile experience
-- ✅ **Loading states** and error boundaries
-
-### Security
-- ✅ **Content Security Policy** headers
-- ✅ **XSS protection**
-- ✅ **CSRF protection**
-- ✅ **Input validation**
-- ✅ **Rate limiting** on order submissions
-- ✅ **Authentication** for admin access
-
-## 📊 Current Status
-
-### ✅ Completed Features
-- **Homepage** with hero slider and company information
-- **Product Catalog** with Firebase integration
-- **Shopping Cart** with localStorage persistence
-- **Order Processing** with Firebase storage and unique codes
-- **Admin Dashboard** with order and inventory management
-- **Authentication** system with Google OAuth
-- **Responsive Design** with Tailwind CSS
-- **Error Boundaries** and loading states
-- **SEO Optimization** and PWA support
-- **TypeScript** integration throughout
-- **Firebase Integration** for data persistence
-
-### 🔄 In Progress
-- **Firebase Setup**: Need to enable Firestore API and populate data
-- **Google OAuth**: Need to configure OAuth credentials
-- **Production Deployment**: Ready for deployment once Firebase is configured
-
-### 📋 Planned Features
-- **Email Notifications**: Order confirmations and updates
-- **Analytics Integration**: Google Analytics and Firebase Analytics
-- **Multi-language Support**: French and other languages
-- **Advanced Inventory**: Low stock alerts and automatic ordering
-- **Customer Accounts**: User registration and order history
-- **Payment Processing**: Direct payment integration
-
-## 🎯 Performance Metrics
-
-- **Lighthouse Score**: Target 90+ across all metrics
-- **Core Web Vitals**: Optimized for all metrics
-- **Bundle Size**: Minimized with code splitting
-- **Image Optimization**: WebP and AVIF formats
-- **Firebase Performance**: Optimized queries and caching
-
-## 📝 Code Standards
-
-- **TypeScript** for all components and functions
-- **ESLint** for code quality
-- **Prettier** for consistent formatting
-- **Component composition** over inheritance
-- **Error boundaries** for graceful failures
-- **Accessibility** first approach
-- **Firebase best practices** for data management
-
-## 🔄 Development Workflow
-
-1. **Component Development** - Create reusable components
-2. **State Management** - Use Context for global state
-3. **API Integration** - Build route handlers with Firebase
-4. **Authentication** - NextAuth integration
-5. **Testing** - Unit and integration tests
-6. **Deployment** - Vercel or similar platform
-
-## 📚 Environment Setup
-
-### Required Environment Variables
-```env
-# Firebase Client
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_FIREBASE_APP_ID=
-
-# Firebase Admin
-FIREBASE_PROJECT_ID=
-FIREBASE_CLIENT_EMAIL=
-FIREBASE_PRIVATE_KEY=
-
-# NextAuth
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-
-# Admin Access
-ADMIN_EMAILS=heritagefieldsandacreage@gmail.com
-```
-
-### Setup Steps
-1. Copy `env.example` to `.env.local`
-2. Fill in Firebase credentials from Firebase Console
-3. Set up Google OAuth credentials
-4. Generate NextAuth secret
-5. Run `node scripts/populate-inventory.js` to populate data
-
-## 🚀 Deployment
-
-### Prerequisites
-- Firebase project configured
-- Environment variables set
-- Google OAuth configured
-- Inventory data populated
-
-### Deployment Platforms
-- **Vercel** (recommended)
-- **Netlify**
-- **Firebase Hosting**
-
-### Production Checklist
-- [ ] Environment variables configured
-- [ ] Firebase security rules set
-- [ ] Domain configured
-- [ ] SSL certificate active
-- [ ] Analytics tracking enabled
-
----
-
-*Last Updated: January 2024*
-*Architecture Version: 2.0 - Firebase Integration*
-*Status: Ready for Firebase Setup and Deployment*
+For support or questions about Heritage Farms products, contact:
+- Email: info@heritagefarms.ca
+- Phone: (555) 123-4567
+- Location: Ontario, Canada

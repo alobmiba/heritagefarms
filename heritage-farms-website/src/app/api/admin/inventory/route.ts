@@ -56,6 +56,14 @@ export async function POST(request: NextRequest) {
     // Create new item with timestamps
     const newItem: InventoryItem = {
       ...validatedData,
+      localName: validatedData.localName || validatedData.name,
+      image: validatedData.image || '/branding/Images/products/placeholder.png',
+      cultivar: validatedData.cultivar || 'Standard',
+      healthBenefits: validatedData.healthBenefits || 'Rich in vitamins and minerals',
+      growingMethod: validatedData.growingMethod || 'Hydroponic',
+      maturityTime: validatedData.maturityTime || '6-8 weeks',
+      description: validatedData.description || `Fresh ${validatedData.name} grown sustainably`,
+      inStock: validatedData.stockQuantity > 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -70,7 +78,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }

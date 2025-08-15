@@ -12,8 +12,8 @@ export function ContactInformation() {
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold text-sm rounded-full mb-4">
-              Get In Touch
+            <span className="inline-block px-4 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold text-sm rounded-full mb-4">
+              Contact Information
             </span>
             <h2 className="text-3xl md:text-5xl font-gilroy-extrabold text-[#404A3D] mb-6">
               We&apos;re Ready to Help You!

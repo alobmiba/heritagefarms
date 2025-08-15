@@ -43,11 +43,9 @@ export default function Wishlist({ isOpen, onClose }: WishlistProps) {
     addToCart({
       id: item.id,
       name: item.name,
-      price: item.price,
-      priceUnit: item.priceUnit,
+      localName: item.name, // Use name as localName since WishlistItem doesn't have localName
+      price: item.price.toString(),
       image: item.image,
-      sku: item.sku,
-      quantity: 1
     });
     removeFromWishlist(item.id);
   };
@@ -77,7 +75,7 @@ export default function Wishlist({ isOpen, onClose }: WishlistProps) {
             </h2>
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] rounded-full"
+              className="p-2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] rounded-full"
               aria-label="Close wishlist"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +108,7 @@ export default function Wishlist({ isOpen, onClose }: WishlistProps) {
                 </p>
                 <button
                   onClick={onClose}
-                  className="mt-6 inline-flex items-center px-4 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold rounded-lg hover:bg-[#E5D454] transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2"
+                  className="mt-6 inline-flex items-center px-4 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold rounded-lg hover:bg-[#002A26] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-2"
                 >
                   Browse Products
                 </button>
@@ -125,7 +123,7 @@ export default function Wishlist({ isOpen, onClose }: WishlistProps) {
                     {/* Product Image */}
                     <div className="flex-shrink-0">
                       <Image
-                        src={item.image}
+                        src={item.image || '/branding/Images/products/placeholder.png'}
                         alt={item.name}
                         width={80}
                         height={80}
@@ -147,7 +145,7 @@ export default function Wishlist({ isOpen, onClose }: WishlistProps) {
                     <div className="flex flex-col space-y-2">
                       <button
                         onClick={() => moveToCart(item)}
-                        className="px-3 py-1 bg-[#EDDD5E] text-[#404A3D] text-sm font-gilroy font-medium rounded hover:bg-[#E5D454] transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-1"
+                        className="px-3 py-1 bg-[#00312D] text-[#EAFDE7] text-sm font-gilroy font-medium rounded hover:bg-[#002A26] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-1"
                         aria-label={`Add ${item.name} to cart`}
                       >
                         Add to Cart
@@ -177,7 +175,7 @@ export default function Wishlist({ isOpen, onClose }: WishlistProps) {
                   onClick={() => {
                     wishlistItems.forEach(item => moveToCart(item));
                   }}
-                  className="px-6 py-3 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold rounded-lg hover:bg-[#E5D454] transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2"
+                  className="px-6 py-3 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold rounded-lg hover:bg-[#002A26] transition-colors focus:outline-none focus:ring-2 focus:ring-[#00312D] focus:ring-offset-2"
                 >
                   Add All to Cart
                 </button>
@@ -212,7 +210,7 @@ export const useWishlist = () => {
     const sanitizedItem: WishlistItem = {
       ...item,
       name: item.name.trim().replace(/[<>]/g, '').substring(0, 200),
-      image: item.image.startsWith('http') ? item.image : '',
+      image: item.image || '/branding/Images/products/placeholder.png',
       sku: item.sku.trim().substring(0, 50)
     };
 

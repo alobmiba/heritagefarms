@@ -4,7 +4,7 @@ export interface SecurityEvent {
   type: 'auth_attempt' | 'rate_limit' | 'validation_failure' | 'admin_access' | 'suspicious_activity';
   severity: 'low' | 'medium' | 'high' | 'critical';
   message: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   timestamp: string;
   ip?: string;
   userAgent?: string;
@@ -81,7 +81,7 @@ class SecurityMonitor {
     });
   }
 
-  logSuspiciousActivity(activity: string, details: Record<string, any>, ip?: string, userAgent?: string) {
+  logSuspiciousActivity(activity: string, details: Record<string, unknown>, ip?: string, userAgent?: string) {
     this.log({
       type: 'suspicious_activity',
       severity: 'high',
@@ -155,7 +155,8 @@ if (typeof window === 'undefined') { // Server-side only
 }
 
 // Helper functions for common security checks
-export function isSuspiciousIP(ip: string): boolean {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function isSuspiciousIP(_ip: string): boolean {
   // Add logic to detect suspicious IPs
   // This could check against known malicious IP lists
   return false;
@@ -178,15 +179,15 @@ export function isSuspiciousUserAgent(userAgent: string): boolean {
 export function validateCSRFToken(token: string): boolean {
   // Implement CSRF token validation
   // This is a placeholder - implement proper CSRF protection
-  return token && token.length > 0;
+  return Boolean(token && token.length > 0);
 }
 
-export function sanitizeForLogging(data: any): any {
+export function sanitizeForLogging(data: unknown): unknown {
   // Remove sensitive information before logging
   const sensitiveFields = ['password', 'token', 'secret', 'key', 'credit_card'];
   
   if (typeof data === 'object' && data !== null) {
-    const sanitized = { ...data };
+    const sanitized = { ...data as Record<string, unknown> };
     for (const field of sensitiveFields) {
       if (field in sanitized) {
         sanitized[field] = '[REDACTED]';

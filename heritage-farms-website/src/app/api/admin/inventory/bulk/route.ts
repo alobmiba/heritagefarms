@@ -47,6 +47,14 @@ export async function POST(request: NextRequest) {
         
         const inventoryItem: InventoryItem = {
           ...item,
+          localName: item.localName || item.name,
+          image: item.image || '/branding/Images/products/placeholder.png',
+          cultivar: item.cultivar || 'Standard',
+          healthBenefits: item.healthBenefits || 'Rich in vitamins and minerals',
+          growingMethod: item.growingMethod || 'Hydroponic',
+          maturityTime: item.maturityTime || '6-8 weeks',
+          description: item.description || `Fresh ${item.name} grown sustainably`,
+          inStock: item.stockQuantity > 0,
           createdAt: existingDoc.exists ? existingDoc.data()?.createdAt || Date.now() : Date.now(),
           updatedAt: Date.now(),
         };
@@ -81,7 +89,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }

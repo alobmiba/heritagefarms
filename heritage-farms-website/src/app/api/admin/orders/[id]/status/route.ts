@@ -8,16 +8,17 @@ const statusUpdateSchema = z.object({
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     
     // Validate the input
     const validatedData = statusUpdateSchema.parse(body);
     
     // Check if order exists
-    const orderDoc = await db.collection("orders").doc(params.id).get();
+    const orderDoc = await db.collection("orders").doc(id).get();
     
     if (!orderDoc.exists) {
       return NextResponse.json(
@@ -27,7 +28,7 @@ export async function PATCH(
     }
     
     // Update order status and timestamp
-    await db.collection("orders").doc(params.id).update({
+    await db.collection("orders").doc(id).update({
       status: validatedData.status,
       updatedAt: Date.now(),
     });
@@ -35,7 +36,7 @@ export async function PATCH(
     return NextResponse.json(
       { 
         message: 'Order status updated successfully',
-        orderId: params.id,
+        orderId: id,
         newStatus: validatedData.status
       },
       { status: 200 }
@@ -43,7 +44,7 @@ export async function PATCH(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: error.issues },
         { status: 400 }
       );
     }

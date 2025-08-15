@@ -11,8 +11,8 @@ export function MapFullBleed() {
       <div className="container-max">
         {/* Map Header */}
         <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 bg-[#EDDD5E] text-[#404A3D] font-gilroy font-semibold text-sm rounded-full mb-4">
-            Find Us
+          <span className="inline-block px-4 py-2 bg-[#00312D] text-[#EAFDE7] font-gilroy font-semibold text-sm rounded-full mb-4">
+            Our Location
           </span>
           <h2 className="text-3xl md:text-4xl font-gilroy-extrabold text-[#404A3D] mb-4">
             Visit Our Farm
