@@ -1,227 +1,312 @@
 # Heritage Farms Website
 
-A modern, responsive e-commerce website for Heritage Farms, Ontario's first Black-led farm focused on West African & Caribbean greens.
+A modern, high-performance website for Heritage Farms, featuring local image optimization, offline support, and comprehensive performance monitoring.
 
-## About Heritage Farms
+## 🚀 Features
 
-Heritage Farms is Ontario's premier heritage crop farm, specializing in West African and Caribbean greens grown sustainably using modern greenhouse technology. Our mission is to reconnect our community with culturally meaningful greens while reducing environmental impact through innovative farming practices.
+- **Performance Optimized**: Local image processing, Service Worker, Core Web Vitals monitoring
+- **Offline Support**: Service Worker with smart caching strategies
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **E-commerce Ready**: Shopping cart, checkout, and inventory management
+- **Admin Dashboard**: Inventory and order management
+- **SEO Optimized**: Structured data, meta tags, and performance monitoring
+- **Security Focused**: Input validation, rate limiting, and secure Firebase configuration
 
-### Our Values
-- **Cultural Preservation**: Honoring traditional farming methods and heritage crops
-- **Sustainability**: 75% less water usage, reduced food miles, responsible waste management
-- **Community Focus**: Serving the Ontario community with fresh, locally-grown heritage greens
-- **Innovation**: Combining traditional knowledge with modern greenhouse technology
+## 📋 Table of Contents
 
-### Heritage Crops Featured
-- **Ugwu (Pumpkin Leaves)**: Traditional West African green
-- **Ewedu (Jute Leaves)**: Nutritious and culturally significant
-- **Scent Leaf**: Aromatic herb with medicinal properties
-- **Waterleaf**: Popular in Caribbean cuisine
-- **And more**: Expanding our selection of heritage varieties
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Performance Optimizations](#performance-optimizations)
+- [Security Implementation](#security-implementation)
+- [Firebase Setup](#firebase-setup)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Development](#development)
 
-## Features
+## 🏃‍♂️ Quick Start
 
-### User Experience
-- **Responsive Design**: Optimized for all devices and screen sizes
-- **Modern UI/UX**: Clean, intuitive interface with smooth animations
-- **Fast Loading**: Optimized images and efficient code structure
-- **Accessibility**: WCAG compliant with proper ARIA labels and keyboard navigation
+### Prerequisites
 
-### E-commerce Functionality
-- **Product Catalog**: Browse heritage crops with detailed descriptions
-- **Shopping Cart**: Add items and manage quantities
-- **Wishlist**: Save products for later purchase
-- **Product Reviews**: Customer feedback and ratings system
-- **Search & Filter**: Find products by category, price, and availability
+- Node.js 18+ 
+- npm or yarn
+- Firebase project (for backend functionality)
 
-### SEO & Accessibility
-- **Structured Data**: JSON-LD markup for better search engine visibility
-- **Meta Tags**: Comprehensive SEO optimization
-- **Sitemap**: Dynamic sitemap generation
-- **Alt Text**: Descriptive alt text for all images
-- **Semantic HTML**: Proper heading hierarchy and landmarks
+### Installation
 
-### Security
-- **Input Validation**: Zod schema validation for all forms
-- **Rate Limiting**: API protection against abuse
-- **Security Monitoring**: Comprehensive logging and monitoring
-- **CSRF Protection**: Cross-site request forgery prevention
-- **Content Security Policy**: XSS protection headers
+```bash
+# Clone the repository
+git clone https://github.com/your-username/heritagefarms.git
+cd heritage-farms/heritage-farms-website
 
-### Performance Optimizations
-- **Local Image Processing**: All images optimized locally for maximum performance
-- **Multiple Format Support**: WebP, AVIF, and fallback formats
-- **Responsive Images**: Automatically generated for different screen sizes
-- **Service Worker**: Offline support and smart caching strategies
-- **Core Web Vitals**: Real-time performance monitoring and optimization
-- **Bundle Optimization**: Code splitting and tree shaking for faster loads
+# Install dependencies
+npm install
 
-## Directory Structure
+# Copy environment variables
+cp env.example .env.local
+
+# Set up Firebase (see Firebase Setup section)
+# Add your Firebase configuration to .env.local
+
+# Start development server
+npm run dev
+```
+
+### Environment Variables
+
+Create a `.env.local` file with the following variables:
+
+```env
+# Firebase Configuration
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_CLIENT_EMAIL=your-service-account-email
+FIREBASE_PRIVATE_KEY=your-private-key
+
+# NextAuth (if using authentication)
+NEXTAUTH_SECRET=your-secret
+NEXTAUTH_URL=http://localhost:3000
+
+# Optional: Analytics and monitoring
+NEXT_PUBLIC_GA_ID=your-google-analytics-id
+```
+
+## 📁 Project Structure
 
 ```
 heritage-farms-website/
 ├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── about/             # About page
-│   │   ├── admin/             # Admin dashboard
+│   ├── app/                    # Next.js App Router
 │   │   ├── api/               # API routes
-│   │   ├── contact/           # Contact page
-│   │   ├── products/          # Product catalog
-│   │   └── globals.css        # Global styles
+│   │   ├── admin/             # Admin pages
+│   │   ├── about/             # About page
+│   │   ├── products/          # Products page
+│   │   ├── checkout/          # Checkout page
+│   │   └── offline/           # Offline fallback page
 │   ├── components/            # React components
+│   │   ├── common/            # Shared components
 │   │   ├── about/             # About page components
-│   │   ├── contact/           # Contact form components
-│   │   ├── media/             # Media components
-│   │   └── wrappers/          # Component wrappers
-│   ├── context/               # React Context providers
+│   │   ├── contact/           # Contact components
+│   │   └── shop/              # E-commerce components
 │   ├── lib/                   # Utility functions
-│   │   ├── flaticon-api.ts    # Flaticon API integration
-│   │   ├── firebase.ts        # Firebase client config
-│   │   ├── firebase-admin.ts  # Firebase admin config
-│   │   ├── validation.ts      # Zod schemas
-│   │   └── security-monitor.ts # Security utilities
+│   ├── context/               # React context providers
+│   ├── data/                  # Static data and types
 │   └── types/                 # TypeScript type definitions
 ├── public/                    # Static assets
-│   ├── branding/              # Brand assets and images
-│   └── fonts/                 # Custom fonts
-└── scripts/                   # Build and utility scripts
+│   ├── branding/              # Brand assets
+│   └── sw.js                  # Service Worker
+├── scripts/                   # Build and utility scripts
+└── tests/                     # Test files
 ```
 
-## State Management
+## ⚡ Performance Optimizations
 
-The application uses React Context for global state management:
+### Image Optimization
+- **Local Processing**: WebP/AVIF conversion with Sharp
+- **Responsive Images**: Multiple sizes and formats
+- **Lazy Loading**: Intersection Observer API
+- **Blur Placeholders**: Progressive image loading
+- **Critical Preloading**: Above-the-fold images
 
-- **CartContext**: Manages shopping cart state and operations
-- **WishlistContext**: Handles wishlist modal and item management
-- **AppProviders**: Wraps the app with all necessary contexts
+### Service Worker
+- **Offline Support**: Cache-first for static assets
+- **Smart Caching**: Network-first for API calls
+- **Background Sync**: Queue operations when offline
+- **Push Notifications**: Real-time updates
 
-## API Architecture
+### Bundle Optimization
+- **Code Splitting**: Route-based and component-level
+- **Dynamic Imports**: Lazy load non-critical components
+- **Tree Shaking**: Remove unused code
+- **Compression**: Gzip and Brotli support
 
-### Firebase Integration
-- **Authentication**: NextAuth.js with Google OAuth
-- **Database**: Firestore for product and order data
-- **Storage**: Firebase Storage for images and files
-- **Admin SDK**: Server-side operations and security
+### Core Web Vitals
+- **LCP (Largest Contentful Paint)**: < 2.5s target
+- **FID (First Input Delay)**: < 100ms target
+- **CLS (Cumulative Layout Shift)**: < 0.1 target
 
-### Security Features
-- **Rate Limiting**: Custom rate limiter for API endpoints
-- **Input Sanitization**: XSS prevention through input cleaning
-- **Security Monitoring**: Comprehensive event logging
-- **Validation**: Zod schema validation for all inputs
+### Caching Strategies
+- **Browser Cache**: Long-term for static assets
+- **Service Worker Cache**: Offline-first approach
+- **CDN Headers**: Optimized cache control
 
-## Setup Instructions
+## 🔒 Security Implementation
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-- Firebase project
-- Flaticon premium account (for icons)
+### Input Validation
+- **Zod Schemas**: Type-safe validation for all API routes
+- **Sanitization**: XSS protection and input cleaning
+- **Rate Limiting**: In-memory rate limiting (consider Redis for production)
 
-### Installation
+### Firebase Security
+- **Environment Variables**: Secure credential management
+- **Admin SDK**: Server-side only initialization
+- **Security Rules**: Firestore rules (see Firebase Setup)
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd heritage-farms-website
-   ```
+### API Security
+- **CORS**: Proper cross-origin configuration
+- **Error Handling**: No sensitive data in error responses
+- **Authentication**: NextAuth integration for protected routes
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### Recommendations for Production
+1. **Implement Firebase Security Rules** (Critical)
+2. **Redis-based Rate Limiting** (High Priority)
+3. **Authorization Checks** (Medium Priority)
+4. **Regular Security Audits** (Ongoing)
 
-3. **Environment Setup**
-   ```bash
-   cp env.example .env.local
-   ```
+## 🔥 Firebase Setup
 
-4. **Configure Environment Variables**
-   
-   **Firebase Configuration:**
-   - Get your Firebase config from the Firebase Console
-   - Add all Firebase variables to `.env.local`
-   
-   **Icon API Setup:**
-   - **Flaticon API**: Contact Flaticon at info@flaticon.com to request an API key
-   - **Icons8 API**: Get your API key from https://developers.icons8.com/
-   - Add both API keys to `.env.local`:
-     ```
-     FLATICON_API_KEY=your_flaticon_api_key_here
-     ICONS8_API_KEY=your_icons8_api_key_here
-     ```
+### 1. Create Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project
+3. Enable Firestore Database
+4. Set up Authentication (if needed)
 
-5. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+### 2. Service Account Setup
+1. Go to Project Settings > Service Accounts
+2. Generate new private key
+3. Download JSON file
+4. Extract credentials for environment variables
 
-### Icon API Integration
+### 3. Firestore Security Rules
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Inventory - read-only for public, full access for admin
+    match /inventory/{document} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+    
+    // Orders - authenticated users can create, admin can read/write
+    match /orders/{document} {
+      allow create: if request.auth != null;
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}
+```
 
-The About page uses both Flaticon and Icons8 APIs to fetch professional icons and illustrations. To set this up:
+### 4. Environment Variables
+```env
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_CLIENT_EMAIL=your-service-account-email
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
 
-1. **Flaticon API Access**: Contact Flaticon at info@flaticon.com
-2. **Icons8 API Access**: Get your API key from https://developers.icons8.com/
-3. **Add to Environment**: Add both keys to your `.env.local` file
-4. **Usage**: The APIs automatically fetch relevant icons and illustrations for:
-   - Farming and agriculture
-   - Sustainability and environment
-   - Community and teamwork
-   - Food and nutrition
-   - Technology and innovation
-   - Cultural heritage and tradition
+## 🧪 Testing
 
-The APIs include automatic token management and fallback to emoji icons if the APIs are unavailable.
+### Unit Tests
+```bash
+# Run all tests
+npm test
 
-## Key Features
+# Watch mode
+npm run test:watch
 
-### Completed Features
-- ✅ Responsive homepage with hero slider
-- ✅ Product catalog with search and filtering
-- ✅ Shopping cart functionality
-- ✅ Wishlist system
-- ✅ Customer testimonials
-- ✅ Newsletter signup
-- ✅ Contact forms with validation
-- ✅ Admin dashboard (basic)
-- ✅ SEO optimization with structured data
-- ✅ Accessibility improvements
-- ✅ Security monitoring and validation
-- ✅ Flaticon API integration for professional icons
-- ✅ Icons8 API integration for icons and illustrations
-- ✅ Modern About page with themeforest-sandbox layout
+# Coverage report
+npm run test:coverage
 
-### In Progress
-- 🔄 Enhanced admin features
-- 🔄 Advanced product management
-- 🔄 Order processing system
-- 🔄 Payment integration
-- 🔄 Advanced analytics
+# CI mode
+npm run test:ci
+```
 
-## Technologies Used
+### E2E Tests
+```bash
+# Run Playwright tests
+npm run test:e2e
 
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS, custom CSS animations
-- **Backend**: Firebase (Firestore, Auth, Storage)
-- **Authentication**: NextAuth.js
-- **Validation**: Zod
-- **Icons**: Flaticon API (premium), Icons8 API
-- **Deployment**: Vercel (recommended)
+# UI mode
+npm run test:e2e:ui
 
-## Contributing
+# Headed mode
+npm run test:e2e:headed
+
+# Debug mode
+npm run test:e2e:debug
+```
+
+### Test Structure
+- **Unit Tests**: Component and utility function testing
+- **Integration Tests**: API route testing
+- **E2E Tests**: User workflow testing
+- **Performance Tests**: Core Web Vitals monitoring
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Set environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
+
+### Manual Deployment
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+### Environment Variables for Production
+- Set all Firebase credentials
+- Configure NextAuth secrets
+- Add analytics IDs
+- Set up monitoring tools
+
+## 🛠️ Development
+
+### Available Scripts
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run typecheck    # TypeScript type checking
+npm run optimize-images # Optimize images
+```
+
+### Code Quality
+- **ESLint**: Code linting and formatting
+- **Prettier**: Code formatting
+- **TypeScript**: Type safety
+- **Husky**: Git hooks for quality checks
+- **Commitlint**: Conventional commit messages
+
+### Git Hooks
+- **Pre-commit**: Lint and type check
+- **Commit-msg**: Validate commit message format
+
+### Performance Monitoring
+- **Core Web Vitals**: Real-time monitoring
+- **Bundle Analysis**: Webpack bundle analyzer
+- **Lighthouse**: Performance audits
+- **Custom Metrics**: Application-specific monitoring
+
+## 📚 Additional Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Performance Best Practices](https://web.dev/performance/)
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Run tests and linting
 5. Submit a pull request
 
-## License
+## 📄 License
 
-This project is proprietary to Heritage Farms.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+## 🆘 Support
 
-For support or questions about Heritage Farms products, contact:
-- Email: info@heritagefarms.ca
-- Phone: (555) 123-4567
-- Location: Ontario, Canada
+For support and questions:
+- Create an issue on GitHub
+- Check the documentation sections above
+- Review the Firebase setup guide
+
+---
+
+**Note**: This project includes comprehensive performance optimizations and security measures. Make sure to review the security recommendations and implement Firebase security rules before deploying to production.
