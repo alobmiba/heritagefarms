@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase-admin';
+import { getDb } from '@/lib/firebase-admin';
 import { z } from 'zod';
+
+// Build-time check to prevent Firebase initialization during build
+const isBuildTime = () => {
+  return process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV;
+};
 
 // Validation schema for stock adjustment
 const stockAdjustmentSchema = z.object({
@@ -11,12 +16,19 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ sku: string }> }
 ) {
+  // Skip during build time
+  if (isBuildTime()) {
+    return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
+  }
+
   try {
     const { sku } = await params;
     const body = await request.json();
     
     // Validate the input
     const validatedData = stockAdjustmentSchema.parse(body);
+    
+    const db = getDb();
     
     // Get current item
     const itemDoc = await db.collection("inventory").doc(sku).get();

@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase-admin';
+import { getDb } from '@/lib/firebase-admin';
 import { InventoryItem } from '@/types/commerce';
 import { z } from 'zod';
+
+// Build-time check to prevent Firebase initialization during build
+const isBuildTime = () => {
+  return process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV;
+};
 
 // Validation schema for inventory items (same as main route)
 const inventoryItemSchema = z.object({
@@ -25,6 +30,11 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ sku: string }> }
 ) {
+  // Skip during build time
+  if (isBuildTime()) {
+    return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
+  }
+
   try {
     const { sku } = await params;
     const body = await request.json();
@@ -39,6 +49,9 @@ export async function PUT(
         { status: 400 }
       );
     }
+    
+    // Get database instance
+    const db = getDb();
     
     // Check if item exists
     const existingDoc = await db.collection("inventory").doc(sku).get();
@@ -85,8 +98,16 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ sku: string }> }
 ) {
+  // Skip during build time
+  if (isBuildTime()) {
+    return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
+  }
+
   try {
     const { sku } = await params;
+    
+    // Get database instance
+    const db = getDb();
     
     // Check if item exists
     const existingDoc = await db.collection("inventory").doc(sku).get();

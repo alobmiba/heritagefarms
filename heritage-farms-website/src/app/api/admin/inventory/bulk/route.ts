@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase-admin';
+import { getDb } from '@/lib/firebase-admin';
 import { InventoryItem } from '@/types/commerce';
 import { z } from 'zod';
+
+// Build-time check to prevent Firebase initialization during build
+const isBuildTime = () => {
+  return process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV;
+};
 
 // Validation schema for bulk inventory items
 const bulkInventoryItemSchema = z.object({
@@ -26,12 +31,18 @@ const bulkImportSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Skip during build time
+  if (isBuildTime()) {
+    return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
+  }
+
   try {
     const body = await request.json();
     
     // Validate the input
     const validatedData = bulkImportSchema.parse(body);
     
+    const db = getDb();
     const batch = db.batch();
     const results = {
       created: 0,

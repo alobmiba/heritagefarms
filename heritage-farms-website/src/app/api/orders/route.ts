@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/firebase-admin';
+import { getDb } from '@/lib/firebase-admin';
 import { generateOrderCode } from '@/lib/order-code';
+
+// Build-time check to prevent Firebase initialization during build
+const isBuildTime = () => {
+  return process.env.NODE_ENV === 'production' && !process.env.VERCEL_ENV;
+};
 
 interface CartItem {
   id: string;
@@ -52,6 +57,11 @@ const OrderSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Skip during build time
+  if (isBuildTime()) {
+    return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
+  }
+
   try {
     const ip = (request.headers.get("x-forwarded-for") || "").split(",")[0];
     // basic rate limit (edge-safe, ephemeral)
@@ -204,6 +214,7 @@ export async function POST(request: NextRequest) {
       updatedAt: ts,
     };
 
+    const db = getDb();
     const ref = await db.collection("orders").add(doc);
     const instructions = {
       pay_to: "heritagefieldsandacreage@gmail.com",
