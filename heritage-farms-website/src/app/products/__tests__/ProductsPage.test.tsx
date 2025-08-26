@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ProductsPage from '../page'
+import { useCart } from '@/context/CartContext'
 
 // Mock the CartContext
 jest.mock('@/context/CartContext', () => ({
