@@ -18,7 +18,7 @@ export default function Header() {
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 bg-[#3A7817]/60">
+    <header className="absolute top-0 left-0 right-0 z-50 bg-[#3A7817]/0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-24">
           {/* Logo */}
@@ -28,14 +28,15 @@ export default function Header() {
               alt="Heritage Farms"
               width={150}
               height={40}
-              className="h-10 w-auto"
+              className="h-10"
+              style={{ width: 'auto' }}
             />
           </Link>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
                             <Link href="/" className="text-[#EAFDE7] hover:text-[#EDDD5E] font-gilroy font-semibold text-base uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">Home</Link>
-                <Link href="/about" className="text-[#EAFDE7] hover:text-[#EDDD5E] font-gilroy font-semibold text-base uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">About</Link>
+                <Link href="/about" prefetch={false} className="text-[#EAFDE7] hover:text-[#EDDD5E] font-gilroy font-semibold text-base uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">About</Link>
                 <Link href="/contact" className="text-[#EAFDE7] hover:text-[#EDDD5E] font-gilroy font-semibold text-base uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2 rounded">Contact Us</Link>
             <Link href="/products" className="bg-[#EAFDE7] text-[#00312D] font-gilroy font-semibold px-6 py-3 rounded-full hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#EDDD5E] focus:ring-offset-2">
               Shop now

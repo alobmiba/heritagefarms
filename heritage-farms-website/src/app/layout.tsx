@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: 'Heritage Farms',
     images: [
       {
-        url: '/branding/images/og-image.jpg',
+        url: '/branding/Images/favicon.png',
         width: 1200,
         height: 630,
         alt: 'Heritage Farms - Sustainable Agriculture',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Heritage Farms - Ontario's First Black-Led Farm",
     description: "Ontario's first Black-led farm growing West African & Caribbean greens—rooted in heritage, nurtured under Canadian skies.",
-    images: ['/branding/images/twitter-image.jpg'],
+    images: ['/branding/Images/favicon.png'],
   },
   robots: {
     index: true,
@@ -85,15 +85,14 @@ function PerformanceOptimizations() {
     
     // Preload critical images
     performanceOptimizations.imageOptimization.preloadImages([
-      '/branding/images/hero-bg.jpg',
-      '/branding/images/about/hero-optimized.jpg',
+      '/branding/Images/about/hero.jpg',
     ]);
     
-    // Preload critical fonts
-    performanceOptimizations.fontOptimization.preloadFonts([
-      '/fonts/gilroy-regular.woff2',
-      '/fonts/gilroy-bold.woff2',
-    ]);
+    // Preload critical fonts - would need to implement this function
+    // performanceOptimizations.resourceOptimization.preloadFonts([
+    //   '/fonts/Gilroy/Gilroy-Light.woff',
+    //   '/fonts/Gilroy/Gilroy-Extrabold.woff',
+    // ]);
   }
   
   return null;
@@ -113,9 +112,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         
         {/* Preload critical resources */}
-        <link rel="preload" href="/branding/images/hero-bg.jpg" as="image" />
-        <link rel="preload" href="/fonts/gilroy-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/gilroy-bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/branding/Images/about/hero.jpg" as="image" />
+        <link rel="preload" href="/fonts/Gilroy/Gilroy-Light.woff" as="font" type="font/woff" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Gilroy/Gilroy-Extrabold.woff" as="font" type="font/woff" crossOrigin="anonymous" />
         
         {/* Critical CSS inlining */}
         <style dangerouslySetInnerHTML={{
@@ -139,7 +138,7 @@ export default function RootLayout({
               "name": "Heritage Farms",
               "description": "Ontario's first Black-led farm growing West African & Caribbean greens",
               "url": "https://heritagefarms.ca",
-              "logo": "https://heritagefarms.ca/branding/images/logo.png",
+              "logo": "https://heritagefarms.ca/branding/Images/favicon.png",
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Ontario",

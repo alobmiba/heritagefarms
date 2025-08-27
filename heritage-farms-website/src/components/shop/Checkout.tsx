@@ -1,510 +1,220 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "@/context/CartContext";
 
-// Mock cart data for demonstration
-const mockCartProducts = [
-  {
-    id: 1,
-    title: "Fresh Callaloo Greens",
-    price: 8.99,
-    quantity: 2,
-    image: "/branding/images/products/callaloo.jpg",
-    image2x: "/branding/images/products/callaloo@2x.jpg"
-  },
-  {
-    id: 2,
-    title: "Organic Amaranth Leaves",
-    price: 7.50,
-    quantity: 1,
-    image: "/branding/images/products/amaranth.jpg",
-    image2x: "/branding/images/products/amaranth@2x.jpg"
-  }
-];
+// Reusable form input component
+const FormInput = ({ id, label, type = "text", required = false, optional = false }: {
+  id: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  optional?: boolean;
+}) => (
+  <div className="w-full">
+    <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+      {label} {optional && <span className="text-gray-500">(Optional)</span>}
+    </label>
+    <input
+      type={type}
+      id={id}
+      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      required={required}
+    />
+  </div>
+);
 
-const mockTotalPrice = mockCartProducts.reduce((total, product) => total + (product.price * product.quantity), 0);
+// Reusable select component
+const FormSelect = ({ id, label, children, required = false }: {
+  id: string;
+  label: string;
+  children: React.ReactNode;
+  required?: boolean;
+}) => (
+  <div>
+    <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+    </label>
+    <select
+      id={id}
+      className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      required={required}
+    >
+      {children}
+    </select>
+  </div>
+);
 
 export default function Checkout() {
-  const [cartProducts] = useState(mockCartProducts);
-  const [totalPrice] = useState(mockTotalPrice);
+  const { cartItems, getTotalPrice } = useCart();
+  const totalPrice = getTotalPrice();
+  const discountAmount = totalPrice * 0.05;
+  const shippingCost = totalPrice > 0 ? 10 : 0;
+  const grandTotal = totalPrice - discountAmount + shippingCost;
+
+  // Helper to parse price string and return a number
+  const parsePrice = (price: string) => {
+    return parseFloat(price.replace(/[^0-9.]/g, ''));
+  };
 
   return (
-    <section className="wrapper !bg-[#ffffff]">
-      <div className="container pt-14 xl:pt-[4.5rem] lg:pt-[4.5rem] md:pt-[4.5rem] pb-[4.5rem] xl:pb-24 lg:pb-24 md:pb-24">
-        <div className="flex flex-wrap mx-[-15px] md:mx-[-20px] xl:mx-[-35px] !mt-[-70px]">
-          <div className="xl:w-8/12 lg:w-8/12 w-full flex-[0_0_auto] xl:!px-[35px] lg:!px-[20px] md:!px-[20px] !px-[15px] !mt-[70px] max-w-full">
-            <div
-              className="alert alert-primary !text-[#2c549d] !bg-[#edf2fc] !border-[#2c549d] alert-icon !p-[1rem] !pl-10 !mb-6 !border-0"
-              role="alert"
-            >
-              <i className="uil uil-exclamation-circle before:content-['\ead0']" />
-              Already have an account?
-              <a
-                href="#"
-                data-bs-target="#modal-signin"
-                data-bs-toggle="modal"
-                data-bs-dismiss="modal"
-                className="alert-link !text-[#2c549d] hover"
-              >
+    <section className="bg-gray-50">
+      <div className="container mx-auto px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+          {/* Billing Details Column */}
+          <div className="lg:col-span-7">
+            <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-md p-4 mb-6 text-sm" role="alert">
+              Already have an account?{" "}
+              <a href="#" className="font-medium underline">
                 Sign in
-              </a>
-              for faster checkout experience.
+              </a>{" "}
+              for a faster checkout experience.
             </div>
-            <h3 className="!mb-4">Billing address</h3>
-            <form
-              className="needs-validation"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <div className="flex flex-wrap !mt-[-15px] mx-[-7.5px]">
-                <div className="max-sm:w-full w-6/12 flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-floating !relative">
-                    <input
-                      type="text"
-                      className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                      id="firstName"
-                      placeholder=""
-                      defaultValue=""
-                      required
-                    />
-                    <label
-                      htmlFor="firstName"
-                      className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                    >
-                      First name
-                    </label>
-                    <div className="invalid-feedback">
-                      Valid first name is required.
-                    </div>
-                  </div>
+
+            <h3 className="text-2xl font-semibold text-gray-800 mb-6">Billing address</h3>
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <FormInput id="firstName" label="First name" required />
+                <FormInput id="lastName" label="Last name" required />
+              </div>
+              <FormInput id="email" label="Email" type="email" required />
+              <FormInput id="address" label="Address" required />
+              <FormInput id="address2" label="Address 2" optional />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div className="sm:col-span-1">
+                  <FormSelect id="country" label="Country" required>
+                    <option value="">Select...</option>
+                    <option>Canada</option>
+                    <option>United States</option>
+                  </FormSelect>
                 </div>
-                <div className="max-sm:w-full w-6/12 flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-floating !relative">
-                    <input
-                      type="text"
-                      className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                      id="lastName"
-                      placeholder=""
-                      defaultValue=""
-                      required
-                    />
-                    <label
-                      htmlFor="lastName"
-                      className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                    >
-                      Last name
-                    </label>
-                    <div className="invalid-feedback">
-                      Valid last name is required.
-                    </div>
-                  </div>
+                <div className="sm:col-span-1">
+                  <FormSelect id="state" label="Province/State" required>
+                    <option value="">Select...</option>
+                    <option>Ontario</option>
+                    <option>Quebec</option>
+                    <option>British Columbia</option>
+                    <option>Alberta</option>
+                  </FormSelect>
                 </div>
-                <div className="w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-floating !relative">
-                    <input
-                      type="email"
-                      className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                      id="email"
-                      placeholder=""
-                      required
-                    />
-                    <label
-                      htmlFor="email"
-                      className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                    >
-                      Email
-                    </label>
-                    <div className="invalid-feedback">
-                      Please enter a valid email address for shipping updates.
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-floating !relative">
-                    <input
-                      type="text"
-                      className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                      id="address"
-                      placeholder=""
-                      required
-                    />
-                    <label
-                      htmlFor="address"
-                      className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                    >
-                      Address
-                    </label>
-                    <div className="invalid-feedback">
-                      Please enter your shipping address.
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-floating !relative">
-                    <input
-                      type="text"
-                      className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                      id="address2"
-                      placeholder=""
-                    />
-                    <label
-                      htmlFor="address2"
-                      className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                    >
-                      Address 2
-                      <span className="!text-[#aab0bc]">(Optional)</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="xl:w-5/12 lg:w-5/12 md:w-5/12 w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-select-wrapper">
-                    <select className="form-select" id="country" required>
-                      <option value="">Country</option>
-                      <option>Canada</option>
-                      <option>United States</option>
-                    </select>
-                    <div className="invalid-feedback">
-                      Please select a valid country.
-                    </div>
-                  </div>
-                </div>
-                <div className="xl:w-4/12 lg:w-4/12 md:w-4/12 w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-select-wrapper">
-                    <select className="form-select" id="state" required>
-                      <option value="">Province/State</option>
-                      <option>Ontario</option>
-                      <option>Quebec</option>
-                      <option>British Columbia</option>
-                      <option>Alberta</option>
-                    </select>
-                    <div className="invalid-feedback">
-                      Please provide a valid province/state.
-                    </div>
-                  </div>
-                </div>
-                <div className="xl:w-3/12 lg:w-3/12 md:w-3/12 w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                  <div className="form-floating !relative">
-                    <input
-                      type="text"
-                      className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                      id="zip"
-                      placeholder=""
-                      required
-                    />
-                    <label
-                      htmlFor="zip"
-                      className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                    >
-                      Postal Code
-                    </label>
-                    <div className="invalid-feedback">Postal code required.</div>
-                  </div>
+                <div className="sm:col-span-1">
+                  <FormInput id="zip" label="Postal Code" required />
                 </div>
               </div>
-              <hr className="!mt-7 !mb-6" />
-              <div className="form-check block min-h-[1.36rem] !mb-0.5 !pl-[1.55rem]">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="same-address"
-                />
-                <label className="form-check-label" htmlFor="same-address">
-                  Shipping address is the same as my billing address
-                </label>
-              </div>
-              <div className="form-check block min-h-[1.36rem] !mb-0.5 !pl-[1.55rem]">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="save-info"
-                />
-                <label className="form-check-label" htmlFor="save-info">
-                  Save this information for next time
-                </label>
-              </div>
-              <hr className="!mt-7 !mb-6" />
-              <h3 className="!mb-4">Payment</h3>
-              <div className="!mt-3 !mb-6">
-                <div className="form-check block min-h-[1.36rem] !mb-0.5 !pl-[1.55rem]">
-                                     <input
-                     id="credit"
-                     name="paymentMethod"
-                     type="radio"
-                     className="form-check-input"
-                     defaultChecked={true}
-                     required
-                   />
-                  <label className="form-check-label" htmlFor="credit">
-                    Credit card
+
+              <hr className="my-8" />
+
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <input id="same-address" type="checkbox" className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                  <label htmlFor="same-address" className="ml-2 block text-sm text-gray-900">
+                    Shipping address is the same as my billing address
                   </label>
                 </div>
-                <div className="form-check block min-h-[1.36rem] !mb-0.5 !pl-[1.55rem]">
-                  <input
-                    id="debit"
-                    name="paymentMethod"
-                    type="radio"
-                    className="form-check-input"
-                    required
-                  />
-                  <label className="form-check-label" htmlFor="debit">
-                    Debit card
-                  </label>
-                </div>
-                <div className="form-check block min-h-[1.36rem] !mb-0.5 !pl-[1.55rem]">
-                  <input
-                    id="paypal"
-                    name="paymentMethod"
-                    type="radio"
-                    className="form-check-input"
-                    required
-                  />
-                  <label className="form-check-label" htmlFor="paypal">
-                    PayPal
+                <div className="flex items-center">
+                  <input id="save-info" type="checkbox" className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                  <label htmlFor="save-info" className="ml-2 block text-sm text-gray-900">
+                    Save this information for next time
                   </label>
                 </div>
               </div>
-              <div className="flex flex-wrap mx-[-15px]">
-                <div className="xl:w-8/12 w-full flex-[0_0_auto] !px-[15px] max-w-full">
-                  <div className="flex flex-wrap !mt-[-15px] mx-[-7.5px]">
-                    <div className="w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                      <div className="form-floating !relative">
-                        <input
-                          type="text"
-                          className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                          id="cc-number"
-                          placeholder=""
-                          required
-                        />
-                        <label
-                          htmlFor="cc-number"
-                          className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                        >
-                          Credit card number
-                        </label>
-                        <div className="invalid-feedback">
-                          Credit card number is required
-                        </div>
-                      </div>
-                    </div>
-                    <div className="xl:w-6/12 lg:w-6/12 md:w-6/12 w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                      <div className="form-floating !relative">
-                        <input
-                          type="text"
-                          className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                          id="cc-name"
-                          placeholder=""
-                          required
-                        />
-                        <label
-                          htmlFor="cc-name"
-                          className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                        >
-                          Name on card
-                        </label>
-                        <div className="invalid-feedback">
-                          Name on card is required
-                        </div>
-                      </div>
-                    </div>
-                    <div className="xl:w-3/12 lg:w-3/12 md:w-3/12 w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                      <div className="form-floating !relative">
-                        <input
-                          type="text"
-                          className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                          id="cc-expiration"
-                          placeholder=""
-                          required
-                        />
-                        <label
-                          htmlFor="cc-expiration"
-                          className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                        >
-                          Expiration
-                        </label>
-                        <div className="invalid-feedback">
-                          Expiration date required
-                        </div>
-                      </div>
-                    </div>
-                    <div className="xl:w-3/12 lg:w-3/12 md:w-3/12 w-full flex-[0_0_auto] px-[7.5px] !mt-[15px] max-w-full">
-                      <div className="form-floating !relative">
-                        <input
-                          type="text"
-                          className="form-control relative block w-full text-[.75rem] font-medium !text-[#60697b] bg-[#fefefe] bg-clip-padding border shadow-[0_0_1.25rem_rgba(30,34,40,0.04)] rounded-[0.4rem] border-solid border-[rgba(8,60,130,0.07)] transition-[border-color] duration-[0.15s] ease-in-out focus:shadow-[0_0_1.25rem_rgba(30,34,40,0.04),unset] focus-visible:!border-[rgba(63,120,224,0.5)] placeholder:!text-[#959ca9] placeholder:opacity-100 m-0 !pr-9 p-[.6rem_1rem] h-[calc(2.5rem_+_2px)] min-h-[calc(2.5rem_+_2px)] !leading-[1.25]"
-                          id="cc-cvv"
-                          placeholder=""
-                          required
-                        />
-                        <label
-                          htmlFor="cc-cvv"
-                          className="!text-[#959ca9] !mb-2 !inline-block text-[.75rem] !absolute !z-[2] h-full overflow-hidden text-start text-ellipsis whitespace-nowrap pointer-events-none border origin-[0_0] px-4 py-[0.6rem] border-solid border-transparent left-0 top-0 font-Manrope"
-                        >
-                          CVV
-                        </label>
-                        <div className="invalid-feedback">
-                          Security code required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
+              <hr className="my-8" />
+
+              <h3 className="text-2xl font-semibold text-gray-800 mb-6">Payment</h3>
+              <div className="space-y-3 mb-6">
+                {/* Payment method radio buttons */}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                <div className="sm:col-span-4">
+                  <FormInput id="cc-number" label="Credit card number" required />
+                </div>
+                <div className="sm:col-span-2">
+                  <FormInput id="cc-name" label="Name on card" required />
+                </div>
+                <div className="sm:col-span-1">
+                  <FormInput id="cc-expiration" label="Expiration" required />
+                </div>
+                <div className="sm:col-span-1">
+                  <FormInput id="cc-cvv" label="CVV" required />
                 </div>
               </div>
             </form>
           </div>
-          {/* /column */}
-          <div className="xl:w-4/12 lg:w-4/12 w-full flex-[0_0_auto] xl:!px-[35px] lg:!px-[20px] md:!px-[20px] !px-[15px] !mt-[70px] max-w-full">
-            <h3 className="!mb-4">Order Summary</h3>
-            {cartProducts.length ? (
-              <div className="shopping-cart !mb-7">
-                {cartProducts.map((product, i) => (
-                  <div
-                    key={i}
-                    className="shopping-cart-item flex justify-between !mb-4"
-                  >
-                    <div className="flex flex-row items-center">
-                      <figure className="!rounded-[.4rem] !w-[7rem]">
-                                                 <Link href={`/products/${product.id}`}>
-                           <Image
-                             className="!rounded-[.4rem]"
-                             alt={product.title}
-                             src={product.image}
-                             width={90}
-                             height={100}
-                             sizes="(max-width: 768px) 100vw, 90px"
-                           />
-                         </Link>
-                      </figure>
-                      <div className="w-full !ml-4">
-                        <h3 className="post-title h6 !leading-[1.35] !mb-1">
-                          <Link
-                            href={`/products/${product.id}`}
-                            className="!text-[#343f52] hover:!text-[#3A7817]"
-                          >
-                            {product.title}
-                          </Link>
-                        </h3>
-                        <div className="small">Quantity: {product.quantity}</div>
+
+          {/* Order Summary Column */}
+          <div className="lg:col-span-5">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-6">Order Summary</h3>
+              {cartItems.length > 0 ? (
+                <div className="space-y-4">
+                  {cartItems.map((product) => (
+                    <div key={product.id} className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Image
+                          className="rounded-md"
+                          alt={product.name}
+                          src={product.image}
+                          width={64}
+                          height={64}
+                        />
+                        <div className="ml-4">
+                          <h4 className="text-sm font-semibold text-gray-800">
+                            <Link href={`/products/${product.id}`} className="hover:text-green-700">
+                              {product.name}
+                            </Link>
+                          </h4>
+                          <div className="text-xs text-gray-500">Quantity: {product.quantity}</div>
+                        </div>
+                      </div>
+                      <div className="text-sm font-medium text-gray-900">
+                        ${(parsePrice(product.price) * product.quantity).toFixed(2)}
                       </div>
                     </div>
-                    <div className="ml-2 flex items-center">
-                      <p className="price text-[0.7rem]">
-                        <span className="amount">
-                          {" "}
-                          ${(product.price * product.quantity).toFixed(2)}
-                        </span>
-                      </p>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 mb-4">Your cart is empty.</p>
+                  <Link href="/products" className="w-full bg-green-700 text-white py-2 px-4 rounded-md hover:bg-green-800 transition-colors">
+                    Explore Products
+                  </Link>
+                </div>
+              )}
+
+              {cartItems.length > 0 && (
+                <>
+                  <hr className="my-6" />
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Subtotal</span>
+                      <span className="font-medium text-gray-900">${totalPrice.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Discount (5%)</span>
+                      <span className="font-medium text-red-500">-${discountAmount.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Shipping</span>
+                      <span className="font-medium text-gray-900">${shippingCost.toFixed(2)}</span>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <>
-                <div className="mb-2.5">Cart is empty</div>
-
-                <Link
-                  href={`/products`}
-                  className="btn btn-primary !mb-7 !text-white !bg-[#3A7817] border-[#3A7817] hover:text-white hover:bg-[#2A5A12] hover:!border-[#2A5A12] active:text-white active:bg-[#2A5A12] active:border-[#2A5A12] disabled:text-white disabled:bg-[#3A7817] disabled:border-[#3A7817] rounded hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.15)]"
-                >
-                  Explore Products
-                </Link>
-              </>
-            )}
-            {/* /.shopping-cart*/}
-            <hr className="!my-4" />
-            <h3 className="!mb-2">Shipping</h3>
-            <div className="!mb-5">
-              <div className="form-check block min-h-[1.36rem] !pl-[1.55rem] !mb-2">
-                <input
-                  id="standart"
-                  name="shippingMethod"
-                  type="radio"
-                  className="form-check-input"
-                  required
-                />
-                <label className="form-check-label" htmlFor="standart">
-                  Free - Standard delivery
-                </label>
-                <small className="!text-[#aab0bc] block">
-                  Shipment may take 5-6 business days
-                </small>
-              </div>
-              <div className="form-check block min-h-[1.36rem] !mb-0.5 !pl-[1.55rem]">
-                                 <input
-                   id="express"
-                   name="shippingMethod"
-                   type="radio"
-                   className="form-check-input"
-                   defaultChecked={true}
-                   required
-                 />
-                <label className="form-check-label" htmlFor="express">
-                  $10 - Express delivery
-                </label>
-                <small className="!text-[#aab0bc] block">
-                  Shipment may take 2-3 business days
-                </small>
-              </div>
+                  <hr className="my-6" />
+                  <div className="flex justify-between text-lg font-bold">
+                    <span className="text-gray-900">Grand Total</span>
+                    <span className="text-gray-900">${grandTotal.toFixed(2)}</span>
+                  </div>
+                  <button className="w-full mt-6 bg-green-700 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Place Order
+                  </button>
+                </>
+              )}
             </div>
-            <div className="table-responsive">
-              <table className="table table-order">
-                <tbody>
-                  <tr>
-                    <td className="!pl-0">
-                      <strong className="!text-[#343f52]">Subtotal</strong>
-                    </td>
-                    <td className="!pr-0 text-right">
-                      <p className="price !m-0">${totalPrice.toFixed(2)}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="!pl-0">
-                      <strong className="!text-[#343f52]">Discount (5%)</strong>
-                    </td>
-                    <td className="!pr-0 text-right">
-                      <p className="price !text-[#e2626b] !m-0">
-                        -${totalPrice ? (totalPrice / 100) * 5 : 0}
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="!pl-0">
-                      <strong className="!text-[#343f52]">Shipping</strong>
-                    </td>
-                    <td className="!pr-0 text-right">
-                      <p className="price !m-0">${totalPrice ? 10 : 0}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="!pl-0">
-                      <strong className="!text-[#343f52]">Grand Total</strong>
-                    </td>
-                    <td className="!pr-0 text-right">
-                      <p className="price !text-[#343f52] font-bold !m-0">
-                        $
-                        {totalPrice
-                          ? (totalPrice - (totalPrice / 100) * 5 + 10).toFixed(
-                              2
-                            )
-                          : 0}
-                      </p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <a
-              href="#"
-              className="btn btn-primary !text-white !bg-[#3A7817] border-[#3A7817] hover:text-white hover:bg-[#2A5A12] hover:!border-[#2A5A12] active:text-white active:bg-[#2A5A12] active:border-[#2A5A12] disabled:text-white disabled:bg-[#3A7817] disabled:border-[#3A7817] rounded w-full !mt-4 hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.15)]"
-            >
-              Place Order
-            </a>
           </div>
-          {/* /column */}
         </div>
-        {/* /.row */}
       </div>
-      {/* /.container */}
     </section>
   );
 }

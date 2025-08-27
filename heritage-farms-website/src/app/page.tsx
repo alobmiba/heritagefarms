@@ -1,6 +1,7 @@
 'use client';
 
 import React from "react";
+import Header from "@/components/Header";
 import HeroSlider from '@/components/HeroSlider';
 import ServicesSection from '@/components/ServicesSection';
 import BlogSection from '@/components/BlogSection';
@@ -10,6 +11,7 @@ import BenefitsSection from '@/components/BenefitsSection';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import Footer from '@/components/Footer';
 import ShoppingCart from '@/components/ShoppingCart';
+
 import { useCart } from '@/context/CartContext';
 
 interface CartItem {
@@ -24,13 +26,13 @@ interface CartItem {
 const HomePage = () => {
   const { isCartOpen, setIsCartOpen } = useCart();
 
-  const handleCheckout = async (items: CartItem[]) => {
+  const handleCheckout = async () => {
     // Cart items are now handled by the CheckoutForm component
-    console.log('Order completed with items:', items);
   };
 
   return (
     <>
+      <Header />
       <div>
         {/* Hero Section */}
         <section id="home">

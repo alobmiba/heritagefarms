@@ -66,7 +66,7 @@ export default function HeroSlider() {
   };
 
   return (
-    <section className="relative h-[75vh] min-h-[500px] max-h-[800px] overflow-hidden">
+    <section className="relative h-[120vh] min-h-[800px] max-h-[1200px] overflow-hidden">
       {bannerImages.map((banner, index) => (
         <div
           key={index}

@@ -22,9 +22,8 @@ const STATIC_FILES = [
   '/',
   '/offline',
   '/branding/Images/placeholders/placeholder.jpg',
-  '/fonts/Gilroy/Gilroy-Regular.woff2',
-  '/fonts/Gilroy/Gilroy-Bold.woff2',
-  '/fonts/Gilroy/Gilroy-Extrabold.woff2',
+  '/fonts/Gilroy/Gilroy-Light.woff',
+  '/fonts/Gilroy/Gilroy-Extrabold.woff',
 ];
 
 // Image patterns to cache

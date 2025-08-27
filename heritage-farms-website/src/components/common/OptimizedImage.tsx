@@ -35,7 +35,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   height,
   className = '',
   priority = false,
-  placeholder = 'blur',
+  placeholder = 'empty',
   blurDataURL,
   sizes,
   quality = 85,
@@ -102,6 +102,13 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     }
   }, [priority, optimizedProps]);
 
+  // Determine loading strategy - don't use both priority and loading='lazy'
+  const imageLoading = priority ? undefined : loading;
+
+  // Determine placeholder strategy
+  const imagePlaceholder = placeholder === 'blur' && optimizedProps.blurDataURL ? 'blur' : 'empty';
+  const imageBlurDataURL = imagePlaceholder === 'blur' ? optimizedProps.blurDataURL : undefined;
+
   return (
     <div 
       className={`optimized-image-container ${className}`}
@@ -120,12 +127,12 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         height={fill ? undefined : height}
         className={`optimized-image ${isLoaded ? 'loaded' : 'loading'}`}
         priority={priority}
-        placeholder={placeholder}
-        blurDataURL={optimizedProps.blurDataURL}
+        placeholder={imagePlaceholder}
+        blurDataURL={imageBlurDataURL}
         sizes={sizes || optimizedProps.sizes}
         quality={quality}
         fill={fill}
-        loading={loading}
+        loading={imageLoading}
         decoding={decoding}
         onLoad={handleLoad}
         onError={handleError}

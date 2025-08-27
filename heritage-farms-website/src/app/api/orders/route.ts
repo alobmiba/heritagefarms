@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getDb } from '@/lib/firebase-admin';
 import { generateOrderCode } from '@/lib/order-code';
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/lib/auth"
+import { checkCSRF } from '@/lib/csrf-protection';
+import { EnhancedOrderSchema, sanitizeText, sanitizeEmail, sanitizePhone, validateCartItem } from '@/lib/input-validation';
 
 // Build-time check to prevent Firebase initialization during build
 const isBuildTime = () => {
@@ -31,30 +35,9 @@ interface OrderData {
   orderType: 'ecommerce' | 'mission';
 }
 
-interface RateLimitRecord {
-  c: number;
-  t: number;
-}
+import rateLimiter from '@/lib/rate-limiter';
 
-interface GlobalWithHits {
-  __hits?: Map<string, RateLimitRecord>;
-}
-
-const OrderSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().optional(),
-  notes: z.string().optional(),
-  items: z.array(z.object({
-    sku: z.string(),
-    name: z.string(),
-    qty: z.number().int().positive(),
-    price: z.number().int().nonnegative(),
-  })).min(1),
-  subtotal: z.number().int().nonnegative(),
-  tax: z.number().int().nonnegative(),
-  total: z.number().int().positive(),
-});
+// Order schema is now imported from input-validation.ts as EnhancedOrderSchema
 
 export async function POST(request: NextRequest) {
   // Skip during build time
@@ -62,17 +45,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
   }
 
+  // CSRF Protection
+  const csrfValid = await checkCSRF(request);
+  if (!csrfValid) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+  }
+
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const ip = (request.headers.get("x-forwarded-for") || "").split(",")[0];
-    // basic rate limit (edge-safe, ephemeral)
-    const key = `order:${ip}`;
-    const globalWithHits = globalThis as GlobalWithHits;
-    globalWithHits.__hits = globalWithHits.__hits || new Map<string, RateLimitRecord>();
-    const now = Date.now();
-    const rec = globalWithHits.__hits.get(key) || { c: 0, t: now };
-    if (now - rec.t > 60000) { rec.t = now; rec.c = 0; }
-    rec.c++; globalWithHits.__hits.set(key, rec);
-    if (rec.c > 10) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    const ip = (request.headers.get("x-forwarded-for") || "127.0.0.1").split(",")[0];
+
+    try {
+      await rateLimiter.consume(ip);
+    } catch {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
 
     const body: OrderData = await request.json();
     
@@ -159,13 +151,43 @@ export async function POST(request: NextRequest) {
     let total = 0;
 
     if (body.orderType === 'ecommerce' && body.cartItems) {
+      // Validate each cart item
+      for (const item of body.cartItems) {
+        if (!validateCartItem(item)) {
+          return NextResponse.json(
+            { 
+              success: false, 
+              message: 'Invalid cart item data. Please refresh and try again.' 
+            },
+            { status: 400 }
+          );
+        }
+      }
+      
+      // Fetch actual prices from database to prevent price manipulation
+      // In production, prices should be fetched from your product database
+      // For now, we'll use the provided prices but validate them
       orderItems = body.cartItems.map(item => {
-        const price = parseFloat(item.price.replace(/[^0-9.]/g, '')) * 100; // Convert to cents
+        // Parse price safely - ensure it's a valid number
+        const priceString = item.price.replace(/[^0-9.]/g, '');
+        const price = Math.round(parseFloat(priceString) * 100); // Convert to cents
+        
+        // Validate price is reasonable (between $0.01 and $10,000)
+        if (price < 1 || price > 1000000) {
+          throw new Error('Invalid item price');
+        }
+        
+        // Validate quantity
+        if (item.quantity < 1 || item.quantity > 100) {
+          throw new Error('Invalid item quantity');
+        }
+        
         const itemTotal = price * item.quantity;
         subtotal += itemTotal;
+        
         return {
-          sku: item.id,
-          name: item.name,
+          sku: sanitizeText(item.id, 50),
+          name: sanitizeText(item.name, 200),
           qty: item.quantity,
           price: price
         };
@@ -183,19 +205,22 @@ export async function POST(request: NextRequest) {
     total = subtotal;
     const tax = 0; // No tax for now
 
-    // Validate order data with Zod
+    // Validate order data with enhanced schema
     const orderData = {
-      name: body.name,
-      email: body.email,
-      phone: body.phone,
-      notes: body.message,
+      name: sanitizeText(body.name, 100),
+      email: sanitizeEmail(body.email),
+      phone: sanitizePhone(body.phone),
+      address: body.address ? sanitizeText(body.address, 200) : undefined,
+      city: body.city ? sanitizeText(body.city, 100) : undefined,
+      postalCode: body.postalCode ? sanitizeText(body.postalCode, 10) : undefined,
+      message: body.message ? sanitizeText(body.message, 1000) : undefined,
       items: orderItems,
       subtotal,
       tax,
       total
     };
 
-    const parsed = OrderSchema.safeParse(orderData);
+    const parsed = EnhancedOrderSchema.safeParse(orderData);
     if (!parsed.success) {
       return NextResponse.json({ 
         error: "Invalid order", 
@@ -233,7 +258,8 @@ export async function POST(request: NextRequest) {
     }, { status: 200 });
 
   } catch (error) {
-    console.error('Order submission error:', error);
+    // Log error securely without exposing sensitive details
+    // In production, this should go to a secure logging service
     
     return NextResponse.json(
       { 

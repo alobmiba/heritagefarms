@@ -20,11 +20,11 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  // Use optimized static images for better performance
+  // Use available static images for better performance
   const optimizedImages = {
-    hero: '/branding/images/about/hero-optimized.jpg',
-    sustainability: '/branding/images/about/sustainability-bg.jpg',
-    crops: '/branding/images/about/crops-showcase.jpg'
+    hero: '/branding/Images/about/hero.jpg',
+    sustainability: '/branding/Images/about/greenhouse.jpg',
+    crops: '/branding/Images/about/leaf-texture.jpg'
   };
 
   return (
@@ -35,29 +35,41 @@ export default function AboutPage() {
         {/* HERO: About page hero with Dark Green overlay */}
         <AboutHero heroImage={optimizedImages.hero} />
 
-        {/* PURPOSE • PROMISE • METRICS */}
-        <PurposePromiseMetrics />
+        {/* Fixed Background Section */}
+        <div 
+          className="relative bg-cover bg-center bg-no-repeat bg-fixed" 
+          style={{ backgroundImage: "url('/branding/Images/banner/homebanner.png')" }}
+        >
+          {/* Dark Overlay for Readability */}
+          <div className="absolute inset-0 bg-gray-900 bg-opacity-60"></div>
 
-        {/* OUR STORY (Timeline) */}
-        <StoryTimeline />
+          {/* Content layered on top */}
+          <div className="relative z-10">
+            {/* PURPOSE • PROMISE • METRICS */}
+            <PurposePromiseMetrics />
+
+            {/* OUR STORY (Timeline) */}
+            <StoryTimeline />
+
+            {/* TEAM */}
+            <section id="team" className="py-16 bg-transparent text-white">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl md:text-4xl font-gilroy font-bold text-white mb-4">
+                    The People Behind the Produce
+                  </h2>
+                  <p className="text-lg font-gilroy text-gray-200 max-w-3xl mx-auto">
+                    Meet the people behind the produce—growers and partners dedicated to flavour, freshness, and sustainability.
+                  </p>
+                </div>
+                <Team />
+              </div>
+            </section>
+          </div>
+        </div>
 
         {/* HOW WE GROW (Sustainability Practices) */}
         <SustainabilityPractices backgroundImage={optimizedImages.sustainability} />
-
-        {/* TEAM */}
-        <section id="team" className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-gilroy font-bold text-[#00312D] mb-4">
-                The People Behind the Produce
-              </h2>
-              <p className="text-lg font-gilroy text-gray-600 max-w-3xl mx-auto">
-                Meet the people behind the produce—growers and partners dedicated to flavour, freshness, and sustainability.
-              </p>
-            </div>
-            <Team />
-          </div>
-        </section>
 
         {/* HERITAGE CROPS (teaser) */}
         <HeritageCropsTeaser cropsImages={optimizedImages.crops} />

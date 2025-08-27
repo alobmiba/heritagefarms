@@ -3,25 +3,10 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import ProductReviews from '@/components/ProductReviews';
+import { InventoryItem } from '@/types/commerce';
 
-interface Product {
-  id: string;
-  sku: string;
-  name: string;
-  localName: string;
-  price: number;
-  priceUnit: string;
-  image: string;
-  cultivar: string;
-  healthBenefits: string;
-  growingMethod: string;
-  maturityTime: string;
-  description: string;
-  category: string;
-  active: boolean;
-  inStock: boolean;
-  stockQuantity: number;
-}
+// Use InventoryItem as Product type
+type Product = InventoryItem;
 
 interface ProductModalProps {
   product: Product;
@@ -153,7 +138,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }: 
         {/* Product Reviews Section */}
         <div className="border-t border-gray-200 p-8">
           <ProductReviews 
-            productId={product.id} 
+            productId={product.sku} 
             productName={product.name} 
           />
         </div>

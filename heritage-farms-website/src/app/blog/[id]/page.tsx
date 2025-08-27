@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { sanitizeBlogContent } from '@/lib/sanitize-html';
 
 const blogPosts = [
   {
@@ -191,7 +192,7 @@ export default function BlogPostPage() {
           {/* Article Content */}
           <div 
             className="prose prose-lg max-w-none font-gilroy"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeBlogContent(post.content) }}
             style={{
               '--tw-prose-headings': '#404A3D',
               '--tw-prose-body': '#374151',

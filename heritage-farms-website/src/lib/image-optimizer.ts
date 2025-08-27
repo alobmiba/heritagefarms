@@ -123,23 +123,34 @@ export const setupLazyLoading = (): void => {
 
 // Generate blur placeholder for images
 export const generateBlurPlaceholder = (width: number, height: number): string => {
-  if (typeof window === 'undefined') return '';
-  
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  
-  if (ctx) {
-    // Create a simple gradient placeholder
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#f0f0f0');
-    gradient.addColorStop(1, '#e0e0e0');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+  // During SSR, return a simple data URL
+  if (typeof window === 'undefined') {
+    // Return a minimal base64 encoded 1x1 pixel
+    return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmMGYwZjAiLz48L3N2Zz4=';
   }
   
-  return canvas.toDataURL('image/jpeg', 0.1);
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.min(width, 10); // Limit size for performance
+    canvas.height = Math.min(height, 10);
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      // Create a simple gradient placeholder
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#f0f0f0');
+      gradient.addColorStop(1, '#e0e0e0');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      return canvas.toDataURL('image/jpeg', 0.1);
+    }
+  } catch (error) {
+    console.warn('Failed to generate blur placeholder:', error);
+  }
+  
+  // Fallback to a simple data URL
+  return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmMGYwZjAiLz48L3N2Zz4=';
 };
 
 // Optimize image component props

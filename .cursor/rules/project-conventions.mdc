@@ -1,0 +1,57 @@
+# Heritage Farms Website: Coding Rules and Project Conventions
+
+This document outlines the key architectural patterns, coding standards, and conventions for the Heritage Farms website. Adhering to these rules ensures code quality, consistency, and security.
+
+## 1. Core Technologies
+
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI**: React (Server Components preferred)
+- **Backend**: Firebase (Firestore) via Next.js API Routes
+- **Authentication**: NextAuth.js
+- **Validation**: Zod
+
+## 2. General Principles
+
+- **Follow Existing Patterns**: Before writing new code, inspect the surrounding files and directories to understand and replicate the established patterns.
+- **Security First**: All code must be written with security as a top priority. This is not an afterthought.
+- **Clarity and Simplicity**: Write clear, self-documenting code. Avoid overly complex abstractions.
+
+## 3. TypeScript and Data Validation
+
+- **Strict Typing**: Use TypeScript's strict mode. Avoid `any` whenever possible.
+- **Zod for Validation**: All external data (API request bodies, form submissions, environment variables) **must** be validated using Zod schemas. This is our primary defense against invalid data and injection attacks.
+
+## 4. React & Next.js Conventions
+
+- **Server Components by Default**: Prefer React Server Components for performance. Only use Client Components (`'use client'`) when interactivity (hooks like `useState`, `useEffect`) is absolutely necessary.
+- **File Naming**:
+    - Components: `PascalCase.tsx` (e.g., `ProductCard.tsx`)
+    - API Routes: `route.ts` within the `src/app/api/...` directory structure.
+- **Data Fetching**: Use server-side data fetching within Server Components whenever possible. For client-side fetching, use libraries like `SWR` or `React Query` if they are introduced to the project.
+
+## 5. Styling with Tailwind CSS
+
+- **Utility-First**: Embrace the utility-first approach of Tailwind CSS.
+- **Component Abstraction**: For complex, reusable UI elements, create a React component rather than a custom CSS class.
+- **`clsx` and `tailwind-merge`**: Use these utilities (already in the project) for conditionally applying classes to avoid conflicts and keep the code clean.
+
+## 6. Firebase Interaction (Server-Side)
+
+- **Use the Admin SDK Wrapper**: All server-side interaction with Firestore **must** go through the pre-configured admin client in `@/lib/firebase-admin.ts`. Do not initialize a new Firebase app instance elsewhere.
+- **Security Rules are Law**: All database queries must be written with the assumption that Firestore Security Rules are the ultimate authority. Do not rely solely on server-side checks for data access control.
+- **No Frontend Firebase Admin**: The Firebase Admin SDK must never be imported or used in client-side code.
+
+## 7. API Route (Backend) Rules
+
+1.  **Authentication & Authorization**: Secure endpoints using `getServerSession` from NextAuth.js. Check for the appropriate role (e.g., `session.isAdmin`) if the endpoint is for admin use only.
+2.  **Rate Limiting**: All public-facing, sensitive, or resource-intensive API routes must be protected by the Vercel KV-based rate limiter in `@/lib/rate-limiter.ts`.
+3.  **Input Validation**: The very first step in any API route that accepts a body or parameters is to validate the input with a Zod schema.
+4.  **Structured Responses**: Return consistent, predictable JSON responses. For errors, use appropriate HTTP status codes (e.g., 400 for bad requests, 401 for unauthorized, 429 for too many requests, 500 for server errors).
+
+## 8. Security
+
+- **Environment Variables**: All secrets (API keys, database credentials, `NEXTAUTH_SECRET`) **must** be stored in environment variables (`.env.local`) and accessed via `process.env`. Never hardcode secrets in the source code.
+- **Input Sanitization**: While Zod provides validation, be mindful of data before rendering it to prevent XSS. Avoid `dangerouslySetInnerHTML`.
+- **Authorization Checks**: Always verify that a user has the permission to perform an action or access data, even if they are authenticated.

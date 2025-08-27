@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { OptimizedImage } from '@/components/common/OptimizedImage';
+import Image from 'next/image';
 
 export default function OfflinePage() {
   return (
@@ -10,7 +10,7 @@ export default function OfflinePage() {
       <div className="max-w-md w-full text-center">
         {/* Offline Icon */}
         <div className="mb-8">
-          <OptimizedImage
+          <Image
             src="/branding/Images/placeholders/placeholder.jpg"
             alt="Offline"
             width={120}

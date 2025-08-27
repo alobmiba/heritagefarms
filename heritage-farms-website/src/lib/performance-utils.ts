@@ -181,7 +181,10 @@ export const performanceMonitoring = {
       new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach(entry => {
-          console.log('FID:', (entry as PerformanceEntry & { processingStart: number }).processingStart - entry.startTime);
+          const fidEntry = entry as PerformanceEntry & { processingStart?: number };
+          if (fidEntry.processingStart) {
+            console.log('FID:', fidEntry.processingStart - entry.startTime);
+          }
         });
       }).observe({ entryTypes: ['first-input'] });
 
@@ -190,8 +193,9 @@ export const performanceMonitoring = {
         let cls = 0;
         const entries = list.getEntries();
         entries.forEach(entry => {
-          if (!(entry as PerformanceEntry & { hadRecentInput: boolean }).hadRecentInput) {
-            cls += (entry as PerformanceEntry & { value: number }).value;
+          const clsEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
+          if (!clsEntry.hadRecentInput && clsEntry.value) {
+            cls += clsEntry.value;
           }
         });
         console.log('CLS:', cls);
