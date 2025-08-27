@@ -53,11 +53,8 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
     "postcss": "^8.4.49",
-<<<<<<< Updated upstream
-=======
     "semantic-release": "^24.1.0",
     "ts-jest": "^29.4.1",
->>>>>>> Stashed changes
     "typescript": "^5"
   }
 }
