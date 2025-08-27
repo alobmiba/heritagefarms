@@ -35,8 +35,6 @@ interface OrderData {
   orderType: 'ecommerce' | 'mission';
 }
 
-import rateLimiter from '@/lib/rate-limiter';
-
 // Order schema is now imported from input-validation.ts as EnhancedOrderSchema
 
 export async function POST(request: NextRequest) {
@@ -44,6 +42,9 @@ export async function POST(request: NextRequest) {
   if (isBuildTime()) {
     return NextResponse.json({ error: 'Service unavailable during build' }, { status: 503 });
   }
+
+  // Import rate limiter only when needed (not during build)
+  const { default: rateLimiter } = await import('@/lib/rate-limiter');
 
   // CSRF Protection
   const csrfValid = await checkCSRF(request);
