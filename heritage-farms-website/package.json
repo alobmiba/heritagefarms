@@ -24,7 +24,7 @@
     "firebase": "^12.1.0",
     "firebase-admin": "^13.4.0",
     "isomorphic-dompurify": "^2.26.0",
-    "next": "15.4.5",
+    "next": "15.5.2",
     "next-auth": "^4.24.11",
     "preline": "^2.5.1",
     "prettier": "^3.3.3",
