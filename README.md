@@ -1,180 +1,234 @@
 # Heritage Farms Website
 
-A world-class Next.js 15 + TypeScript website for Heritage Fields and Acreage Ltd, Ontario's first Black-led farm focusing on year-round West African and Caribbean greens.
+A modern, high-performance website for Heritage Farms, featuring local image optimization, offline support, and comprehensive performance monitoring.
 
 ## 🚀 Features
 
-### Core Functionality
-- **Hero Slider**: Auto-rotating banner with manual navigation
-- **Our Purpose**: Mission and vision content from Farm Profile
-- **Credibility Metrics**: Animated count-up counters with key statistics
-- **Mission & Order Form**: Split-screen layout with server-side validation
-- **Latest News**: 3-card carousel for CMS-driven blog posts
-- **Newsletter Signup**: Email subscription with validation
-- **Footer**: Complete contact information and social links
+- **Performance Optimized**: Local image processing, Service Worker, Core Web Vitals monitoring
+- **Offline Support**: Service Worker with smart caching strategies
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **E-commerce Ready**: Shopping cart, checkout, and inventory management
+- **Admin Dashboard**: Inventory and order management
+- **SEO Optimized**: Structured data, meta tags, and performance monitoring
+- **Security Focused**: Input validation, rate limiting, and secure Firebase configuration
 
-### Technical Features
-- **Next.js 15** with App Router and Edge Runtime
-- **TypeScript** throughout for type safety
-- **Tailwind CSS** with custom brand palette
-- **Gilroy Font** integration (Light & Extrabold)
-- **Intersection Observer** for scroll animations
-- **API Routes** with server-side validation
-- **Security Headers** and CSP configuration
-- **Image Optimization** with next/future/image
-- **Responsive Design** for all devices
+## 📋 Table of Contents
 
-## 🎨 Brand Identity
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Performance Optimizations](#performance-optimizations)
+- [Security Implementation](#security-implementation)
+- [Firebase Setup](#firebase-setup)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Development](#development)
 
-### Color Palette
-- **Dark Green**: `#00312D` - Primary brand color
-- **Forest Green**: `#3A7817` - Secondary color
-- **Lime Slice**: `#EAFDE7` - Light background
-- **Leafy Lemon**: `#BFF106` - Accent color
+## 🏃‍♂️ Quick Start
 
-### Typography
-- **Gilroy Light**: Body text and descriptions
-- **Gilroy Extrabold**: Headings and emphasis
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+- Firebase project (for backend functionality)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/heritagefarms.git
+cd heritage-farms/heritage-farms-website
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp env.example .env.local
+
+# Set up Firebase (see Firebase Setup section)
+# Add your Firebase configuration to .env.local
+
+# Start development server
+npm run dev
+```
+
+### Environment Variables
+
+Create a `.env.local` file with the following variables:
+
+```env
+# Firebase Configuration
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_CLIENT_EMAIL=your-service-account-email
+FIREBASE_PRIVATE_KEY=your-private-key
+
+# NextAuth (if using authentication)
+NEXTAUTH_SECRET=your-secret
+NEXTAUTH_URL=http://localhost:3000
+
+# Optional: Analytics and monitoring
+NEXT_PUBLIC_GA_ID=your-google-analytics-id
+```
 
 ## 📁 Project Structure
 
 ```
-heritage-farms-website/ ([browse in GitHub](https://github.com/alobmiba/heritagefarms/tree/main/heritage-farms-website))
+heritage-farms-website/
 ├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   ├── orders/
-│   │   │   │   └── route.ts          # Order form API
-│   │   │   └── pexels/
-│   │   │       └── route.ts          # Pexels image proxy
-│   │   ├── globals.css               # Global styles & fonts
-│   │   ├── layout.tsx                # Root layout
-│   │   └── page.tsx                  # Home page
-│   └── components/
-│       ├── HeroSlider.tsx            # Auto-rotating banner
-│       ├── OurPurpose.tsx            # Mission content
-│       ├── CredibilityMetrics.tsx    # Animated counters
-│       ├── MissionOrderForm.tsx      # Split-screen form
-│       ├── LatestNews.tsx            # News carousel
-│       ├── NewsletterSignup.tsx      # Email subscription
-│       └── Footer.tsx                # Site footer
-├── public/
-│   ├── branding/
-│   │   ├── Images/                   # Product & banner images
-│   │   └── Logo/                     # Logo variants
-│   └── fonts/
-│       └── Gilroy/                   # Custom fonts
-├── tailwind.config.ts                # Tailwind configuration
-├── next.config.js                    # Next.js configuration
-└── README.md
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API routes
+│   │   ├── admin/             # Admin pages
+│   │   ├── about/             # About page
+│   │   ├── products/          # Products page
+│   │   ├── checkout/          # Checkout page
+│   │   └── offline/           # Offline fallback page
+│   ├── components/            # React components
+│   │   ├── common/            # Shared components
+│   │   ├── about/             # About page components
+│   │   ├── contact/           # Contact components
+│   │   └── shop/              # E-commerce components
+│   ├── lib/                   # Utility functions
+│   ├── context/               # React context providers
+│   ├── data/                  # Static data and types
+│   └── types/                 # TypeScript type definitions
+├── public/                    # Static assets
+│   ├── branding/              # Brand assets
+│   └── sw.js                  # Service Worker
+├── scripts/                   # Build and utility scripts
+└── tests/                     # Test files
 ```
 
-## 🛠️ Technology Stack
+## ⚡ Performance Optimizations
 
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Fonts**: Gilroy (Light & Extrabold)
-- **Images**: next/future/image
-- **Animations**: CSS transitions + Intersection Observer
-- **API**: Edge Functions
-- **Deployment**: Vercel (recommended)
+### Image Optimization
+- **Local Processing**: WebP/AVIF conversion with Sharp
+- **Responsive Images**: Multiple sizes and formats
+- **Lazy Loading**: Intersection Observer API
+- **Blur Placeholders**: Progressive image loading
+- **Critical Preloading**: Above-the-fold images
 
-## 🚀 Getting Started
+### Service Worker
+- **Offline Support**: Cache-first for static assets
+- **Smart Caching**: Network-first for API calls
+- **Background Sync**: Queue operations when offline
+- **Push Notifications**: Real-time updates
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+### Bundle Optimization
+- **Code Splitting**: Route-based and component-level
+- **Dynamic Imports**: Lazy load non-critical components
+- **Tree Shaking**: Remove unused code
+- **Compression**: Gzip and Brotli support
 
-### Installation
+### Core Web Vitals
+- **LCP (Largest Contentful Paint)**: < 2.5s target
+- **FID (First Input Delay)**: < 100ms target
+- **CLS (Cumulative Layout Shift)**: < 0.1 target
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd heritage-farms-website
-   ```
+### Caching Strategies
+- **Browser Cache**: Long-term for static assets
+- **Service Worker Cache**: Offline-first approach
+- **CDN Headers**: Optimized cache control
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## 🔒 Security Implementation
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Add your API keys:
-   ```
-   PEXELS_API_KEY=your_pexels_api_key_here
-   ```
+### Input Validation
+- **Zod Schemas**: Type-safe validation for all API routes
+- **Sanitization**: XSS protection and input cleaning
+- **Rate Limiting**: In-memory rate limiting (consider Redis for production)
 
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+### Firebase Security
+- **Environment Variables**: Secure credential management
+- **Admin SDK**: Server-side only initialization
+- **Security Rules**: Firestore rules (see Firebase Setup)
 
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+### API Security
+- **CORS**: Proper cross-origin configuration
+- **Error Handling**: No sensitive data in error responses
+- **Authentication**: NextAuth integration for protected routes
 
-## 📋 Content Sources
+### Recommendations for Production
+1. **Implement Firebase Security Rules** (Critical)
+2. **Redis-based Rate Limiting** (High Priority)
+3. **Authorization Checks** (Medium Priority)
+4. **Regular Security Audits** (Ongoing)
 
-All website content is sourced from internal documents:
+## 🔥 Firebase Setup
 
-- **Business Plan**: `./Branding/Heritage Farms Business Plan.md`
-- **Farm Profile**: `./Branding/Farm Profile.md`
-- **Brand Assets**: `./Branding/` directory
-- **Product Images**: `./Branding/Images/products/`
-- **Logo Variants**: `./Branding/Logo/PNG/`
+### 1. Create Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project
+3. Enable Firestore Database
+4. Set up Authentication (if needed)
 
-## 🎯 Key Metrics Displayed
+### 2. Service Account Setup
+1. Go to Project Settings > Service Accounts
+2. Generate new private key
+3. Download JSON file
+4. Extract credentials for environment variables
 
-From the Business Plan, the website showcases:
-
-- **75%** less water usage
-- **50%** fewer food-mile CO₂ emissions
-- **7** heritage crops grown
-- **90%** year-round greenhouse capacity
-- **5** local grocer partnerships
-- **Bi-weekly** farm tours (coming soon)
-
-## 🔧 API Endpoints
-
-### `/api/orders` (POST)
-- Handles order form submissions
-- Server-side validation
-- Returns success/error responses
-
-### `/api/pexels` (GET)
-- Proxies Pexels image API requests
-- Requires `PEXELS_API_KEY` environment variable
-- Cached responses for performance
-
-## 🎨 Customization
-
-### Brand Colors
-Update `tailwind.config.ts` to modify the brand palette:
-
-```typescript
-colors: {
-  'heritage': {
-    'dark-green': '#00312D',
-    'forest-green': '#3A7817',
-    'lime-slice': '#EAFDE7',
-    'leafy-lemon': '#BFF106',
+### 3. Firestore Security Rules
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Inventory - read-only for public, full access for admin
+    match /inventory/{document} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+    
+    // Orders - authenticated users can create, admin can read/write
+    match /orders/{document} {
+      allow create: if request.auth != null;
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
   }
 }
 ```
 
-### Fonts
-Gilroy fonts are loaded from `public/fonts/Gilroy/` and configured in `globals.css`.
+### 4. Environment Variables
+```env
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_CLIENT_EMAIL=your-service-account-email
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
 
-### Content
-Update component files to modify:
-- Mission statements
-- Product listings
-- Contact information
-- Social media links
+## 🧪 Testing
+
+### Unit Tests
+```bash
+# Run all tests
+npm test
+
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
+
+# CI mode
+npm run test:ci
+```
+
+### E2E Tests
+```bash
+# Run Playwright tests
+npm run test:e2e
+
+# UI mode
+npm run test:e2e:ui
+
+# Headed mode
+npm run test:e2e:headed
+
+# Debug mode
+npm run test:e2e:debug
+```
+
+### Test Structure
+- **Unit Tests**: Component and utility function testing
+- **Integration Tests**: API route testing
+- **E2E Tests**: User workflow testing
+- **Performance Tests**: Core Web Vitals monitoring
 
 ## 🚀 Deployment
 
@@ -183,68 +237,76 @@ Update component files to modify:
 2. Set environment variables in Vercel dashboard
 3. Deploy automatically on push to main branch
 
-### Environment Variables
-- `PEXELS_API_KEY`: For additional image content
-- `NEXT_PUBLIC_SITE_URL`: For canonical URLs
+### Manual Deployment
+```bash
+# Build for production
+npm run build
 
-## 📊 Performance Features
+# Start production server
+npm start
+```
 
-- **Edge Runtime**: Fast API responses
-- **Image Optimization**: WebP/AVIF formats
-- **Font Optimization**: Local font loading
-- **Code Splitting**: Automatic by Next.js
-- **Caching**: Static generation + ISR
-- **Security**: CSP headers and validation
+### Environment Variables for Production
+- Set all Firebase credentials
+- Configure NextAuth secrets
+- Add analytics IDs
+- Set up monitoring tools
 
-## 🔒 Security
+## 🛠️ Development
 
-- **Content Security Policy**: Configured in `next.config.js`
-- **Input Validation**: Server-side form validation
-- **HTTPS**: Enforced with HSTS headers
-- **XSS Protection**: Enabled headers
-- **CSRF Protection**: Built into Next.js
+### Available Scripts
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run typecheck    # TypeScript type checking
+npm run optimize-images # Optimize images
+```
 
-## 📱 Responsive Design
+### Code Quality
+- **ESLint**: Code linting and formatting
+- **Prettier**: Code formatting
+- **TypeScript**: Type safety
+- **Husky**: Git hooks for quality checks
+- **Commitlint**: Conventional commit messages
 
-The website is fully responsive with breakpoints:
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px  
-- **Desktop**: > 1024px
+### Git Hooks
+- **Pre-commit**: Lint and type check
+- **Commit-msg**: Validate commit message format
 
-## 🎭 Animations
+### Performance Monitoring
+- **Core Web Vitals**: Real-time monitoring
+- **Bundle Analysis**: Webpack bundle analyzer
+- **Lighthouse**: Performance audits
+- **Custom Metrics**: Application-specific monitoring
 
-- **Scroll-triggered**: Intersection Observer
-- **Count-up**: Animated metrics
-- **Fade-in**: Content reveals
-- **Slide-up**: Smooth transitions
-- **Hover effects**: Interactive elements
+## 📚 Additional Resources
 
-## 📈 Analytics
-
-Ready for integration with:
-- Vercel Analytics
-- Google Analytics
-- Custom tracking
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Performance Best Practices](https://web.dev/performance/)
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Run tests and linting
 5. Submit a pull request
 
 ## 📄 License
 
-This project is proprietary to Heritage Fields and Acreage Ltd.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📞 Support
+## 🆘 Support
 
-For questions or support, contact:
-- **Email**: info@heritagefarms.ca
-- **Phone**: +1 (555) 123-4567
-- **Address**: 16 Twin Sisters Lake Road, Marmora, Ontario
+For support and questions:
+- Create an issue on GitHub
+- Check the documentation sections above
+- Review the Firebase setup guide
 
 ---
 
-**Built with ❤️ for Heritage Farms**
+**Note**: This project includes comprehensive performance optimizations and security measures. Make sure to review the security recommendations and implement Firebase security rules before deploying to production.
