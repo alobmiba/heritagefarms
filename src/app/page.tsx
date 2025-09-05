@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import ShoppingCart from '@/components/ShoppingCart';
 import { useCart } from '@/context/CartContext';
 import HeroSection from "../components/HeroSection";
+import AboutUs from "../components/aboutUs"
 
 interface CartItem {
   id: string;
@@ -37,9 +38,11 @@ const HomePage = () => {
         <section id="home">
           <HeroSection />
         </section>
-
+        <section id="aboutUs">
+         <AboutUs></AboutUs>
+        </section>
         {/* Our Purpose Section */}
-        <section id="purpose">
+        <section id="purpose" className="mt-20">
           <OurPurpose />
         </section>
 
